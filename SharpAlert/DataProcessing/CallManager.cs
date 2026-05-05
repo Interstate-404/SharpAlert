@@ -9,7 +9,6 @@ using System.Threading;
 using System.Windows.Forms;
 using static SharpAlertPluginBase.AlertContents;
 using static SharpAlert.ProgramWorker.NotificationWorker;
-using static SharpAlert.ProgramWorker.MainEntryPoint;
 using SharpAlert.ProgramWorker;
 
 namespace SharpAlert.DataProcessing
@@ -34,7 +33,7 @@ namespace SharpAlert.DataProcessing
                 //var winAudioEndPoint = new WindowsAudioEndPoint(new AudioEncoder());
                 //winAudioEndPoint.ToMediaEndPoints()
                 using var voipMediaSession = new VoIPMediaSession();
-                bool callResult = userAgent.Call(callTo, null, null, voipMediaSession).Result;
+                bool callResult = userAgent.Call(callTo, null, null, voipMediaSession, 12).Result;
                 voipMediaSession.AudioExtrasSource.SetSource(AudioSourcesEnum.None);
 
                 if (callResult)
