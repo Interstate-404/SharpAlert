@@ -47,6 +47,7 @@
             TryForceWindowFocusBox = new System.Windows.Forms.CheckBox();
             ForceCustomFontBox = new System.Windows.Forms.CheckBox();
             CustomFontCombo = new System.Windows.Forms.ComboBox();
+            PhoneIPInput = new System.Windows.Forms.TextBox();
             label1 = new System.Windows.Forms.Label();
             label9 = new System.Windows.Forms.Label();
             label2 = new System.Windows.Forms.Label();
@@ -56,6 +57,7 @@
             label3 = new System.Windows.Forms.Label();
             DisplayStyleInfoButton = new System.Windows.Forms.Button();
             TextDisplayGroup = new System.Windows.Forms.GroupBox();
+            label5 = new System.Windows.Forms.Label();
             label4 = new System.Windows.Forms.Label();
             DisplayWhereInfoButton = new System.Windows.Forms.Button();
             WindowShake = new System.Windows.Forms.Timer(components);
@@ -265,6 +267,15 @@
             CustomFontCombo.TabIndex = 61;
             ToolTipInformation.SetToolTip(CustomFontCombo, "Choose a font to force everywhere possiible.\r\nThis is ignored if \"Force custom font\" is off.");
             // 
+            // PhoneIPInput
+            // 
+            PhoneIPInput.Location = new System.Drawing.Point(366, 65);
+            PhoneIPInput.Name = "PhoneIPInput";
+            PhoneIPInput.PlaceholderText = "192.168.6.7";
+            PhoneIPInput.Size = new System.Drawing.Size(165, 23);
+            PhoneIPInput.TabIndex = 66;
+            ToolTipInformation.SetToolTip(PhoneIPInput, "Used to call IP phones. Not all phones are supported.");
+            // 
             // label1
             // 
             label1.Anchor = System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left;
@@ -355,6 +366,8 @@
             // TextDisplayGroup
             // 
             TextDisplayGroup.Anchor = System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right;
+            TextDisplayGroup.Controls.Add(label5);
+            TextDisplayGroup.Controls.Add(PhoneIPInput);
             TextDisplayGroup.Controls.Add(TryForceWindowFocusBox);
             TextDisplayGroup.Controls.Add(PreviewPicture);
             TextDisplayGroup.Controls.Add(alertIncreaseSizeBox);
@@ -380,6 +393,15 @@
             TextDisplayGroup.TabIndex = 58;
             TextDisplayGroup.TabStop = false;
             TextDisplayGroup.Text = "Alert Window";
+            // 
+            // label5
+            // 
+            label5.Location = new System.Drawing.Point(237, 65);
+            label5.Name = "label5";
+            label5.Size = new System.Drawing.Size(123, 23);
+            label5.TabIndex = 67;
+            label5.Text = "IP of phone";
+            label5.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             // 
             // label4
             // 
@@ -483,5 +505,7 @@
         private System.Windows.Forms.TextBox AreaSAMEInput;
         private System.Windows.Forms.CheckBox ForceCustomFontBox;
         private System.Windows.Forms.ComboBox CustomFontCombo;
+        private System.Windows.Forms.Label label5;
+        private System.Windows.Forms.TextBox PhoneIPInput;
     }
 }

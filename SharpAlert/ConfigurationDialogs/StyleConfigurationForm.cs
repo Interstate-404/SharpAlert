@@ -141,6 +141,9 @@ namespace SharpAlert.ConfigurationDialogs
             alertFullscreenWindowedBox.Checked = QuickSettings.Instance.alertTitlebarControls;
             alertFullscreenWindowedBox.CheckedChanged += (a, b) => QuickSettings.Instance.alertTitlebarControls = ((CheckBox)a).Checked;
 
+            PhoneIPInput.Text = QuickSettings.Instance.PhoneIP;
+            PhoneIPInput.TextChanged += (a, b) => QuickSettings.Instance.PhoneIP = PhoneIPInput.Text.Trim();
+
             alertTimeoutInput.Value = QuickSettings.Instance.alertTimeout;
             alertTimeoutInput.ValueChanged += (a, b) => QuickSettings.Instance.alertTimeout = (int)((NumericUpDown)a).Value;
 

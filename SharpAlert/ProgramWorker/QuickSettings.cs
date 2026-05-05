@@ -135,6 +135,7 @@ namespace SharpAlert.ProgramWorker
         public bool alertFullscreenIdle { get; set; } = false;
         public int alertFullscreenDisplay { get; set; } = 0;
         public int AlertDeadInterval { get; set; } = 1;
+        public string PhoneIP { get; set; } = string.Empty;
         public bool alertCompatibilityMode { get; set; } = false;
         public bool statusWindow { get; set; } = false;
         // Removed support for expiry messages.

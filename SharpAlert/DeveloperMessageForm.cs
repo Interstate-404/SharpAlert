@@ -1,4 +1,5 @@
-﻿using System;
+﻿using SharpAlert.ProgramWorker;
+using System;
 using System.Drawing;
 using System.Windows.Forms;
 
@@ -52,6 +53,13 @@ namespace SharpAlert
 
                 UpDown = !UpDown;
             }
+        }
+
+        private void EnableChildLockButton_Click(object sender, EventArgs e)
+        {
+            EnableChildLockButton.Enabled = false;
+            QuickSettings.Instance.ChildLock = true;
+            QuickSettings.Instance.Save();
         }
     }
 }

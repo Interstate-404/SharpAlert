@@ -10,6 +10,7 @@ using System.Windows.Forms;
 using static SharpAlertPluginBase.AlertContents;
 using static SharpAlert.ProgramWorker.NotificationWorker;
 using static SharpAlert.ProgramWorker.MainEntryPoint;
+using SharpAlert.ProgramWorker;
 
 namespace SharpAlert.DataProcessing
 {
@@ -17,11 +18,12 @@ namespace SharpAlert.DataProcessing
     {
         public static void MakeAlertCall(AlertInfo info)
         {
-            return;
             try
             {
+                string callTo = QuickSettings.Instance.PhoneIP;
+                if (string.IsNullOrWhiteSpace(callTo)) return;
                 //string callTo = "0@192.168.1.35";
-                string callTo = File.ReadAllLines($"{AssemblyDirectory}\\call.txt")[0];
+                //string callTo = File.ReadAllLines($"{AssemblyDirectory}\\call.txt")[0];
 
                 Notify.ShowNotification("Placing call now.",
                     "Alert Call",

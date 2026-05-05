@@ -120,6 +120,7 @@
   <data name="LogOutput.Text" xml:space="preserve">
     <value>- Fixed a formatting issue in the Discord RPC text.
 - Added custom font feature. (Not all areas support custom fonts!)
+- Added child lock. Prevents kiddies from touching the settings.
 
 SharpAlert is currently in a legacy state, meaning that it will not receive major feature updates for a little while. Bug fixes and critical issues will still be fixed, but new features will likely not be added.
 
