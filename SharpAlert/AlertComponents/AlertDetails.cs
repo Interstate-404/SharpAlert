@@ -2768,7 +2768,7 @@ namespace SharpAlert.AlertComponents
             new SAME_CountyCode(57, "Weber", new SAME_StateCode(49, "Utah")),
 
             //VT - 50
-            new SAME_CountyCode(000, "All of Virginia", new SAME_StateCode(50, "Vermont"), true),
+            new SAME_CountyCode(000, "All of Vermont", new SAME_StateCode(50, "Vermont"), true),
             new SAME_CountyCode(1, "Addison", new SAME_StateCode(50, "Vermont")),
             new SAME_CountyCode(3, "Bennington", new SAME_StateCode(50, "Vermont")),
             new SAME_CountyCode(5, "Caledonia", new SAME_StateCode(50, "Vermont")),
