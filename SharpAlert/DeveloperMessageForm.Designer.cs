@@ -125,7 +125,6 @@
             EnableNewFeatureButton.Text = "Enable \"Use SAME as severity\"";
             EnableNewFeatureButton.UseMnemonic = false;
             EnableNewFeatureButton.UseVisualStyleBackColor = false;
-            EnableNewFeatureButton.Visible = false;
             EnableNewFeatureButton.Click += EnableNewFeatureButton_Click;
             // 
             // DeveloperMessageForm
