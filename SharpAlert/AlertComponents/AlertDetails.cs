@@ -3565,7 +3565,7 @@ namespace SharpAlert.AlertComponents
             new SAME_CountyCode(9, "New Haven", new SAME_StateCode(9, "Connecticut")),
             new SAME_CountyCode(11, "New London", new SAME_StateCode(9, "Connecticut")),
             new SAME_CountyCode(13, "Tolland", new SAME_StateCode(9, "Connecticut")),
-            new SAME_CountyCode(15, "Windham", new SAME_StateCode(9, "Connecticut"))
+            new SAME_CountyCode(15, "Windham", new SAME_StateCode(9, "Connecticut")),
             
             //WNAO - 73
             new SAME_CountyCode(5, "Eastport ME to Stonington ME out 25 NM", new SAME_StateCode(73, "Western North Atlantic Ocean")),
@@ -3647,7 +3647,7 @@ namespace SharpAlert.AlertComponents
             new SAME_CountyCode(815, "South of Long Island between Montauk Point and Sandy Hook to 1000 fathoms", new SAME_StateCode(73, "Western North Atlantic Ocean")),
             new SAME_CountyCode(820, "Hudson Canyon to Baltimore Canyon to 1000 fathoms", new SAME_StateCode(73, "Western North Atlantic Ocean")),
             new SAME_CountyCode(825, "Baltimore Canyon to Cape Charles Light to 100 NM offshore", new SAME_StateCode(73, "Western North Atlantic Ocean")),
-            new SAME_CountyCode(828, "Cape Charles Light to Currituck Beach Light to 100 NM offshore", new SAME_StateCode(73, "Western North Atlantic Ocean")),\
+            new SAME_CountyCode(828, "Cape Charles Light to Currituck Beach Light to 100 NM offshore", new SAME_StateCode(73, "Western North Atlantic Ocean")),
             new SAME_CountyCode(830, "Currituck Beach Light to Cape Hatteras to 100 NM offshore", new SAME_StateCode(73, "Western North Atlantic Ocean")),
             new SAME_CountyCode(833, "Cape Hatteras to Cape Fear to 100 NM offshore", new SAME_StateCode(73, "Western North Atlantic Ocean")),
             new SAME_CountyCode(835, "Cape Fear to 31N to 1000 fathoms", new SAME_StateCode(73, "Western North Atlantic Ocean")),
