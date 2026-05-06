@@ -41,7 +41,12 @@ namespace SharpAlert.ConfigurationDialogs
 
         private void linkLabel3_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
         {
-            HackyWorkarounds.OpenURL("https://youtube.com/@ItsBunnyTub");
+            HackyWorkarounds.OpenURL("https://bunnytub.com");
+        }
+
+        private void linkLabel5_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
+        {
+            HackyWorkarounds.OpenURL("https://discord.com/users/602238459838595081");
         }
 
         private void CreditsForm_HelpButtonClicked(object sender, System.ComponentModel.CancelEventArgs e)

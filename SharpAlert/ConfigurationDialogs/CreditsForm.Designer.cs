@@ -38,6 +38,7 @@
             linkLabel3 = new System.Windows.Forms.LinkLabel();
             linkLabel4 = new System.Windows.Forms.LinkLabel();
             WindowShake = new System.Windows.Forms.Timer(components);
+            linkLabel5 = new System.Windows.Forms.LinkLabel();
             SuspendLayout();
             // 
             // label5
@@ -80,7 +81,7 @@
             linkLabel1.Anchor = System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left;
             linkLabel1.AutoSize = true;
             linkLabel1.LinkColor = System.Drawing.Color.Pink;
-            linkLabel1.Location = new System.Drawing.Point(9, 252);
+            linkLabel1.Location = new System.Drawing.Point(9, 240);
             linkLabel1.Margin = new System.Windows.Forms.Padding(0);
             linkLabel1.Name = "linkLabel1";
             linkLabel1.Size = new System.Drawing.Size(208, 15);
@@ -94,7 +95,7 @@
             linkLabel2.Anchor = System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left;
             linkLabel2.AutoSize = true;
             linkLabel2.LinkColor = System.Drawing.Color.Pink;
-            linkLabel2.Location = new System.Drawing.Point(9, 267);
+            linkLabel2.Location = new System.Drawing.Point(9, 255);
             linkLabel2.Margin = new System.Windows.Forms.Padding(0);
             linkLabel2.Name = "linkLabel2";
             linkLabel2.Size = new System.Drawing.Size(260, 15);
@@ -108,7 +109,7 @@
             linkLabel3.Anchor = System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left;
             linkLabel3.AutoSize = true;
             linkLabel3.LinkColor = System.Drawing.Color.Pink;
-            linkLabel3.Location = new System.Drawing.Point(9, 214);
+            linkLabel3.Location = new System.Drawing.Point(9, 201);
             linkLabel3.Margin = new System.Windows.Forms.Padding(0);
             linkLabel3.Name = "linkLabel3";
             linkLabel3.Size = new System.Drawing.Size(338, 15);
@@ -122,7 +123,7 @@
             linkLabel4.Anchor = System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left;
             linkLabel4.AutoSize = true;
             linkLabel4.LinkColor = System.Drawing.Color.Pink;
-            linkLabel4.Location = new System.Drawing.Point(9, 237);
+            linkLabel4.Location = new System.Drawing.Point(9, 225);
             linkLabel4.Margin = new System.Windows.Forms.Padding(0);
             linkLabel4.Name = "linkLabel4";
             linkLabel4.Size = new System.Drawing.Size(520, 15);
@@ -137,11 +138,26 @@
             WindowShake.Interval = 500;
             WindowShake.Tick += WindowShake_Tick;
             // 
+            // linkLabel5
+            // 
+            linkLabel5.Anchor = System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left;
+            linkLabel5.AutoSize = true;
+            linkLabel5.LinkColor = System.Drawing.Color.Pink;
+            linkLabel5.Location = new System.Drawing.Point(9, 270);
+            linkLabel5.Margin = new System.Windows.Forms.Padding(0);
+            linkLabel5.Name = "linkLabel5";
+            linkLabel5.Size = new System.Drawing.Size(371, 15);
+            linkLabel5.TabIndex = 104;
+            linkLabel5.TabStop = true;
+            linkLabel5.Text = "Credit to Interstate404 for painstakingly adding U.S. marine locations.";
+            linkLabel5.LinkClicked += linkLabel5_LinkClicked;
+            // 
             // CreditsForm
             // 
             AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
             BackColor = System.Drawing.Color.FromArgb(20, 20, 20);
             ClientSize = new System.Drawing.Size(582, 291);
+            Controls.Add(linkLabel5);
             Controls.Add(linkLabel4);
             Controls.Add(linkLabel3);
             Controls.Add(linkLabel2);
@@ -176,5 +192,6 @@
         private System.Windows.Forms.LinkLabel linkLabel3;
         private System.Windows.Forms.LinkLabel linkLabel4;
         private System.Windows.Forms.Timer WindowShake;
+        private System.Windows.Forms.LinkLabel linkLabel5;
     }
 }
