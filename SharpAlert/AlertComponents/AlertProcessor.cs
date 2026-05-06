@@ -105,7 +105,7 @@ namespace SharpAlert.AlertComponents
 
                 if (QuickSettings.Instance.IgnoreKeepAlive)
                 {
-                    if (relayItem.Name.ToLowerInvariant().Contains("keepalive"))
+                    if (relayItem.Name.Contains("keepalive", StringComparison.InvariantCultureIgnoreCase))
                     {
                         info = new AlertInfo { AlertDiscardReason = "The identifier contains \"KEEPALIVE\", so the alert has been discarded." };
                     }
@@ -350,6 +350,30 @@ namespace SharpAlert.AlertComponents
                         string Severity = SeverityRegex.MatchOrDefault(AlertInfo, "Unknown");
                         Console.WriteLine($"[Alert Processor] Severity: {Severity}");
 
+                        if (QuickSettings.Instance.UseSAMEAsSeverityWhenPossible)
+                        {
+                            switch (GetAlertSeverityFromSAME(EventType))
+                            {
+                                //case SAME_EventLevel.None:
+                                //    Severity = SeverityLevel.Unknown.ToString();
+                                //    break;
+                                case SAME_EventLevel.Other:
+                                case SAME_EventLevel.Test:
+                                case SAME_EventLevel.Advisory:
+                                    Severity = SeverityLevel.Minor.ToString();
+                                    break;
+                                case SAME_EventLevel.Watch:
+                                    Severity = SeverityLevel.Moderate.ToString();
+                                    break;
+                                case SAME_EventLevel.Warning:
+                                    Severity = SeverityLevel.Severe.ToString();
+                                    break;
+                                case SAME_EventLevel.ExtremeWarning:
+                                    Severity = SeverityLevel.Extreme.ToString();
+                                    break;
+                            }
+                        }
+
                         int ResourceCount = 0;
                         MatchCollection MatchedResources = ResourceRegex.Matches(AlertInfo);
                         foreach (Match resource in MatchedResources)
@@ -494,7 +518,7 @@ namespace SharpAlert.AlertComponents
                         bool EventListed = false;
 
                         if (ProcessParameterX(AlertInfo) ||
-                            BroadcastImmediatelyRegex.MatchOrDefault(AlertInfo, "no").ToLowerInvariant() == "yes" ||
+                            BroadcastImmediatelyRegex.MatchOrDefault(AlertInfo, "no").Equals("yes", StringComparison.InvariantCultureIgnoreCase) ||
                             IgnoreDiscards ||
                             QuickSettings.Instance.BypassAllFilters)
                         {
@@ -1421,7 +1445,7 @@ namespace SharpAlert.AlertComponents
             try
             {
                 var alertEvent = SAME_AlertCodes.DefaultIfEmpty(cautionary);
-                var alertInfo = alertEvent.FirstOrDefault(y => y.ID == code.ToUpperInvariant());
+                var alertInfo = alertEvent.FirstOrDefault(y => y.ID.Equals(code, StringComparison.InvariantCultureIgnoreCase));
 
                 if (alertInfo != null) return (alertInfo.Name, true);
                 else return ("Cautionary (Unknown Event)", false);
@@ -1430,6 +1454,24 @@ namespace SharpAlert.AlertComponents
             {
                 //Console.WriteLine($"[Alert Processor] {ex.Message}");
                 return ("Cautionary (Unknown Event)", false);
+            }
+        }
+        
+        public static SAME_EventLevel GetAlertSeverityFromSAME(string code)
+        {
+            if (string.IsNullOrWhiteSpace(code)) return SAME_EventLevel.None;
+            try
+            {
+                var alertEvent = SAME_AlertCodes.DefaultIfEmpty(cautionary);
+                var alertInfo = alertEvent.FirstOrDefault(y => y.ID.Equals(code, StringComparison.InvariantCultureIgnoreCase));
+
+                if (alertInfo != null) return alertInfo.EventLevel;
+                else return SAME_EventLevel.None;
+            }
+            catch (Exception)
+            {
+                //Console.WriteLine($"[Alert Processor] {ex.Message}");
+                return SAME_EventLevel.None;
             }
         }
 
@@ -1669,7 +1711,7 @@ namespace SharpAlert.AlertComponents
                             {
                                 if (location.ValueName == valueName)
                                 {
-                                    if (location.Value.ToLowerInvariant() == value.ToLowerInvariant())
+                                    if (location.Value.Equals(value, StringComparison.InvariantCultureIgnoreCase))
                                     {
                                         GeoMatch = true;
                                         break;
@@ -2527,7 +2569,7 @@ namespace SharpAlert.AlertComponents
 
         public static (string text, Color MainColor, Color SubColor) GetTextFromMessageSeverityAndType(string severity, string type)
         {
-            if (type.ToLowerInvariant() == "cancel")
+            if (type.Equals("cancel", StringComparison.InvariantCultureIgnoreCase))
             {
                 return (Language.Get("AlertCancelled", "ALERT CANCELLED"), Color.FromArgb(0, 80, 200), Color.FromArgb(0, 50, 100));
             }

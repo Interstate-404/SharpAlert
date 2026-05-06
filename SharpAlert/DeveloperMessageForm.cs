@@ -55,10 +55,10 @@ namespace SharpAlert
             }
         }
 
-        private void EnableChildLockButton_Click(object sender, EventArgs e)
+        private void EnableNewFeatureButton_Click(object sender, EventArgs e)
         {
-            EnableChildLockButton.Enabled = false;
-            QuickSettings.Instance.ChildLock = true;
+            EnableNewFeatureButton.Enabled = false;
+            QuickSettings.Instance.UseSAMEAsSeverityWhenPossible = true;
             QuickSettings.Instance.Save();
         }
     }

@@ -103,6 +103,7 @@ namespace SharpAlert.ProgramWorker
         public bool severityModerate { get; set; } = true;
         public bool severityMinor { get; set; } = true;
         public bool severityUnknown { get; set; } = false;
+        public bool UseSAMEAsSeverityWhenPossible { get; set; } = false;
         // Urgency
         public bool urgencyImmediate { get; set; } = true;
         public bool urgencyExpected { get; set; } = true;

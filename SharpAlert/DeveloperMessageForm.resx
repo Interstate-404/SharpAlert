@@ -118,14 +118,11 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="LogOutput.Text" xml:space="preserve">
-    <value>- Fixed a formatting issue in the Discord RPC text.
-- Added custom font feature. (Not all areas support custom fonts!)
-- Added child lock. Prevents kiddies from touching the settings.
+    <value>- Added U.S. marine locations. Credits to Interstate404 for painstakingly adding them.
 
-SharpAlert is currently in a legacy state, meaning that it will not receive major feature updates for a little while. Bug fixes and critical issues will still be fixed, but new features will likely not be added.
+- Added a mapping system to convert SAME severity to CAP severity. The mapping somewhat adheres to the standard. (You can only change this setting in the advanced "Alert Settings" area.)
 
-Development has shifted to SharpWX, and SharpWX's mobile app.
-https://bunnytub.com/SharpWX
+- Experimental support for IP phones. Go to Style Settings to change settings for IP phones.
 
 I am BunnyTub, the (mostly) sole developer of SharpAlert. Find additional contributors in credits. SharpAlert has been completely open-sourced! You can find the entire source code and files at https://github.com/BunnyTub/SharpAlert. This software is provided free of charge. If you paid for this software, or it came inside of a software package of which you paid for, you should probably try getting your money back immediately.</value>
   </data>

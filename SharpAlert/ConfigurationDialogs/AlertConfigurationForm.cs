@@ -21,6 +21,9 @@ namespace SharpAlert.ConfigurationDialogs
             if (Initialized) return;
             Initialized = true;
 
+            UseSAMEAsSeverityWhenPossibleBox.Checked = QuickSettings.Instance.UseSAMEAsSeverityWhenPossible;
+            UseSAMEAsSeverityWhenPossibleBox.CheckedChanged += (a, b) => QuickSettings.Instance.UseSAMEAsSeverityWhenPossible = ((CheckBox)a).Checked;
+            
             alertNoRelayBox.Checked = QuickSettings.Instance.alertNoRelay;
             alertNoRelayBox.CheckedChanged += (a, b) => QuickSettings.Instance.alertNoRelay = ((CheckBox)a).Checked;
 

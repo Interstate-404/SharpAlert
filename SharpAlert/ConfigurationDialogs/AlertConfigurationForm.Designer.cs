@@ -67,6 +67,7 @@
             LanguageButton = new System.Windows.Forms.Button();
             StationButton = new System.Windows.Forms.Button();
             MiscGroup = new System.Windows.Forms.GroupBox();
+            UseSAMEAsSeverityWhenPossibleBox = new System.Windows.Forms.CheckBox();
             BypassAlertFilteringButton = new System.Windows.Forms.Button();
             label5 = new System.Windows.Forms.Label();
             alertNoRelayBox = new System.Windows.Forms.CheckBox();
@@ -470,9 +471,9 @@
             RainbowText.ForeColor = System.Drawing.Color.Red;
             RainbowText.Location = new System.Drawing.Point(360, 185);
             RainbowText.Name = "RainbowText";
-            RainbowText.Size = new System.Drawing.Size(331, 52);
+            RainbowText.Size = new System.Drawing.Size(331, 18);
             RainbowText.TabIndex = 24;
-            RainbowText.Text = "Tell us about your requests on features or to report problems and bugs by clicking here to go to our website.";
+            RainbowText.Text = "Click here to open our website.";
             RainbowText.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             RainbowText.Click += RainbowText_Click;
             // 
@@ -543,17 +544,29 @@
             // 
             // MiscGroup
             // 
+            MiscGroup.Controls.Add(UseSAMEAsSeverityWhenPossibleBox);
             MiscGroup.Controls.Add(BypassAlertFilteringButton);
             MiscGroup.Controls.Add(label5);
             MiscGroup.Controls.Add(alertNoRelayBox);
             MiscGroup.Controls.Add(storedMaxSizeInput);
             MiscGroup.ForeColor = System.Drawing.Color.White;
-            MiscGroup.Location = new System.Drawing.Point(360, 240);
+            MiscGroup.Location = new System.Drawing.Point(360, 206);
             MiscGroup.Name = "MiscGroup";
-            MiscGroup.Size = new System.Drawing.Size(331, 74);
+            MiscGroup.Size = new System.Drawing.Size(331, 108);
             MiscGroup.TabIndex = 17;
             MiscGroup.TabStop = false;
             MiscGroup.Text = "Miscellaneous";
+            // 
+            // UseSAMEAsSeverityWhenPossibleBox
+            // 
+            UseSAMEAsSeverityWhenPossibleBox.AutoSize = true;
+            UseSAMEAsSeverityWhenPossibleBox.Location = new System.Drawing.Point(6, 50);
+            UseSAMEAsSeverityWhenPossibleBox.Name = "UseSAMEAsSeverityWhenPossibleBox";
+            UseSAMEAsSeverityWhenPossibleBox.Size = new System.Drawing.Size(229, 19);
+            UseSAMEAsSeverityWhenPossibleBox.TabIndex = 39;
+            UseSAMEAsSeverityWhenPossibleBox.Text = "Use SAME for severity (where possible)";
+            ToolTipInformation.SetToolTip(UseSAMEAsSeverityWhenPossibleBox, "Tries to map SAME severity onto CAP severity when an alert has SAME information.");
+            UseSAMEAsSeverityWhenPossibleBox.UseVisualStyleBackColor = true;
             // 
             // BypassAlertFilteringButton
             // 
@@ -561,9 +574,9 @@
             BypassAlertFilteringButton.BackColor = System.Drawing.Color.FromArgb(60, 60, 60);
             BypassAlertFilteringButton.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
             BypassAlertFilteringButton.Font = new System.Drawing.Font("Segoe UI", 9F);
-            BypassAlertFilteringButton.Location = new System.Drawing.Point(6, 45);
+            BypassAlertFilteringButton.Location = new System.Drawing.Point(6, 75);
             BypassAlertFilteringButton.Name = "BypassAlertFilteringButton";
-            BypassAlertFilteringButton.Size = new System.Drawing.Size(319, 23);
+            BypassAlertFilteringButton.Size = new System.Drawing.Size(319, 27);
             BypassAlertFilteringButton.TabIndex = 38;
             BypassAlertFilteringButton.Text = "Bypass Alert Filtering";
             BypassAlertFilteringButton.UseVisualStyleBackColor = false;
@@ -582,7 +595,7 @@
             // 
             alertNoRelayBox.Anchor = System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right;
             alertNoRelayBox.AutoSize = true;
-            alertNoRelayBox.Location = new System.Drawing.Point(209, 19);
+            alertNoRelayBox.Location = new System.Drawing.Point(149, 20);
             alertNoRelayBox.Name = "alertNoRelayBox";
             alertNoRelayBox.Size = new System.Drawing.Size(116, 19);
             alertNoRelayBox.TabIndex = 16;
@@ -974,5 +987,6 @@
         private System.Windows.Forms.Timer RainbowColoring;
         private System.Windows.Forms.Button EventsButton;
         private System.Windows.Forms.Timer WindowShake;
+        private System.Windows.Forms.CheckBox UseSAMEAsSeverityWhenPossibleBox;
     }
 }

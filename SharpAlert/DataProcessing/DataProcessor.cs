@@ -293,7 +293,7 @@ namespace SharpAlert.DataProcessing
 
                                                             int color = 16777215;
 
-                                                            if (info.AlertMessageType.ToLowerInvariant().Contains("cancel"))
+                                                            if (info.AlertMessageType.Contains("cancel", StringComparison.InvariantCultureIgnoreCase))
                                                             {
                                                                 color = 32767;
                                                             }

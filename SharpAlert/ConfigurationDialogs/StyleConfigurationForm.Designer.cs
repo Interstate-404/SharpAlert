@@ -269,10 +269,10 @@
             // 
             // PhoneIPInput
             // 
-            PhoneIPInput.Location = new System.Drawing.Point(366, 65);
+            PhoneIPInput.Location = new System.Drawing.Point(447, 65);
             PhoneIPInput.Name = "PhoneIPInput";
             PhoneIPInput.PlaceholderText = "192.168.6.7";
-            PhoneIPInput.Size = new System.Drawing.Size(165, 23);
+            PhoneIPInput.Size = new System.Drawing.Size(84, 23);
             PhoneIPInput.TabIndex = 66;
             ToolTipInformation.SetToolTip(PhoneIPInput, "Used to call IP phones. Not all phones are supported.");
             // 
@@ -396,9 +396,9 @@
             // 
             // label5
             // 
-            label5.Location = new System.Drawing.Point(237, 65);
+            label5.Location = new System.Drawing.Point(365, 65);
             label5.Name = "label5";
-            label5.Size = new System.Drawing.Size(123, 23);
+            label5.Size = new System.Drawing.Size(76, 23);
             label5.TabIndex = 67;
             label5.Text = "IP of phone";
             label5.TextAlign = System.Drawing.ContentAlignment.MiddleRight;

@@ -7,7 +7,7 @@ namespace SharpAlert.AlertComponents
 {
     public static class AlertDetails
     {
-        public static readonly SAME_EventCode cautionary = new("111", "Cautionary (Unknown Event)");
+        public static readonly SAME_EventCode cautionary = new("111", "Cautionary (Unknown Event)", SAME_EventLevel.Advisory);
 
         public enum SAME_EventLevel
         {
@@ -16,10 +16,11 @@ namespace SharpAlert.AlertComponents
             Test = 10,
             Advisory = 20,
             Watch = 30,
-            Warning = 40
+            Warning = 40,
+            ExtremeWarning = 45
         }
 
-        public class SAME_EventCode(string id, string name, SAME_EventLevel level = SAME_EventLevel.None)
+        public class SAME_EventCode(string id, string name, SAME_EventLevel level)
         {
             public string ID { private set; get; } = id;
             public string Name { private set; get; } = name;
@@ -29,8 +30,8 @@ namespace SharpAlert.AlertComponents
         public static readonly List<SAME_EventCode> SAME_AlertCodes =
         [
             // Used in the EBS (Emergency Broadcast System).
-            new("EAN", "National Emergency Message"), // former is "Emergency Action Notification"
-            new("EAT", "Emergency Action Termination"),
+            new("EAN", "National Emergency Message", SAME_EventLevel.ExtremeWarning), // former is "Emergency Action Notification"
+            new("EAT", "Emergency Action Termination", SAME_EventLevel.Advisory),
             
             // These are national alert codes.
             new("NIC", "National Information Center", SAME_EventLevel.Advisory),
@@ -48,12 +49,12 @@ namespace SharpAlert.AlertComponents
             // These are other codes.
             new("AVW", "Avalanche Warning", SAME_EventLevel.Warning),
             new("AVA", "Avalanche Watch", SAME_EventLevel.Watch),
-            new("BLU", "Blue Alert", SAME_EventLevel.Other),
+            new("BLU", "Blue Alert", SAME_EventLevel.ExtremeWarning),
             new("BHW", "Biological Hazard Warning", SAME_EventLevel.Warning),
             new("BZW", "Blizzard Warning", SAME_EventLevel.Warning),
             new("BWW", "Boil Water Warning", SAME_EventLevel.Warning),
-            new("CAE", "Child Abduction Emergency", SAME_EventLevel.Other),
-            new("CDW", "Civil Danger Warning", SAME_EventLevel.Warning),
+            new("CAE", "Child Abduction Emergency", SAME_EventLevel.ExtremeWarning),
+            new("CDW", "Civil Danger Warning", SAME_EventLevel.ExtremeWarning),
             new("CEM", "Civil Emergency Message", SAME_EventLevel.Warning),
             new("CFW", "Coastal Flood Warning", SAME_EventLevel.Warning),
             new("CFA", "Coastal Flood Watch", SAME_EventLevel.Watch),
@@ -63,10 +64,10 @@ namespace SharpAlert.AlertComponents
             new("DBA", "Dam Watch", SAME_EventLevel.Watch),
             new("DBW", "Dam Break Warning", SAME_EventLevel.Warning),
             new("DSW", "Dust Storm Warning", SAME_EventLevel.Warning),
-            new("EQW", "Earthquake Warning", SAME_EventLevel.Warning),
+            new("EQW", "Earthquake Warning", SAME_EventLevel.ExtremeWarning),
             new("EVA", "Evacuation Watch", SAME_EventLevel.Watch),
-            new("EVI", "Evacuation Immediate", SAME_EventLevel.Warning),
-            new("EWW", "Extreme Wind Warning", SAME_EventLevel.Warning),
+            new("EVI", "Evacuation Immediate", SAME_EventLevel.ExtremeWarning),
+            new("EWW", "Extreme Wind Warning", SAME_EventLevel.ExtremeWarning),
             new("FCW", "Food Contamination Warning", SAME_EventLevel.Warning),
             new("FRW", "Fire Warning", SAME_EventLevel.Warning),
             new("FFW", "Flash Flood Warning", SAME_EventLevel.Warning),
@@ -77,10 +78,10 @@ namespace SharpAlert.AlertComponents
             new("FLS", "Flood Statement", SAME_EventLevel.Advisory),
             new("FSW", "Flash Freeze Warning", SAME_EventLevel.Warning),
             new("FZW", "Freeze Warning", SAME_EventLevel.Warning),
-            new("HMW", "Hazardous Materials Warning", SAME_EventLevel.Warning),
+            new("HMW", "Hazardous Materials Warning", SAME_EventLevel.ExtremeWarning),
             new("HWW", "High Wind Warning", SAME_EventLevel.Warning),
             new("HWA", "High Wind Watch", SAME_EventLevel.Watch),
-            new("HUW", "Hurricane Warning", SAME_EventLevel.Warning),
+            new("HUW", "Hurricane Warning", SAME_EventLevel.ExtremeWarning),
             new("HUA", "Hurricane Watch", SAME_EventLevel.Watch),
             new("HLS", "Hurricane Statement", SAME_EventLevel.Advisory),
             new("IBW", "Iceberg Warning", SAME_EventLevel.Warning),
@@ -90,27 +91,27 @@ namespace SharpAlert.AlertComponents
             new("LAE", "Local Area Emergency", SAME_EventLevel.Warning),
             new("NMN", "Network Message Notification", SAME_EventLevel.Test),
             new("TOE", "911 Telephone Outage Emergency", SAME_EventLevel.Warning),
-            new("NUW", "Nuclear Power Plant Warning", SAME_EventLevel.Warning),
+            new("NUW", "Nuclear Power Plant Warning", SAME_EventLevel.ExtremeWarning),
             new("MEP", "Missing And Endangered Persons", SAME_EventLevel.Other),
             new("DMO", "Practice/Demo Warning", SAME_EventLevel.Other),
             new("POS", "Power Outage Statement", SAME_EventLevel.Advisory),
-            new("RHW", "Radiological Hazard Warning", SAME_EventLevel.Warning),
+            new("RHW", "Radiological Hazard Warning", SAME_EventLevel.ExtremeWarning),
             new("SVR", "Severe Thunderstorm Warning", SAME_EventLevel.Warning),
             new("SVA", "Severe Thunderstorm Watch", SAME_EventLevel.Watch),
             new("SVS", "Severe Weather Statement", SAME_EventLevel.Advisory),
-            new("SPW", "Shelter In-Place Warning", SAME_EventLevel.Warning),
+            new("SPW", "Shelter In-Place Warning", SAME_EventLevel.ExtremeWarning),
             new("SMW", "Special Marine Warning", SAME_EventLevel.Warning),
             new("SPS", "Special Weather Statement", SAME_EventLevel.Advisory),
             new("SQW", "Snow Squall Warning", SAME_EventLevel.Warning),
-            new("SSW", "Storm Surge Warning", SAME_EventLevel.Warning),
+            new("SSW", "Storm Surge Warning", SAME_EventLevel.ExtremeWarning),
             new("SSA", "Storm Surge Watch", SAME_EventLevel.Watch),
             new("TOR", "Tornado Warning", SAME_EventLevel.Warning),
             new("TOA", "Tornado Watch", SAME_EventLevel.Watch),
             new("TRW", "Tropical Storm Warning", SAME_EventLevel.Warning),
             new("TRA", "Tropical Storm Watch", SAME_EventLevel.Watch),
-            new("TSW", "Tsunami Warning", SAME_EventLevel.Warning),
+            new("TSW", "Tsunami Warning", SAME_EventLevel.ExtremeWarning),
             new("TSA", "Tsunami Watch", SAME_EventLevel.Watch),
-            new("VOW", "Volcano Warning", SAME_EventLevel.Warning),
+            new("VOW", "Volcano Warning", SAME_EventLevel.ExtremeWarning),
             new("WSW", "Winter Storm Warning", SAME_EventLevel.Warning),
             new("WSA", "Winter Storm Watch", SAME_EventLevel.Watch),
             new("WFW", "Wild Fire Warning", SAME_EventLevel.Warning),

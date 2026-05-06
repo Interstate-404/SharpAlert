@@ -36,7 +36,7 @@
             DoneButton = new System.Windows.Forms.Button();
             LogOutput = new System.Windows.Forms.TextBox();
             WindowShake = new System.Windows.Forms.Timer(components);
-            EnableChildLockButton = new System.Windows.Forms.Button();
+            EnableNewFeatureButton = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)IDIconBox).BeginInit();
             SuspendLayout();
             // 
@@ -110,29 +110,30 @@
             WindowShake.Interval = 500;
             WindowShake.Tick += WindowShake_Tick;
             // 
-            // EnableChildLockButton
+            // EnableNewFeatureButton
             // 
-            EnableChildLockButton.Anchor = System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right;
-            EnableChildLockButton.BackColor = System.Drawing.Color.FromArgb(60, 60, 60);
-            EnableChildLockButton.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
-            EnableChildLockButton.Font = new System.Drawing.Font("Segoe UI", 16F);
-            EnableChildLockButton.ForeColor = System.Drawing.Color.White;
-            EnableChildLockButton.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            EnableChildLockButton.Location = new System.Drawing.Point(148, 282);
-            EnableChildLockButton.Name = "EnableChildLockButton";
-            EnableChildLockButton.Size = new System.Drawing.Size(367, 40);
-            EnableChildLockButton.TabIndex = 16;
-            EnableChildLockButton.Text = "Turn On Child Lock";
-            EnableChildLockButton.UseMnemonic = false;
-            EnableChildLockButton.UseVisualStyleBackColor = false;
-            EnableChildLockButton.Click += EnableChildLockButton_Click;
+            EnableNewFeatureButton.Anchor = System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right;
+            EnableNewFeatureButton.BackColor = System.Drawing.Color.FromArgb(60, 60, 60);
+            EnableNewFeatureButton.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
+            EnableNewFeatureButton.Font = new System.Drawing.Font("Segoe UI", 16F);
+            EnableNewFeatureButton.ForeColor = System.Drawing.Color.White;
+            EnableNewFeatureButton.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            EnableNewFeatureButton.Location = new System.Drawing.Point(148, 282);
+            EnableNewFeatureButton.Name = "EnableNewFeatureButton";
+            EnableNewFeatureButton.Size = new System.Drawing.Size(367, 40);
+            EnableNewFeatureButton.TabIndex = 16;
+            EnableNewFeatureButton.Text = "Enable \"Use SAME as severity\"";
+            EnableNewFeatureButton.UseMnemonic = false;
+            EnableNewFeatureButton.UseVisualStyleBackColor = false;
+            EnableNewFeatureButton.Visible = false;
+            EnableNewFeatureButton.Click += EnableNewFeatureButton_Click;
             // 
             // DeveloperMessageForm
             // 
             AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
             BackColor = System.Drawing.Color.FromArgb(20, 20, 20);
             ClientSize = new System.Drawing.Size(661, 334);
-            Controls.Add(EnableChildLockButton);
+            Controls.Add(EnableNewFeatureButton);
             Controls.Add(LogOutput);
             Controls.Add(DoneButton);
             Controls.Add(label2);
@@ -161,6 +162,6 @@
         private System.Windows.Forms.Button DoneButton;
         private System.Windows.Forms.TextBox LogOutput;
         private System.Windows.Forms.Timer WindowShake;
-        private System.Windows.Forms.Button EnableChildLockButton;
+        private System.Windows.Forms.Button EnableNewFeatureButton;
     }
 }
