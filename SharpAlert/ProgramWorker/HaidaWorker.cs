@@ -185,8 +185,8 @@ namespace SharpAlert.ProgramWorker
             Console.WriteLine("[Haida] Initializing IDAP Capture.");
             idapfeed = new IDAPFeedCapture(); // FEED
 
-            Console.WriteLine("[Haida] Initializing Cache Capture.");
-            cache = new CacheCapture(); // TECHNICALLY FEED
+            //Console.WriteLine("[Haida] Initializing Cache Capture.");
+            //cache = new CacheCapture(); // TECHNICALLY FEED
 
             Console.WriteLine("[Haida] Initializing Data Processor.");
             dataproc = new DataProcessor();
@@ -196,6 +196,9 @@ namespace SharpAlert.ProgramWorker
 
             Console.WriteLine("[Haida] Initializing Hyper Server.");
             hyper = new HyperServer();
+            
+            //Console.WriteLine("[Haida] Initializing Call Manager.");
+            //CallManager.InitCallManager();
 
             string PluginFolder = $"{QuickSettings.ConfigDirPath}\\Plugins";
 
@@ -515,7 +518,7 @@ namespace SharpAlert.ProgramWorker
                 }
             });
 
-            CacheThread = StartCatchAllThread("Cache Capture", () => cache.ServiceRun(true), true);
+            //CacheThread = StartCatchAllThread("Cache Capture", () => cache.ServiceRun(true), true);
             DataProcThread = StartCatchAllThread("Data Processor", () => dataproc.ServiceRun(), true);
             HistoryProcThread = StartCatchAllThread("History Processor", HistoryProcessor.ServiceRun, true);
             ServerThread = StartCatchAllThread("Hyper Server", () => hyper.ServiceRun(), true);

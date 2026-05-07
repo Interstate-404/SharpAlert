@@ -1,7 +1,8 @@
 ﻿using System;
-using System.Drawing;
-using System.Windows.Forms;
 using System.ComponentModel;
+using System.Drawing;
+using System.Timers;
+using System.Windows.Forms;
 
 namespace SharpAlert.WinFormsControls
 {
@@ -9,76 +10,97 @@ namespace SharpAlert.WinFormsControls
     {
         public class MarqueeLabel : Label
         {
-            private readonly Timer scrollTimer;
+            private readonly System.Timers.Timer scrollTimer;
             private float textPosition = 0;
 
             [DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
             public float ScrollSpeed { get; set; } = 1.5f;
             [DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
-            public bool UseCustomPixelCount { get; set; } = false;
-            [DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
-            public int Stutter { get; set; } = 50;
+            public double ScrollInterval { get; set; } = 16;
 
             public MarqueeLabel()
             {
-                scrollTimer = new Timer()
+                scrollTimer = new System.Timers.Timer()
                 {
-                    Interval = 1
+                    Interval = ScrollInterval
                 };
-                scrollTimer.Tick += new EventHandler(OnScrollTick);
-                scrollTimer.Start();
+                scrollTimer.Elapsed += new ElapsedEventHandler(OnScrollTick);
             }
 
             private bool Started = false;
+
+            private SolidBrush sb = new(Color.Black);
+
+            private SizeF PreviousTextSize = new();
+            private string PreviousText = "";
 
             protected override void OnPaint(PaintEventArgs e)
             {
                 if (!Started)
                 {
-                    textPosition = this.Width;
+                    textPosition = Width;
                     Started = true;
                     return;
                 }
 
-                if (this.Text.Length == 0) return;
+                if (Text.Length == 0) return;
 
                 //float localTextPosition = textPosition;
                 //if (UseCustomPixelCount) localTextPosition += PixelCount;
 
-                SizeF textSize = e.Graphics.MeasureString(this.Text, this.Font);
+                if (PreviousText != Text)
+                {
+                    PreviousTextSize = e.Graphics.MeasureString(Text, Font);
+                    PreviousText = Text;
+                }
 
                 RectangleF textRect;
-
-                SolidBrush sb = new(this.ForeColor);
 
                 switch (base.TextAlign)
                 {
                     case ContentAlignment.TopLeft:
-                        textRect = new RectangleF((this.DesignMode || ScrollSpeed == 0) ? 0 : textPosition, 0, textSize.Width, this.Height);
+                        textRect = new RectangleF((ScrollSpeed == 0) ? 0 : textPosition, 0, PreviousTextSize.Width, this.Height);
                         e.Graphics.DrawString(this.Text, this.Font, sb, textRect);
                         break;
                     case ContentAlignment.MiddleLeft:
-                        textRect = new RectangleF((this.DesignMode || ScrollSpeed == 0) ? 0 : textPosition, (this.Height - textSize.Height) / 2, textSize.Width, this.Height);
+                        textRect = new RectangleF((ScrollSpeed == 0) ? 0 : textPosition, (this.Height - PreviousTextSize.Height) / 2, PreviousTextSize.Width, this.Height);
                         e.Graphics.DrawString(this.Text, this.Font, sb, textRect);
                         break;
                     case ContentAlignment.BottomLeft:
-                        textRect = new RectangleF((this.DesignMode || ScrollSpeed == 0) ? 0 : textPosition, this.Height - textSize.Height, textSize.Width, this.Height);
+                        textRect = new RectangleF((ScrollSpeed == 0) ? 0 : textPosition, this.Height - PreviousTextSize.Height, PreviousTextSize.Width, this.Height);
                         e.Graphics.DrawString(this.Text, this.Font, sb, textRect);
                         break;
                     default:
-                        textRect = new RectangleF((this.DesignMode || ScrollSpeed == 0) ? 0 : textPosition, 0, textSize.Width, this.Height);
+                        textRect = new RectangleF((ScrollSpeed == 0) ? 0 : textPosition, 0, PreviousTextSize.Width, this.Height);
                         e.Graphics.DrawString(this.Text, this.Font, sb, textRect);
                         break;
                 }
 
-                if (textPosition < -textSize.Width)
+                if (ScrollSpeed >= 0)
                 {
-                    // TODO
-                    // Raise event here when the scroll finishes
-                    textPosition = this.Width;
+                    if (textPosition < -PreviousTextSize.Width)
+                    {
+                        // TODO
+                        // Raise event here when the scroll finishes
+                        textPosition = this.Width;
+                    }
                 }
+                else
+                {
+                    if (textPosition > this.Width)
+                    {
+                        // TODO
+                        // Raise event here when the scroll finishes
+                        textPosition = -PreviousTextSize.Width;
+                    }
+                }
+            }
 
-                sb.Dispose();
+            protected override void OnForeColorChanged(EventArgs e)
+            {
+                base.OnForeColorChanged(e);
+                sb?.Dispose();
+                sb = new(ForeColor);
             }
 
             [DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
@@ -96,6 +118,12 @@ namespace SharpAlert.WinFormsControls
 
             public void SetText(string text)
             {
+                if (this.InvokeRequired)
+                {
+                    this.BeginInvoke(() => SetText(text));
+                    return;
+                }
+
                 if (text.Length == base.Text.Length)
                 {
                     base.Text = text;
@@ -119,23 +147,21 @@ namespace SharpAlert.WinFormsControls
             protected override void OnSizeChanged(EventArgs e)
             {
                 Started = false;
-                this.Invalidate();
+                Invalidate();
                 base.OnSizeChanged(e);
             }
 
-            private void OnScrollTick(object sender, EventArgs e)
+            protected override void OnHandleCreated(EventArgs e)
             {
-                if (!UseCustomPixelCount)
-                {
-                    scrollTimer.Interval = 1;
-                    textPosition -= ScrollSpeed / 2f;
-                }
-                else
-                {
-                    scrollTimer.Interval = 100;
-                    textPosition -= (ScrollSpeed + Stutter * 2) / 2f;
-                }
-                this.Invalidate();
+                base.OnHandleCreated(e);
+                scrollTimer.Start();
+            }
+
+            private void OnScrollTick(object sender, ElapsedEventArgs e)
+            {
+                if (DesignMode) return;
+                textPosition -= ScrollSpeed;
+                if (!IsDisposed) if (Visible && Width > 0) BeginInvoke(Invalidate);
             }
 
             protected override void Dispose(bool disposing)
@@ -147,6 +173,8 @@ namespace SharpAlert.WinFormsControls
                         scrollTimer.Stop();
                         scrollTimer.Dispose();
                     }
+
+                    sb?.Dispose();
                 }
 
                 base.Dispose(disposing);

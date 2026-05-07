@@ -1465,7 +1465,7 @@ namespace SharpAlert.AlertComponents
                 var alertEvent = SAME_AlertCodes.DefaultIfEmpty(cautionary);
                 var alertInfo = alertEvent.FirstOrDefault(y => y.ID.Equals(code, StringComparison.InvariantCultureIgnoreCase));
 
-                MessageBox.Show($"{alertInfo.Name} ({alertInfo.ID}) == {alertInfo.EventLevel}");
+                //MessageBox.Show($"{alertInfo.Name} ({alertInfo.ID}) == {alertInfo.EventLevel}");
 
                 if (alertInfo != null) return alertInfo.EventLevel;
                 else return SAME_EventLevel.None;

@@ -275,6 +275,7 @@
             PhoneIPInput.Size = new System.Drawing.Size(84, 23);
             PhoneIPInput.TabIndex = 66;
             ToolTipInformation.SetToolTip(PhoneIPInput, "Used to call IP phones. Not all phones are supported.");
+            PhoneIPInput.WordWrap = false;
             // 
             // label1
             // 
@@ -502,7 +503,6 @@
         private System.Windows.Forms.PictureBox PreviewPicture;
         private System.Windows.Forms.CheckBox TryForceWindowFocusBox;
         private System.Windows.Forms.Timer WindowShake;
-        private System.Windows.Forms.TextBox AreaSAMEInput;
         private System.Windows.Forms.CheckBox ForceCustomFontBox;
         private System.Windows.Forms.ComboBox CustomFontCombo;
         private System.Windows.Forms.Label label5;

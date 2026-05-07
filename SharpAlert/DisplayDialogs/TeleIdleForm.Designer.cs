@@ -90,11 +90,9 @@
             InfoText.Name = "InfoText";
             InfoText.ScrollSpeed = 2F;
             InfoText.Size = new System.Drawing.Size(1280, 26);
-            InfoText.Stutter = 50;
             InfoText.TabIndex = 1;
             InfoText.Text = "SharpAlert";
             InfoText.TextAlign = System.Drawing.ContentAlignment.BottomLeft;
-            InfoText.UseCustomPixelCount = false;
             // 
             // TeleIdleForm
             // 

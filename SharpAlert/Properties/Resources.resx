@@ -124,6 +124,9 @@
   <data name="minor_alert" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\minor_alert.wav;System.IO.MemoryStream, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
+  <data name="Character_Sergio" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Character_Sergio.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
   <data name="gear-solid" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\gear-solid.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
@@ -163,6 +166,9 @@
   <data name="major_alert" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\major_alert.wav;System.IO.MemoryStream, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
+  <data name="Character_BunnyTub" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\BunnyStandsKwaziiz.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
   <data name="trash-can-solid" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\trash-can-solid.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
@@ -193,6 +199,9 @@
   <data name="bell-slash-solid" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\bell-slash-solid.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
+  <data name="TrippingBunny" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\TrippingBunny.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
   <data name="V-Sign" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\V-Sign.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
@@ -208,7 +217,7 @@
   <data name="WarningApp_Splash" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\WarningApp_Splash.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="TrippingBunny" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\TrippingBunny.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  <data name="Characters" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Characters.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
 </root>

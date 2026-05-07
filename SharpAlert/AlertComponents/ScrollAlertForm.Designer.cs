@@ -189,11 +189,9 @@
             this.AlertText.Name = "AlertText";
             this.AlertText.ScrollSpeed = 5F;
             this.AlertText.Size = new System.Drawing.Size(1280, 90);
-            this.AlertText.Stutter = 25;
             this.AlertText.TabIndex = 15;
             this.AlertText.Text = "Alert Message";
             this.AlertText.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.AlertText.UseCustomPixelCount = false;
             // 
             // EnsureTopWindow
             // 

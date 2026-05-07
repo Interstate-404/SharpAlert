@@ -51,7 +51,7 @@ namespace SharpAlert.ProgramWorker
         public static WeatherAtomCapture atomfeed;
         public static DirectFeedCapture directfeed;
         public static IDAPFeedCapture idapfeed;
-        public static CacheCapture cache;
+        //public static CacheCapture cache;
         public static DataProcessor dataproc;
         //public static TeleIdleForm idle;
         //public static StatusForm status;
