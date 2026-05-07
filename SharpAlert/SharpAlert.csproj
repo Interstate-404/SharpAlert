@@ -27,6 +27,12 @@
 		<ProduceReferenceAssembly>False</ProduceReferenceAssembly>
 		<BaseOutputPath>C:\Users\rivera\source\repos\SharpAlert\SharpAlert\bin</BaseOutputPath>
 	</PropertyGroup>
+	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+	  <NoWarn>1701;1702;SYSLIB1054</NoWarn>
+	</PropertyGroup>
+	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+	  <NoWarn>1701;1702;SYSLIB1054</NoWarn>
+	</PropertyGroup>
 
 	<ItemGroup>
 	  <Compile Remove="bin\**" />

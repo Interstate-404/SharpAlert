@@ -537,7 +537,7 @@ namespace SharpAlert.ProgramWorker
                             {
                                 Process parentProc = GetParentProcess();
 
-                                if (parentProc.MainModule.FileName.ToLowerInvariant() == AssemblyFile.ToLowerInvariant())
+                                if (parentProc.MainModule.FileName.Equals(AssemblyFile, StringComparison.InvariantCultureIgnoreCase))
                                 {
                                     parentProc.WaitForExit();
                                     QuickSettings.Instance.Save();
@@ -613,8 +613,7 @@ namespace SharpAlert.ProgramWorker
                     self.Arguments = "--wait-until-parent-closes";
                 }
 
-#pragma warning disable CA2000
-                Process monitorSelf = new()
+                using Process monitorSelf = new()
                 {
                     StartInfo = self
                 };
@@ -626,7 +625,6 @@ namespace SharpAlert.ProgramWorker
                     Environment.Exit(0);
                     return;
                 }
-#pragma warning restore CA2000
 
                 monitorSelf.WaitForExit();
             

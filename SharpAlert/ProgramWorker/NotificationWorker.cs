@@ -308,7 +308,7 @@ namespace SharpAlert.ProgramWorker
                         RandomCombined3--;
                     }
 
-                    int[] combined = { RandomCombined1, RandomCombined2, RandomCombined3 };
+                    int[] combined = [RandomCombined1, RandomCombined2, RandomCombined3];
 
                     for (int i = combined.Length - 1; i > 0; i--)
                     {
