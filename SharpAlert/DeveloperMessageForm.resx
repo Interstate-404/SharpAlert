@@ -118,11 +118,10 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="LogOutput.Text" xml:space="preserve">
-    <value>- Added U.S. marine locations. Credits to Interstate404 for painstakingly adding them.
-
+    <value>- The 
+- Added U.S. marine locations. Credits to Interstate404 for painstakingly adding them.
 - Added a mapping system to convert SAME severity to CAP severity. The mapping somewhat adheres to the standard. (You can only change this setting in the advanced "Alert Settings" area.)
-
-IP phone functionality is being worked on, and isn't available yet.
+- Experimental support for IP phones. Go to Style Settings to change settings for IP phones. Leave the IP blank to disable. The field should contain the IP address of a physical SIP phone. The following phones have been tested to work with SharpAlert: Polycom VVX 400, Polycom VVX 401
 
 I am BunnyTub, the (mostly) sole developer of SharpAlert. Find additional contributors in credits. SharpAlert has been completely open-sourced! You can find the entire source code and files at https://github.com/BunnyTub/SharpAlert. This software is provided free of charge. If you paid for this software, or it came inside of a software package of which you paid for, you should probably try getting your money back immediately.</value>
   </data>

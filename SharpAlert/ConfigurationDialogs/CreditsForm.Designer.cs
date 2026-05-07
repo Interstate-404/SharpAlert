@@ -72,14 +72,15 @@
             BoxedApplePieLink.Anchor = System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left;
             BoxedApplePieLink.AutoSize = true;
             BoxedApplePieLink.BackColor = System.Drawing.Color.Transparent;
+            BoxedApplePieLink.LinkBehavior = System.Windows.Forms.LinkBehavior.HoverUnderline;
             BoxedApplePieLink.LinkColor = System.Drawing.Color.DeepSkyBlue;
-            BoxedApplePieLink.Location = new System.Drawing.Point(9, 77);
+            BoxedApplePieLink.Location = new System.Drawing.Point(9, 83);
             BoxedApplePieLink.Margin = new System.Windows.Forms.Padding(0, 0, 0, 3);
             BoxedApplePieLink.Name = "BoxedApplePieLink";
-            BoxedApplePieLink.Size = new System.Drawing.Size(198, 15);
+            BoxedApplePieLink.Size = new System.Drawing.Size(199, 15);
             BoxedApplePieLink.TabIndex = 2;
             BoxedApplePieLink.TabStop = true;
-            BoxedApplePieLink.Text = "BoxedApplePie (character drawings)";
+            BoxedApplePieLink.Text = "BoxedApplePie (Other OC drawings)";
             BoxedApplePieLink.LinkClicked += BoxedApplePieLink_LinkClicked;
             // 
             // SkewerKingLink
@@ -87,14 +88,15 @@
             SkewerKingLink.Anchor = System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left;
             SkewerKingLink.AutoSize = true;
             SkewerKingLink.BackColor = System.Drawing.Color.Transparent;
+            SkewerKingLink.LinkBehavior = System.Windows.Forms.LinkBehavior.HoverUnderline;
             SkewerKingLink.LinkColor = System.Drawing.Color.DeepSkyBlue;
-            SkewerKingLink.Location = new System.Drawing.Point(9, 59);
+            SkewerKingLink.Location = new System.Drawing.Point(9, 65);
             SkewerKingLink.Margin = new System.Windows.Forms.Padding(0, 0, 0, 3);
             SkewerKingLink.Name = "SkewerKingLink";
-            SkewerKingLink.Size = new System.Drawing.Size(159, 15);
+            SkewerKingLink.Size = new System.Drawing.Size(161, 15);
             SkewerKingLink.TabIndex = 1;
             SkewerKingLink.TabStop = true;
-            SkewerKingLink.Text = "SkewerKing (webhook icons)";
+            SkewerKingLink.Text = "SkewerKing (Webhook icons)";
             SkewerKingLink.LinkClicked += SkewerKing_LinkClicked;
             // 
             // WindowShake
@@ -108,14 +110,15 @@
             InterstateLink.Anchor = System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left;
             InterstateLink.AutoSize = true;
             InterstateLink.BackColor = System.Drawing.Color.Transparent;
+            InterstateLink.LinkBehavior = System.Windows.Forms.LinkBehavior.HoverUnderline;
             InterstateLink.LinkColor = System.Drawing.Color.DeepSkyBlue;
-            InterstateLink.Location = new System.Drawing.Point(9, 95);
+            InterstateLink.Location = new System.Drawing.Point(9, 101);
             InterstateLink.Margin = new System.Windows.Forms.Padding(0, 0, 0, 3);
             InterstateLink.Name = "InterstateLink";
-            InterstateLink.Size = new System.Drawing.Size(232, 15);
+            InterstateLink.Size = new System.Drawing.Size(234, 15);
             InterstateLink.TabIndex = 3;
             InterstateLink.TabStop = true;
-            InterstateLink.Text = "Interstate404 (added U.S. marine locations)";
+            InterstateLink.Text = "Interstate404 (Added U.S. marine locations)";
             InterstateLink.LinkClicked += InterstateLink_LinkClicked;
             // 
             // ShowLibrariesButton
@@ -123,7 +126,8 @@
             ShowLibrariesButton.Anchor = System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right;
             ShowLibrariesButton.BackColor = System.Drawing.Color.FromArgb(60, 60, 60);
             ShowLibrariesButton.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
-            ShowLibrariesButton.Location = new System.Drawing.Point(9, 33);
+            ShowLibrariesButton.Location = new System.Drawing.Point(10, 37);
+            ShowLibrariesButton.Margin = new System.Windows.Forms.Padding(3, 5, 3, 5);
             ShowLibrariesButton.Name = "ShowLibrariesButton";
             ShowLibrariesButton.Size = new System.Drawing.Size(116, 23);
             ShowLibrariesButton.TabIndex = 0;
@@ -136,14 +140,15 @@
             ConnorLink.Anchor = System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left;
             ConnorLink.AutoSize = true;
             ConnorLink.BackColor = System.Drawing.Color.Transparent;
+            ConnorLink.LinkBehavior = System.Windows.Forms.LinkBehavior.HoverUnderline;
             ConnorLink.LinkColor = System.Drawing.Color.DeepSkyBlue;
-            ConnorLink.Location = new System.Drawing.Point(9, 113);
+            ConnorLink.Location = new System.Drawing.Point(9, 119);
             ConnorLink.Margin = new System.Windows.Forms.Padding(0, 0, 0, 3);
             ConnorLink.Name = "ConnorLink";
-            ConnorLink.Size = new System.Drawing.Size(156, 15);
+            ConnorLink.Size = new System.Drawing.Size(206, 15);
             ConnorLink.TabIndex = 4;
             ConnorLink.TabStop = true;
-            ConnorLink.Text = "MaybeConnor (brand icons)";
+            ConnorLink.Text = "MaybeConnor (Ideas, SharpWX icons)";
             ConnorLink.LinkClicked += ConnorLink_LinkClicked;
             // 
             // Anon1Link
@@ -151,8 +156,9 @@
             Anon1Link.Anchor = System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left;
             Anon1Link.AutoSize = true;
             Anon1Link.BackColor = System.Drawing.Color.Transparent;
+            Anon1Link.LinkBehavior = System.Windows.Forms.LinkBehavior.HoverUnderline;
             Anon1Link.LinkColor = System.Drawing.Color.DeepSkyBlue;
-            Anon1Link.Location = new System.Drawing.Point(9, 131);
+            Anon1Link.Location = new System.Drawing.Point(9, 137);
             Anon1Link.Margin = new System.Windows.Forms.Padding(0, 0, 0, 3);
             Anon1Link.Name = "Anon1Link";
             Anon1Link.Size = new System.Drawing.Size(244, 15);
@@ -166,8 +172,9 @@
             KwaziizLink.Anchor = System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left;
             KwaziizLink.AutoSize = true;
             KwaziizLink.BackColor = System.Drawing.Color.Transparent;
+            KwaziizLink.LinkBehavior = System.Windows.Forms.LinkBehavior.HoverUnderline;
             KwaziizLink.LinkColor = System.Drawing.Color.DeepSkyBlue;
-            KwaziizLink.Location = new System.Drawing.Point(9, 149);
+            KwaziizLink.Location = new System.Drawing.Point(9, 155);
             KwaziizLink.Margin = new System.Windows.Forms.Padding(0, 0, 0, 3);
             KwaziizLink.Name = "KwaziizLink";
             KwaziizLink.Size = new System.Drawing.Size(200, 15);
@@ -275,7 +282,7 @@
             ScrollText3.ScrollSpeed = 1.5F;
             ScrollText3.Size = new System.Drawing.Size(242, 32);
             ScrollText3.TabIndex = 18;
-            ScrollText3.Text = "Thank you MaybeConnor for using and contributing to SharpAlert! \"SharpAlert makes a great marriage counselor\" - MaybeConnor";
+            ScrollText3.Text = "Thank you MaybeConnor for using and contributing to SharpAlert! \"SharpAlert makes a great marriage counselor.\" - MaybeConnor";
             ScrollText3.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             ScrollText3.Click += ScrollText3_Click;
             // 
@@ -289,7 +296,7 @@
             ScrollText2.ScrollSpeed = 2F;
             ScrollText2.Size = new System.Drawing.Size(242, 32);
             ScrollText2.TabIndex = 17;
-            ScrollText2.Text = "Thank you Cb fan productions for using SharpAlert!";
+            ScrollText2.Text = "Thank you 736.e for using SharpAlert! \"I actually like it.\" - 736.e";
             ScrollText2.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             ScrollText2.Click += ScrollText2_Click;
             // 
@@ -303,7 +310,7 @@
             ScrollText1.ScrollSpeed = 1.5F;
             ScrollText1.Size = new System.Drawing.Size(242, 32);
             ScrollText1.TabIndex = 16;
-            ScrollText1.Text = "Thank you AllieW for using SharpAlert! \"Decent Desktop app for CAP alerting that I keep recommending to people!\" - AllieW";
+            ScrollText1.Text = "Thank you AllieW for using SharpAlert! \"Decent desktop app for CAP alerting that I keep recommending to people!\" - AllieW";
             ScrollText1.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             ScrollText1.Click += ScrollText1_Click;
             // 

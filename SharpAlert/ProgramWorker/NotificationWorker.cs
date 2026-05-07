@@ -1,11 +1,13 @@
-﻿using System;
-using System.IO;
-using System.Windows.Forms;
+﻿using Microsoft.Win32;
 using SharpAlert.AlertComponents;
 using SharpAlert.AlertComponents.Dashboard;
 using SharpAlert.ConfigurationDialogs;
 using SharpAlert.Languages;
 using SharpAlert.Properties;
+using System;
+using System.IO;
+using System.Threading;
+using System.Windows.Forms;
 using static SharpAlert.ProgramWorker.MainEntryPoint;
 
 namespace SharpAlert.ProgramWorker
@@ -178,6 +180,31 @@ namespace SharpAlert.ProgramWorker
             }));
 
             contextMenu.Items.Add(new ToolStripSeparator());
+
+            bool SharpWXFound = false;
+
+            string uninstallKey = @"SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall";
+            using (RegistryKey key = Registry.CurrentUser.OpenSubKey(uninstallKey))
+            {
+                foreach (string sub in key.GetSubKeyNames())
+                {
+                    if (sub.Trim().Contains("BunnyTubby.SharpWX", StringComparison.InvariantCultureIgnoreCase))
+                    {
+                        SharpWXFound = true;
+                        break;
+                    }
+                }
+            }
+
+            if (!SharpWXFound)
+            {
+                contextMenu.Items.Add(new ToolStripMenuItem(Language.Get("TryWX", "Try SharpWX"), Resources.SharpWX_black_v2, (sender, arg) =>
+                {
+                    HackyWorkarounds.OpenURL("https://bunnytub.com/SharpWX");
+                }));
+
+                contextMenu.Items.Add(new ToolStripSeparator());
+            }
 
             //contextMenu.Items.Add(new ToolStripMenuItem("Show Console", null, (sender, arg) =>
             //{

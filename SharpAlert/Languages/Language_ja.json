@@ -4,6 +4,7 @@
   "LanguageRestartProgram": "アプリを再起動",
   "LanguageChanged": "言語が変更されました。\r\nSharpAlert を再度開くと、新しい言語がどこでも表示されます。",
 
+  "TryWX": "SharpWXをお試しください",
   "PathText": "パス:",
   "ResetCache": "キャッシュをクリア",
   "ResetHistory": "履歴をクリア",

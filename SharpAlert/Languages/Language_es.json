@@ -4,6 +4,7 @@
   "LanguageRestartProgram": "Reiniciar Programa",
   "LanguageChanged": "Se ha cambiado el idioma.\r\nVuelva a abrir SharpAlert para ver el nuevo idioma en todas partes.",
 
+  "TryWX": "Intenta SharpWX",
   "PathText": "Ruta:",
   "ResetCache": "Limpiar caché",
   "ResetHistory": "Limpiar historial",

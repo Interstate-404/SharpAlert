@@ -4,6 +4,7 @@
   "LanguageRestartProgram": "Restart Program",
   "LanguageChanged": "The language has been changed.\r\nRe-open SharpAlert to see the new language everywhere.",
 
+  "TryWX": "Try SharpWX",
   "PathText": "Path:",
   "ResetCache": "Clear Cache",
   "ResetHistory": "Clear History",

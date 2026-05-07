@@ -127,9 +127,9 @@ namespace SharpAlert.ConfigurationDialogs
 
         private void CharactersPicture_MouseEnter(object sender, EventArgs e)
         {
+            AnimateLogo(355);
             BounceHigh = false;
             Bouncer.Enabled = true;
-            Bouncer_Tick(this, EventArgs.Empty);
             //AnimateLogo(355);
         }
 

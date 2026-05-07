@@ -228,6 +228,26 @@ namespace SharpAlert.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap SharpWX_black_v2 {
+            get {
+                object obj = ResourceManager.GetObject("SharpWX-black-v2", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap SharpWX_white_v2 {
+            get {
+                object obj = ResourceManager.GetObject("SharpWX-white-v2", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap square_xmark_solid {
             get {
                 object obj = ResourceManager.GetObject("square-xmark-solid", resourceCulture);
