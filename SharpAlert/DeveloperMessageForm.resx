@@ -118,7 +118,7 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="LogOutput.Text" xml:space="preserve">
-    <value>- The 
+    <value>- The credits have been updated. Check it out!
 - Added U.S. marine locations. Credits to Interstate404 for painstakingly adding them.
 - Added a mapping system to convert SAME severity to CAP severity. The mapping somewhat adheres to the standard. (You can only change this setting in the advanced "Alert Settings" area.)
 - Experimental support for IP phones. Go to Style Settings to change settings for IP phones. Leave the IP blank to disable. The field should contain the IP address of a physical SIP phone. The following phones have been tested to work with SharpAlert: Polycom VVX 400, Polycom VVX 401
