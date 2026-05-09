@@ -4239,7 +4239,6 @@ namespace SharpAlert.AlertComponents
 
             //LE - 96
             new(20, "Upper Niagara River and Buffalo Harbor", new(96, "Lake Erie")),
-            new(30, "Lower Niagara River", new(96, "Lake Erie")),
             new(40, "Ripley to Dunkirk, NY", new(96, "Lake Erie")),
             new(41, "Dunkirk to Buffalo, NY", new(96, "Lake Erie")),
             new(61, "Ripley to Buffalo NY extending from 5 NM offshore to U.S./Canadian border", new(96, "Lake Erie")),
@@ -4263,6 +4262,7 @@ namespace SharpAlert.AlertComponents
             new(444, "Michigan Waters of Lake Erie from Detroit River to North Cape, MI", new(96, "Lake Erie")),
 
             //LO - 97
+            new(30, "Lower Niagara River", new(97, "Lake Ontario")),
             new(42, "Niagara River to Hamlin Beach, NY", new(97, "Lake Ontario")),
             new(43, "Hamlin Beach to Sodus Bay, NY", new(97, "Lake Ontario")),
             new(44, "Sodus Bay to Mexico Bay, NY", new(97, "Lake Ontario")),
