@@ -4350,6 +4350,7 @@ namespace SharpAlert.AlertComponents
             new(72, "Puerto Rico"),
             new(73, "Western North Atlantic Ocean"),
             new(74, "U.S. Minor Outlying Islands"),
+            new(75, "Western North Atlantic Ocean"),
             new(77, "Gulf of Mexico/America"),
             new(78, "U.S. Virgin Islands"),
             new(91, "Lake Superior"),
