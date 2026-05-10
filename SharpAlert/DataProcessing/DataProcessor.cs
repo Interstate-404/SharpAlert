@@ -327,8 +327,8 @@ namespace SharpAlert.DataProcessing
 
                                                             string ProcessedEvent = $"{UpperFirstRegex().Replace(info.AlertEventType, m => m.Value.ToUpperInvariant())}";
 
-                                                            LocationList = LocationList.Trim().Substring(0, LocationList.Length - 2).Trim();
-                                                            if (LocationList.EndsWith(';')) LocationList = LocationList.Substring(0, LocationList.Length - 1);
+                                                            LocationList = LocationList.Trim()[..(LocationList.Length - 2)].Trim();
+                                                            if (LocationList.EndsWith(';')) LocationList = LocationList[..^1];
 
                                                             string CompiledMessage = $"{ProcessedEvent} | Location(s): {LocationList}"; // \r\n-# Process Time: {(int)(DateTime.UtcNow - startProc).TotalMilliseconds} ms
                                                             if (!string.IsNullOrWhiteSpace(QuickSettings.Instance.DiscordWebhookAppend)) CompiledMessage += "\r\n" + $"{DiscordWebhook.GetDiscordWebhookURLFromSourceName(info.AlertSource).Append}";
