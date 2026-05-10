@@ -874,7 +874,7 @@ namespace SharpAlert.ProgramWorker
 
             QuickSettings.Instance.Save();
 
-            if (QuickSettings.Instance.PlayChimeOnRun) AwokenNotifier?.ShowBasicText("SharpAlert has started.");
+            if (QuickSettings.Instance.PlayChimeOnRun) AwokenNotifier.ShowBasicText("SharpAlert (Interstate 404 // Sevyn Fork) has started.");
         }
 
         //[DllImport("gdi32.dll", CharSet = CharSet.Auto, SetLastError = true, ExactSpelling = true)]
