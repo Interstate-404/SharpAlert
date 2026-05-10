@@ -176,6 +176,26 @@ namespace SharpAlert.ConfigurationDialogs
         {
             HackyWorkarounds.OpenURL("https://discord.com/users/451936795802992640");
         }
+
+        private void label5_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void CharactersPicture_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void label3_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void linkLabel1_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
+        {
+            HackyWorkarounds.OpenURL("https://www.youtube.com/@SPCHalethorpe09");
+        }
 #pragma warning restore IDE1006 // Naming Styles
     }
 }

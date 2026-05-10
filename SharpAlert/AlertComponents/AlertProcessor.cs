@@ -2381,7 +2381,7 @@ namespace SharpAlert.AlertComponents
                 .Replace(" 9-1-1 ", " 9 1 1 ")
                 .Replace(" WEA ", " W E A ")
                 .Replace(" NWS ", " N W S ")
-                .Replace(" NOAA ", " N O A A ");
+                .Replace(" NOAA ", " N O A A ")
                 .Replace("* ", "")
                 .Replace("\r\n", " ");
                 //.Replace("WEA", "Wireless Emergency Alerts")

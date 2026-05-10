@@ -90,7 +90,6 @@
             GeneralInfoText.TabIndex = 3;
             GeneralInfoText.Text = "...";
             GeneralInfoText.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
-            GeneralInfoText.Click += GeneralInfoText_Click;
             // 
             // panel1
             // 
@@ -112,7 +111,6 @@
             BrandText.TabIndex = 1;
             BrandText.Text = "SharpAlert (Interstate 404 // Sevyn Fork) v18.0";
             BrandText.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            BrandText.Click += BrandText_Click;
             // 
             // LogoBox
             // 

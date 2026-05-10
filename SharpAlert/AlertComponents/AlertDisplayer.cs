@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Windows.Forms;
-using SharpAlert.PrinterStuff;
 using SharpAlert.ProgramWorker;
 using SharpAlert.Properties;
 using static SharpAlert.AlertComponents.AlertProcessor;
