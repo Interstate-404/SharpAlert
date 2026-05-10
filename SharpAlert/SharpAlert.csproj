@@ -25,7 +25,7 @@
 		<Title>SharpAlert</Title>
 		<SupportedOSPlatformVersion>10.0.17763.0</SupportedOSPlatformVersion>
 		<ProduceReferenceAssembly>False</ProduceReferenceAssembly>
-		<BaseOutputPath>C:\Users\rivera\source\repos\SharpAlert\SharpAlert\bin</BaseOutputPath>
+		<BaseOutputPath>\bin\</BaseOutputPath>
 		<Nullable>enable</Nullable>
 	</PropertyGroup>
 	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
