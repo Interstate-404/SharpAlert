@@ -1,10 +1,7 @@
 ﻿using System;
-using System.Diagnostics;
 using System.Drawing;
-using System.IO;
 using System.Windows.Forms;
 using SharpAlert.AlertComponents;
-using SharpAlert.Properties;
 
 namespace SharpAlert.ConfigurationDialogs
 {
@@ -157,27 +154,27 @@ namespace SharpAlert.ConfigurationDialogs
 
         private void ScrollText1_Click(object sender, EventArgs e)
         {
-            HackyWorkarounds.OpenURL("https://discord.com/");
+            HackyWorkarounds.OpenURL("https://discord.com/users/475296501862498304");
         }
 
         private void ScrollText2_Click(object sender, EventArgs e)
         {
-
+            HackyWorkarounds.OpenURL("https://discord.com/users/422894211130720267");
         }
 
         private void ScrollText3_Click(object sender, EventArgs e)
         {
-
+            HackyWorkarounds.OpenURL("https://discord.com/users/608175034661470209");
         }
 
         private void ScrollText4_Click(object sender, EventArgs e)
         {
-
+            HackyWorkarounds.OpenURL("https://discord.com/users/602238459838595081");
         }
 
         private void ScrollText5_Click(object sender, EventArgs e)
         {
-
+            HackyWorkarounds.OpenURL("https://discord.com/users/451936795802992640");
         }
 #pragma warning restore IDE1006 // Naming Styles
     }

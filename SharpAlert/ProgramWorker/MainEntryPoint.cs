@@ -634,11 +634,9 @@ namespace SharpAlert.ProgramWorker
                 switch (unchecked(monitorSelf.ExitCode))
                 {
                     case 0:
-                        restartable = false;
-                        //DiscordWebhook.SendFormattedMessage($"SharpAlert has stopped.");
-                        Environment.Exit(0);
-                        return;
+                    case -1:
                     case -1073741510:
+                        //DiscordWebhook.SendFormattedMessage($"SharpAlert has stopped.");
                         restartable = false;
                         Environment.Exit(0);
                         return;

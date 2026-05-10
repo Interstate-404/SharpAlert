@@ -6,7 +6,6 @@ using SharpAlert.Languages;
 using SharpAlert.Properties;
 using System;
 using System.IO;
-using System.Threading;
 using System.Windows.Forms;
 using static SharpAlert.ProgramWorker.MainEntryPoint;
 

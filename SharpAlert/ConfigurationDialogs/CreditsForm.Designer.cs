@@ -254,7 +254,7 @@
             ScrollText5.ScrollSpeed = 1.5F;
             ScrollText5.Size = new System.Drawing.Size(242, 32);
             ScrollText5.TabIndex = 20;
-            ScrollText5.Text = "Thank you Logic44 of WENF-FM for using SharpAlert!";
+            ScrollText5.Text = "Thank you Logic44 of WENF-FM for using SharpAlert! \"Proud early adopter since v9.0, serving Sand Ridge since 2025.\" - Logic44";
             ScrollText5.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             ScrollText5.Click += ScrollText5_Click;
             // 
@@ -296,7 +296,7 @@
             ScrollText2.ScrollSpeed = 2F;
             ScrollText2.Size = new System.Drawing.Size(242, 32);
             ScrollText2.TabIndex = 17;
-            ScrollText2.Text = "Thank you 736.e for using SharpAlert! \"I actually like it.\" - 736.e";
+            ScrollText2.Text = "Thank you JavaMR for using SharpAlert! \"It's useful for living in Tornado Alley.\" - JavaMR";
             ScrollText2.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             ScrollText2.Click += ScrollText2_Click;
             // 

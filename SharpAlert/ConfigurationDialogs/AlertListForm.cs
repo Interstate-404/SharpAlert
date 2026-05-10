@@ -73,11 +73,6 @@ namespace SharpAlert.ConfigurationDialogs
 
                     AlertHistoryText.Text = plural;
                     AlertHistoryOutput.Text = DataHistory.Trim();
-
-                    if (SharpDataHistory.Count != LastKnownHistoryCount)
-                    {
-                        AlertHistoryRefreshButton.Visible = true;
-                    }
                 }
                 else
                 {
@@ -85,9 +80,9 @@ namespace SharpAlert.ConfigurationDialogs
                     AlertHistoryOutput.Clear();
                 }
 
+                AlertHistoryRefreshButton.Visible = false;
                 LastKnownHistoryCount = SharpDataHistory.Count;
             }
-
         }
 
         private void AlertHistoryRefreshButton_Click(object sender, EventArgs e)
@@ -337,7 +332,10 @@ namespace SharpAlert.ConfigurationDialogs
 
         private void AlertListRefresher_Tick(object sender, EventArgs e)
         {
-            RefreshAlertHistory();
+            if (SharpDataHistory.Count != LastKnownHistoryCount)
+            {
+                AlertHistoryRefreshButton.Visible = true;
+            }
         }
 
         private void ConfigurationForm_VisibleChanged(object sender, EventArgs e)

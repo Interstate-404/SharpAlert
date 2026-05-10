@@ -109,9 +109,9 @@
             AlertHistoryRefreshButton.FlatAppearance.BorderSize = 0;
             AlertHistoryRefreshButton.FlatAppearance.MouseOverBackColor = System.Drawing.Color.FromArgb(65, 65, 65);
             AlertHistoryRefreshButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            AlertHistoryRefreshButton.Location = new System.Drawing.Point(636, 36);
+            AlertHistoryRefreshButton.Location = new System.Drawing.Point(478, 34);
             AlertHistoryRefreshButton.Name = "AlertHistoryRefreshButton";
-            AlertHistoryRefreshButton.Size = new System.Drawing.Size(28, 28);
+            AlertHistoryRefreshButton.Size = new System.Drawing.Size(30, 30);
             AlertHistoryRefreshButton.TabIndex = 25;
             ToolTipInformation.SetToolTip(AlertHistoryRefreshButton, "Refreshes the history list.\r\n");
             AlertHistoryRefreshButton.UseVisualStyleBackColor = false;
@@ -395,7 +395,7 @@
             AlertHistoryText.Font = new System.Drawing.Font("Segoe UI", 16F);
             AlertHistoryText.Location = new System.Drawing.Point(6, 17);
             AlertHistoryText.Name = "AlertHistoryText";
-            AlertHistoryText.Size = new System.Drawing.Size(624, 32);
+            AlertHistoryText.Size = new System.Drawing.Size(468, 32);
             AlertHistoryText.TabIndex = 6;
             AlertHistoryText.Text = "The alert history is empty right now.";
             // 
