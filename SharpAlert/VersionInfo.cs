@@ -43,7 +43,7 @@ namespace SharpAlert
         }
 
         public static readonly DateTime BetaTimeEnd = DateTime.ParseExact(
-            "04/20/2026",
+            "05/20/2026",
             "M/d/yyyy",
             CultureInfo.InvariantCulture,
             DateTimeStyles.AssumeUniversal | DateTimeStyles.AdjustToUniversal
