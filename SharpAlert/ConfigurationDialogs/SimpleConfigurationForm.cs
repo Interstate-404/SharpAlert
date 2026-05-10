@@ -39,6 +39,7 @@ namespace SharpAlert.ConfigurationDialogs
             crf?.Close();
             scf?.Close();
             dcf?.Close();
+            alf?.Close();
             cf?.Close();
             slots?.Close();
             //this.Hide();
@@ -290,6 +291,15 @@ namespace SharpAlert.ConfigurationDialogs
 
                 UpDown = !UpDown;
             }
+        }
+
+        private AlertListForm alf = null;
+
+        private void AlertManagerButton_Click(object sender, EventArgs e)
+        {
+            if (alf == null || alf.IsDisposed) alf = new AlertListForm();
+            alf.Show();
+            alf.Activate();
         }
     }
 }

@@ -31,7 +31,6 @@
             components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(ConfigurationForm));
             DoneButton = new System.Windows.Forms.Button();
-            CAPSettingsButton = new System.Windows.Forms.Button();
             StyleSettingsButton = new System.Windows.Forms.Button();
             SoundSettingsButton = new System.Windows.Forms.Button();
             DiscordSettingsButton = new System.Windows.Forms.Button();
@@ -46,6 +45,8 @@
             ExtraOptionsButton = new System.Windows.Forms.Button();
             SimpleModeButton = new System.Windows.Forms.Button();
             SlidesBox = new System.Windows.Forms.PictureBox();
+            CAPSettingsButton = new System.Windows.Forms.Button();
+            AlertManagerButton = new System.Windows.Forms.Button();
             Reloader = new System.Windows.Forms.Timer(components);
             WindowShake = new System.Windows.Forms.Timer(components);
             ((System.ComponentModel.ISupportInitialize)SlidesBox).BeginInit();
@@ -66,22 +67,6 @@
             DoneButton.UseMnemonic = false;
             DoneButton.UseVisualStyleBackColor = false;
             DoneButton.Click += DoneButton_Click;
-            // 
-            // CAPSettingsButton
-            // 
-            CAPSettingsButton.BackColor = System.Drawing.Color.FromArgb(60, 60, 60);
-            CAPSettingsButton.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
-            CAPSettingsButton.Font = new System.Drawing.Font("Segoe UI", 20F, System.Drawing.FontStyle.Bold);
-            CAPSettingsButton.ForeColor = System.Drawing.Color.White;
-            CAPSettingsButton.Location = new System.Drawing.Point(12, 12);
-            CAPSettingsButton.Name = "CAPSettingsButton";
-            CAPSettingsButton.Size = new System.Drawing.Size(262, 64);
-            CAPSettingsButton.TabIndex = 1;
-            CAPSettingsButton.Text = "Alert Settings";
-            ToolTipInformation.SetToolTip(CAPSettingsButton, "Various alert processing settings can be configured here.");
-            CAPSettingsButton.UseMnemonic = false;
-            CAPSettingsButton.UseVisualStyleBackColor = false;
-            CAPSettingsButton.Click += CAPSettingsButton_Click;
             // 
             // StyleSettingsButton
             // 
@@ -292,6 +277,7 @@
             // 
             // SlidesBox
             // 
+            SlidesBox.Anchor = System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left;
             SlidesBox.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             SlidesBox.ErrorImage = Properties.Resources.announce;
             SlidesBox.ImageLocation = "https://bunnytub.com/SharpAlert-Slides/Announcement.png";
@@ -304,6 +290,40 @@
             SlidesBox.TabStop = false;
             ToolTipInformation.SetToolTip(SlidesBox, "Click here to go to the website associated with this slide.");
             SlidesBox.Click += SlidesBox_Click;
+            // 
+            // CAPSettingsButton
+            // 
+            CAPSettingsButton.BackColor = System.Drawing.Color.FromArgb(60, 60, 60);
+            CAPSettingsButton.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
+            CAPSettingsButton.Font = new System.Drawing.Font("Segoe UI", 9F);
+            CAPSettingsButton.ForeColor = System.Drawing.Color.White;
+            CAPSettingsButton.Location = new System.Drawing.Point(12, 53);
+            CAPSettingsButton.Margin = new System.Windows.Forms.Padding(3, 0, 3, 3);
+            CAPSettingsButton.Name = "CAPSettingsButton";
+            CAPSettingsButton.Size = new System.Drawing.Size(262, 23);
+            CAPSettingsButton.TabIndex = 17;
+            CAPSettingsButton.Text = "Alert Settings";
+            ToolTipInformation.SetToolTip(CAPSettingsButton, "Various alert processing settings can be configured here.");
+            CAPSettingsButton.UseMnemonic = false;
+            CAPSettingsButton.UseVisualStyleBackColor = false;
+            CAPSettingsButton.Click += CAPSettingsButton_Click;
+            // 
+            // AlertManagerButton
+            // 
+            AlertManagerButton.BackColor = System.Drawing.Color.FromArgb(60, 60, 60);
+            AlertManagerButton.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
+            AlertManagerButton.Font = new System.Drawing.Font("Segoe UI", 16F, System.Drawing.FontStyle.Bold);
+            AlertManagerButton.ForeColor = System.Drawing.Color.White;
+            AlertManagerButton.Location = new System.Drawing.Point(12, 12);
+            AlertManagerButton.Margin = new System.Windows.Forms.Padding(3, 3, 3, 0);
+            AlertManagerButton.Name = "AlertManagerButton";
+            AlertManagerButton.Size = new System.Drawing.Size(262, 41);
+            AlertManagerButton.TabIndex = 18;
+            AlertManagerButton.Text = "Alert Manager";
+            ToolTipInformation.SetToolTip(AlertManagerButton, "Various alert processing settings can be configured here.");
+            AlertManagerButton.UseMnemonic = false;
+            AlertManagerButton.UseVisualStyleBackColor = false;
+            AlertManagerButton.Click += AlertManagerButton_Click;
             // 
             // Reloader
             // 
@@ -323,6 +343,8 @@
             BackColor = System.Drawing.Color.FromArgb(20, 20, 20);
             ClientSize = new System.Drawing.Size(420, 332);
             ControlBox = false;
+            Controls.Add(CAPSettingsButton);
+            Controls.Add(AlertManagerButton);
             Controls.Add(SlidesBox);
             Controls.Add(SimpleModeButton);
             Controls.Add(ExtraOptionsButton);
@@ -336,7 +358,6 @@
             Controls.Add(RegionSettingsButton);
             Controls.Add(SoundSettingsButton);
             Controls.Add(StyleSettingsButton);
-            Controls.Add(CAPSettingsButton);
             Controls.Add(DoneButton);
             Font = new System.Drawing.Font("Segoe UI", 9F);
             ForeColor = System.Drawing.Color.White;
@@ -347,7 +368,7 @@
             MinimizeBox = false;
             Name = "ConfigurationForm";
             StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
-            Text = "SharpAlert - Global Settings";
+            Text = "SharpAlert - Global Settings (Advanced)";
             FormClosing += ManagementForm_FormClosing;
             Load += ConfigurationForm_Load;
             ((System.ComponentModel.ISupportInitialize)SlidesBox).EndInit();
@@ -359,7 +380,6 @@
         #endregion
 
         private System.Windows.Forms.Button DoneButton;
-        private System.Windows.Forms.Button CAPSettingsButton;
         private System.Windows.Forms.Button StyleSettingsButton;
         private System.Windows.Forms.Button SoundSettingsButton;
         private System.Windows.Forms.Button DiscordSettingsButton;
@@ -376,5 +396,7 @@
         private System.Windows.Forms.PictureBox SlidesBox;
         private System.Windows.Forms.Timer Reloader;
         private System.Windows.Forms.Timer WindowShake;
+        private System.Windows.Forms.Button CAPSettingsButton;
+        private System.Windows.Forms.Button AlertManagerButton;
     }
 }

@@ -63,7 +63,6 @@
             RainbowText = new System.Windows.Forms.Label();
             LocationsClearButton = new System.Windows.Forms.Button();
             LocationsButton = new System.Windows.Forms.Button();
-            AlertListButton = new System.Windows.Forms.Button();
             ToolTipInformation = new System.Windows.Forms.ToolTip(components);
             RainbowColoring = new System.Windows.Forms.Timer(components);
             EventsButton = new System.Windows.Forms.Button();
@@ -74,6 +73,7 @@
             ChangeToInfoButton = new System.Windows.Forms.Button();
             PreferMagicButton = new System.Windows.Forms.Button();
             WindowShake = new System.Windows.Forms.Timer(components);
+            label1 = new System.Windows.Forms.Label();
             AlertFunctionalityGroup.SuspendLayout();
             GeneralGroup.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)AlertCheckIntervalInput).BeginInit();
@@ -479,20 +479,6 @@
             LocationsButton.UseVisualStyleBackColor = false;
             LocationsButton.Click += LocationsButton_Click;
             // 
-            // AlertListButton
-            // 
-            AlertListButton.Anchor = System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right;
-            AlertListButton.BackColor = System.Drawing.Color.FromArgb(60, 60, 60);
-            AlertListButton.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
-            AlertListButton.Font = new System.Drawing.Font("Segoe UI", 18F);
-            AlertListButton.Location = new System.Drawing.Point(360, 12);
-            AlertListButton.Name = "AlertListButton";
-            AlertListButton.Size = new System.Drawing.Size(331, 40);
-            AlertListButton.TabIndex = 34;
-            AlertListButton.Text = "Manage Alerts";
-            AlertListButton.UseVisualStyleBackColor = false;
-            AlertListButton.Click += AlertListButton_Click;
-            // 
             // ToolTipInformation
             // 
             ToolTipInformation.AutomaticDelay = 250;
@@ -617,11 +603,21 @@
             WindowShake.Interval = 500;
             WindowShake.Tick += WindowShake_Tick;
             // 
+            // label1
+            // 
+            label1.Location = new System.Drawing.Point(360, 12);
+            label1.Name = "label1";
+            label1.Size = new System.Drawing.Size(331, 40);
+            label1.TabIndex = 61;
+            label1.Text = "The \"Manage Alerts\" button has been renamed\r\nand moved to the main menu.";
+            label1.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
             // SimpleAlertConfigurationForm
             // 
             AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
             BackColor = System.Drawing.Color.FromArgb(20, 20, 20);
             ClientSize = new System.Drawing.Size(703, 461);
+            Controls.Add(label1);
             Controls.Add(PreferMagicButton);
             Controls.Add(ChangeToInfoButton);
             Controls.Add(PreferSevereButton);
@@ -632,7 +628,6 @@
             Controls.Add(RainbowText);
             Controls.Add(AlertFunctionalityGroup);
             Controls.Add(LocationsButton);
-            Controls.Add(AlertListButton);
             Controls.Add(LocationsClearButton);
             Font = new System.Drawing.Font("Segoe UI", 9F);
             ForeColor = System.Drawing.Color.White;
@@ -696,7 +691,6 @@
         private System.Windows.Forms.Button LocationsButton;
         private System.Windows.Forms.Label label7;
         private System.Windows.Forms.Button LocationsClearButton;
-        private System.Windows.Forms.Button AlertListButton;
         private System.Windows.Forms.CheckBox PreferCMAMTextWhereAvailableBox;
         private System.Windows.Forms.GroupBox GeneralGroup;
         private System.Windows.Forms.CheckBox IgnoreKeepAliveBox;
@@ -710,5 +704,6 @@
         private System.Windows.Forms.Button ChangeToInfoButton;
         private System.Windows.Forms.Button PreferMagicButton;
         private System.Windows.Forms.Timer WindowShake;
+        private System.Windows.Forms.Label label1;
     }
 }

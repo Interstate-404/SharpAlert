@@ -69,7 +69,7 @@
             label2.Padding = new System.Windows.Forms.Padding(2, 0, 0, 0);
             label2.Size = new System.Drawing.Size(505, 32);
             label2.TabIndex = 2;
-            label2.Text = "Here are some changes in this version.";
+            label2.Text = "Here is the changelog for this version.";
             // 
             // DoneButton
             // 
@@ -125,6 +125,7 @@
             EnableNewFeatureButton.Text = "Enable \"Use SAME as severity\"";
             EnableNewFeatureButton.UseMnemonic = false;
             EnableNewFeatureButton.UseVisualStyleBackColor = false;
+            EnableNewFeatureButton.Visible = false;
             EnableNewFeatureButton.Click += EnableNewFeatureButton_Click;
             // 
             // DeveloperMessageForm

@@ -118,10 +118,18 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="LogOutput.Text" xml:space="preserve">
-    <value>- The credits have been updated. Check it out!
-- Added U.S. marine locations. Credits to Interstate404 for painstakingly adding them.
-- Added a mapping system to convert SAME severity to CAP severity. The mapping somewhat adheres to the standard. (You can only change this setting in the advanced "Alert Settings" area.)
-- Experimental support for IP phones. Go to Style Settings to change settings for IP phones. Leave the IP blank to disable. The field should contain the IP address of a physical SIP phone. The following phones have been tested to work with SharpAlert: Polycom VVX 400, Polycom VVX 401
+    <value>This is a major release, I hope you enjoy it!
+Reviewed by BunnyTub and MaybeConnor.
+
+- Add more missing locations for SAME. - Interstate404
+- Using SAME as severity is now turned on by default. - BunnyTub
+- Fixed "Lower Niagara River" belonging to "Lake Erie" instead of "Lake Ontario". - Interstate404
+- Moved the "Manage Alerts" button to the global settings menu under the name of "Alert Manager". - BunnyTub
+- IP phones will no longer pause the processing of alerts. Calls are separated from alerts to windows and webhooks. - BunnyTub
+- **Fixed Discord webhooks having missing icons due to CAP files specifying other text instead of SAME compliant text.** (Images will use the SAME code as a solution on top of this.) - BunnyTub
+- **Fixed a time issue that caused AM/PM text in alert text to be based on the current system time instead of the alert time.** - BunnyTub
+- **Change "Gulf of America" mentions to "Gulf of Mexico".** - Interstate404
+- **Revamped the Alert Manager window. Check it out!** - BunnyTub
 
 I am BunnyTub, the (mostly) sole developer of SharpAlert. Find additional contributors in credits. SharpAlert has been completely open-sourced! You can find the entire source code and files at https://github.com/BunnyTub/SharpAlert. This software is provided free of charge. If you paid for this software, or it came inside of a software package of which you paid for, you should probably try getting your money back immediately.</value>
   </data>

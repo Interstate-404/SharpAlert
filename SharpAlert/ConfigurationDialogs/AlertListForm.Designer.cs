@@ -335,6 +335,7 @@
             ToolTipInformation.SetToolTip(RemoveButton, "Reveal more information about a specific identifier in the list.");
             RemoveButton.UseMnemonic = false;
             RemoveButton.UseVisualStyleBackColor = false;
+            RemoveButton.Visible = false;
             // 
             // PastAlertsGroup
             // 

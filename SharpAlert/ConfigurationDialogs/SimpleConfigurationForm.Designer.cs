@@ -43,6 +43,7 @@
             SlidesBox = new System.Windows.Forms.PictureBox();
             Reloader = new System.Windows.Forms.Timer(components);
             WindowShake = new System.Windows.Forms.Timer(components);
+            AlertManagerButton = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)SlidesBox).BeginInit();
             SuspendLayout();
             // 
@@ -67,11 +68,12 @@
             // 
             CAPSettingsButton.BackColor = System.Drawing.Color.FromArgb(60, 60, 60);
             CAPSettingsButton.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
-            CAPSettingsButton.Font = new System.Drawing.Font("Segoe UI", 20F, System.Drawing.FontStyle.Bold);
+            CAPSettingsButton.Font = new System.Drawing.Font("Segoe UI", 9F);
             CAPSettingsButton.ForeColor = System.Drawing.Color.White;
-            CAPSettingsButton.Location = new System.Drawing.Point(12, 12);
+            CAPSettingsButton.Location = new System.Drawing.Point(12, 53);
+            CAPSettingsButton.Margin = new System.Windows.Forms.Padding(3, 0, 3, 3);
             CAPSettingsButton.Name = "CAPSettingsButton";
-            CAPSettingsButton.Size = new System.Drawing.Size(262, 64);
+            CAPSettingsButton.Size = new System.Drawing.Size(262, 23);
             CAPSettingsButton.TabIndex = 1;
             CAPSettingsButton.Text = "Alert Settings";
             ToolTipInformation.SetToolTip(CAPSettingsButton, "Various alert processing settings can be configured here.");
@@ -227,6 +229,23 @@
             WindowShake.Interval = 500;
             WindowShake.Tick += WindowShake_Tick;
             // 
+            // AlertManagerButton
+            // 
+            AlertManagerButton.BackColor = System.Drawing.Color.FromArgb(60, 60, 60);
+            AlertManagerButton.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
+            AlertManagerButton.Font = new System.Drawing.Font("Segoe UI", 16F, System.Drawing.FontStyle.Bold);
+            AlertManagerButton.ForeColor = System.Drawing.Color.White;
+            AlertManagerButton.Location = new System.Drawing.Point(12, 12);
+            AlertManagerButton.Margin = new System.Windows.Forms.Padding(3, 3, 3, 0);
+            AlertManagerButton.Name = "AlertManagerButton";
+            AlertManagerButton.Size = new System.Drawing.Size(262, 41);
+            AlertManagerButton.TabIndex = 16;
+            AlertManagerButton.Text = "Alert Manager";
+            ToolTipInformation.SetToolTip(AlertManagerButton, "Various alert processing settings can be configured here.");
+            AlertManagerButton.UseMnemonic = false;
+            AlertManagerButton.UseVisualStyleBackColor = false;
+            AlertManagerButton.Click += AlertManagerButton_Click;
+            // 
             // SimpleConfigurationForm
             // 
             AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
@@ -243,6 +262,7 @@
             Controls.Add(StyleSettingsButton);
             Controls.Add(CAPSettingsButton);
             Controls.Add(DoneButton);
+            Controls.Add(AlertManagerButton);
             Font = new System.Drawing.Font("Segoe UI", 9F);
             ForeColor = System.Drawing.Color.White;
             FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
@@ -276,5 +296,6 @@
         private System.Windows.Forms.PictureBox SlidesBox;
         private System.Windows.Forms.Timer Reloader;
         private System.Windows.Forms.Timer WindowShake;
+        private System.Windows.Forms.Button AlertManagerButton;
     }
 }

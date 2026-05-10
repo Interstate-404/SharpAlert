@@ -86,7 +86,6 @@
             categorySafetyBox = new System.Windows.Forms.CheckBox();
             categoryMetBox = new System.Windows.Forms.CheckBox();
             categoryGeoBox = new System.Windows.Forms.CheckBox();
-            AlertListButton = new System.Windows.Forms.Button();
             ToolTipInformation = new System.Windows.Forms.ToolTip(components);
             BypassFilteringFlasher = new System.Windows.Forms.Timer(components);
             ArchiveSettingsButton = new System.Windows.Forms.Button();
@@ -94,6 +93,7 @@
             RainbowColoring = new System.Windows.Forms.Timer(components);
             EventsButton = new System.Windows.Forms.Button();
             WindowShake = new System.Windows.Forms.Timer(components);
+            label1 = new System.Windows.Forms.Label();
             AlertFunctionalityGroup.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)AlertDeadIntervalInput).BeginInit();
             ((System.ComponentModel.ISupportInitialize)AlertCheckIntervalInput).BeginInit();
@@ -789,20 +789,6 @@
             ToolTipInformation.SetToolTip(categoryGeoBox, "Allow messages of the following category.");
             categoryGeoBox.UseVisualStyleBackColor = true;
             // 
-            // AlertListButton
-            // 
-            AlertListButton.Anchor = System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right;
-            AlertListButton.BackColor = System.Drawing.Color.FromArgb(60, 60, 60);
-            AlertListButton.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
-            AlertListButton.Font = new System.Drawing.Font("Segoe UI", 18F);
-            AlertListButton.Location = new System.Drawing.Point(360, 12);
-            AlertListButton.Name = "AlertListButton";
-            AlertListButton.Size = new System.Drawing.Size(250, 40);
-            AlertListButton.TabIndex = 34;
-            AlertListButton.Text = "Manage Alerts";
-            AlertListButton.UseVisualStyleBackColor = false;
-            AlertListButton.Click += AlertListButton_Click;
-            // 
             // ToolTipInformation
             // 
             ToolTipInformation.AutomaticDelay = 250;
@@ -870,11 +856,21 @@
             WindowShake.Interval = 500;
             WindowShake.Tick += WindowShake_Tick;
             // 
+            // label1
+            // 
+            label1.Location = new System.Drawing.Point(360, 12);
+            label1.Name = "label1";
+            label1.Size = new System.Drawing.Size(250, 40);
+            label1.TabIndex = 24;
+            label1.Text = "The \"Manage Alerts\" button has been renamed and moved to the main menu.";
+            label1.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
             // AlertConfigurationForm
             // 
             AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
             BackColor = System.Drawing.Color.FromArgb(20, 20, 20);
             ClientSize = new System.Drawing.Size(703, 427);
+            Controls.Add(label1);
             Controls.Add(EventsButton);
             Controls.Add(RainbowText);
             Controls.Add(GeneralGroup);
@@ -885,7 +881,6 @@
             Controls.Add(MiscGroup);
             Controls.Add(LocationsButton);
             Controls.Add(CategoryGroup);
-            Controls.Add(AlertListButton);
             Controls.Add(LocationsClearButton);
             Font = new System.Drawing.Font("Segoe UI", 9F);
             ForeColor = System.Drawing.Color.White;
@@ -976,7 +971,6 @@
         private System.Windows.Forms.Label label7;
         private System.Windows.Forms.CheckBox alertNoRelayBox;
         private System.Windows.Forms.Button LocationsClearButton;
-        private System.Windows.Forms.Button AlertListButton;
         private System.Windows.Forms.Button CategoryInfoButton;
         private System.Windows.Forms.Button BypassAlertFilteringButton;
         private System.Windows.Forms.Timer BypassFilteringFlasher;
@@ -989,5 +983,6 @@
         private System.Windows.Forms.Button EventsButton;
         private System.Windows.Forms.Timer WindowShake;
         private System.Windows.Forms.CheckBox UseSAMEAsSeverityWhenPossibleBox;
+        private System.Windows.Forms.Label label1;
     }
 }
