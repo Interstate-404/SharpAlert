@@ -492,6 +492,7 @@
             // 
             LocationsClearButton.Anchor = System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right;
             LocationsClearButton.BackColor = System.Drawing.Color.FromArgb(60, 60, 60);
+            LocationsClearButton.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
             LocationsClearButton.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
             LocationsClearButton.Font = new System.Drawing.Font("Segoe UI", 12F);
             LocationsClearButton.Location = new System.Drawing.Point(360, 104);

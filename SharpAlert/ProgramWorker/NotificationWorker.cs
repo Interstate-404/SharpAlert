@@ -392,22 +392,12 @@ namespace SharpAlert.ProgramWorker
             contextMenu.Items.Add(new ToolStripMenuItem(Language.Get("ResetHistory", "Clear History"), Resources.broom_solid, (sender, arg) =>
             {
                 IgnoreRightClick = true;
-                if (MessageBox.Show("Clear the alert history?\r\n" +
-                    "(Any old/previous alerts may be relayed again!)",
+                if (MessageBox.Show("Are you sure you want to destroy the alert history? (Any old/previous alerts may be relayed again!)",
                     "SharpAlert",
                     MessageBoxButtons.YesNo,
                     MessageBoxIcon.Question) == DialogResult.Yes)
                 {
-                    lock (SharpDataHistory)
-                    {
-                        lock (SharpDataRelayedNamesHistory)
-                        {
-                            SharpDataHistory.Clear();
-                            SharpDataRelayedNamesHistory.Clear();
-                        }
-                    }
-
-                    AwokenNotifier.ShowBasicText("The alert history was destroyed.");
+                    ClearAlertHistory();
                 }
                 IgnoreRightClick = false;
             }));

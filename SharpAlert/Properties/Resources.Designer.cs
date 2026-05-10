@@ -81,6 +81,26 @@ namespace SharpAlert.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap arrows_rotate_solid {
+            get {
+                object obj = ResourceManager.GetObject("arrows-rotate-solid", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap arrows_rotate_solid_28x28 {
+            get {
+                object obj = ResourceManager.GetObject("arrows-rotate-solid-28x28", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized resource of type System.IO.UnmanagedMemoryStream similar to System.IO.MemoryStream.
         /// </summary>
         internal static System.IO.UnmanagedMemoryStream awoken {
@@ -251,6 +271,26 @@ namespace SharpAlert.Properties {
         internal static System.Drawing.Bitmap square_xmark_solid {
             get {
                 object obj = ResourceManager.GetObject("square-xmark-solid", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap StripesBacking {
+            get {
+                object obj = ResourceManager.GetObject("StripesBacking", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap StripesBacking2 {
+            get {
+                object obj = ResourceManager.GetObject("StripesBacking2", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }

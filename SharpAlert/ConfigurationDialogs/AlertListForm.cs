@@ -1,17 +1,19 @@
-﻿using System;
+﻿using NAudio.CoreAudioApi;
+using SharpAlert.AlertComponents;
+using SharpAlert.ProgramWorker;
+using SharpAlert.Properties;
+using System;
+using System.Collections.Generic;
 using System.Diagnostics;
+using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Threading;
 using System.Windows.Forms;
-using System.Drawing;
-using static SharpAlert.ProgramWorker.MainEntryPoint;
-using static SharpAlert.ProgramWorker.HaidaWorker;
 using static SharpAlert.AlertComponents.AlertProcessor;
+using static SharpAlert.ProgramWorker.HaidaWorker;
+using static SharpAlert.ProgramWorker.MainEntryPoint;
 using static SharpAlertPluginBase.AlertContents;
-using SharpAlert.ProgramWorker;
-using SharpAlert.AlertComponents;
-using System.Collections.Generic;
 
 namespace SharpAlert.ConfigurationDialogs
 {
@@ -46,61 +48,55 @@ namespace SharpAlert.ConfigurationDialogs
 
         private void AlertHistoryClearButton_Click(object sender, EventArgs e)
         {
-            ClearAlertHistory();
+            DialogResult question = MessageBox.Show("Are you sure you want to destroy the alert history?", Text, MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+            if (question == DialogResult.Yes)
+            {
+                ClearAlertHistory();
+            }
         }
 
         private void RefreshAlertHistory()
         {
-            LastKnownHistoryCount = SharpDataHistory.Count;
-
-            if (SharpDataHistory.Count != 0)
+            lock (SharpDataHistory)
             {
-                string DataHistory = string.Empty;
-                lock (SharpDataHistory)
+                if (SharpDataHistory.Count != 0)
                 {
+                    string DataHistory = string.Empty;
+                    
                     foreach (var item in SharpDataHistory)
                     {
                         DataHistory = $"{item.Name}\r\n{DataHistory}";
                     }
-                    AlertHistoryText.Text = $"Count: {SharpDataHistory.Count} alert(s)";
+
+                    string plural = $"There is 1 alert in the history.";
+                    if (SharpDataHistory.Count != 1) plural = $"There are {SharpDataHistory.Count} alerts in the history.";
+
+                    AlertHistoryText.Text = plural;
+                    AlertHistoryOutput.Text = DataHistory.Trim();
+
+                    if (SharpDataHistory.Count != LastKnownHistoryCount)
+                    {
+                        AlertHistoryRefreshButton.Visible = true;
+                    }
                 }
-                DataHistory.Trim();
-                AlertHistoryOutput.Text = DataHistory;
+                else
+                {
+                    AlertHistoryText.Text = "The alert history is empty right now.";
+                    AlertHistoryOutput.Clear();
+                }
+
+                LastKnownHistoryCount = SharpDataHistory.Count;
             }
-            else
-            {
-                AlertHistoryText.Text = "There are no items in the history.";
-                AlertHistoryOutput.Clear();
-            }
-        }
-        
-        private void ClearAlertHistory()
-        {
-            RefreshAlertHistory();
-            if (SharpDataHistory.Count != 0)
-            {
-                SharpDataHistory.Clear();
-                SharpDataRelayedNamesHistory.Clear();
-                AlertHistoryText.Text = "The history was cleared.";
-                AlertHistoryOutput.Clear();
-                MessageBox.Show("The history has been cleared.",
-                    "SharpAlert",
-                    MessageBoxButtons.OK,
-                    MessageBoxIcon.Information);
-            }
-            else
-            {
-                MessageBox.Show($"There are no items in the history.",
-                    "SharpAlert",
-                    MessageBoxButtons.OK,
-                    MessageBoxIcon.Exclamation);
-            }
+
         }
 
         private void AlertHistoryRefreshButton_Click(object sender, EventArgs e)
         {
-            AlertHistoryRefreshButton.BackColor = Color.FromArgb(60, 60, 60);
+            //AlertHistoryRefreshButton.BackColor = Color.FromArgb(60, 60, 60);
+            AlertListRefresher.Enabled = false;
+            AlertHistoryRefreshButton.Visible = false;
             RefreshAlertHistory();
+            AlertListRefresher.Enabled = true;
         }
 
         private void AlertHistoryReplayRecentButton_Click(object sender, EventArgs e)
@@ -193,8 +189,7 @@ namespace SharpAlert.ConfigurationDialogs
                     {
                         lock (SharpDataHistory)
                         {
-                            List<SharpDataItem> DataItems = new List<SharpDataItem>();
-                            DataItems.AddRange(SharpDataHistory);
+                            List<SharpDataItem> DataItems = [.. SharpDataHistory];
                             SharpDataHistory.Clear();
                             SharpDataQueue.AddRange(DataItems);
 
@@ -330,7 +325,7 @@ namespace SharpAlert.ConfigurationDialogs
 
         private void PlayTestButton_Click(object sender, EventArgs e)
         {
-            ProcessAlertTest();
+            ProcessAlertTest(true, true, true, AutofillTestInfoBox.Checked);
         }
 
         private void ImportFileButton_Click(object sender, EventArgs e)
@@ -338,16 +333,11 @@ namespace SharpAlert.ConfigurationDialogs
             AddFileToQueue();
         }
 
-        int LastKnownHistoryCount = 0;
+        private int LastKnownHistoryCount = 0;
 
         private void AlertListRefresher_Tick(object sender, EventArgs e)
         {
-            if (SharpDataHistory.Count != LastKnownHistoryCount)
-            {
-                AlertHistoryRefreshButton.BackColor = Color.FromArgb(200, 60, 60);
-                AlertHistoryText.Text = $"Count: {SharpDataHistory.Count} alert(s) - Click refresh to update the list";
-            }
-            //RefreshAlertHistory();
+            RefreshAlertHistory();
         }
 
         private void ConfigurationForm_VisibleChanged(object sender, EventArgs e)
@@ -404,7 +394,7 @@ namespace SharpAlert.ConfigurationDialogs
             PastAlertsGroup.Enabled = true;
         }
 
-        private readonly AlertInfoForm aif = new AlertInfoForm();
+        private readonly AlertInfoForm aif = new();
 
         private void RevealRecentButton_Click(object sender, EventArgs e)
         {
@@ -434,6 +424,52 @@ namespace SharpAlert.ConfigurationDialogs
             }
             Thread.Sleep(500);
             PastAlertsGroup.Enabled = true;
+        }
+
+        private void WindowTestButton_Click(object sender, EventArgs e)
+        {
+            ProcessAlertTest(false, true, false, AutofillTestInfoBox.Checked);
+        }
+
+        private void DiscordTestButton_Click(object sender, EventArgs e)
+        {
+            ProcessAlertTest(true, false, false, AutofillTestInfoBox.Checked);
+        }
+
+        private void PhoneTestButton_Click(object sender, EventArgs e)
+        {
+            ProcessAlertTest(false, false, true, AutofillTestInfoBox.Checked);
+        }
+
+        private int Angle = 0;
+        private readonly int AngleStep = 2;
+        private readonly Image RefreshImage = Resources.arrows_rotate_solid_28x28;
+
+        private void Rotater_Tick(object sender, EventArgs e)
+        {
+            Angle += AngleStep;
+
+            if (Angle >= 360)
+            {
+                Angle -= 360;
+            }
+
+            AlertHistoryRefreshButton.Refresh();
+        }
+
+        private void AlertHistoryRefreshButton_Paint(object sender, PaintEventArgs e)
+        {
+            Graphics G = e.Graphics;
+            G.TranslateTransform(AlertHistoryRefreshButton.Width / 2, AlertHistoryRefreshButton.Height / 2);
+            G.RotateTransform(Angle);
+            G.DrawImage(RefreshImage, new Point(-(RefreshImage.Width / 2), -(RefreshImage.Height / 2)));
+        }
+
+        private void RevealAlertIdentifierInput_TextChanged(object sender, EventArgs e)
+        {
+            ChangeAlertInfo.Enabled = false;
+            RevealButton.Enabled = !string.IsNullOrWhiteSpace(RevealAlertIdentifierInput.Text);
+            ChangeAlertInfo.Enabled = true;
         }
     }
 }

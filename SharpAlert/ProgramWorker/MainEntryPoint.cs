@@ -329,7 +329,10 @@ namespace SharpAlert.ProgramWorker
             };
             Application.SetUnhandledExceptionMode(UnhandledExceptionMode.CatchException);
 
-            AwokenNotifier = new(true);
+            AwokenNotifier = new(true)
+            {
+                UseBackdrop = false
+            };
 
             Language.Load(QuickSettings.Instance.LanguageCode);
 
@@ -839,6 +842,28 @@ namespace SharpAlert.ProgramWorker
         //        }
         //    }
         //}
+
+        public static bool ClearAlertHistory()
+        {
+            lock (SharpDataHistory)
+            {
+                lock (SharpDataRelayedNamesHistory)
+                {
+                    if (SharpDataHistory.Count != 0 || SharpDataRelayedNamesHistory.Count != 0)
+                    {
+                        SharpDataHistory.Clear();
+                        SharpDataRelayedNamesHistory.Clear();
+                        AwokenNotifier.ShowBasicText("The alert history was destroyed.");
+                        return true;
+                    }
+                    else
+                    {
+                        AwokenNotifier.ShowBasicText("The alert history is already empty!");
+                        return false;
+                    }
+                }
+            }
+        }
     }
 }
 

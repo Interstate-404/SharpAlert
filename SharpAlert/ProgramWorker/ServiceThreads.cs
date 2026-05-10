@@ -18,6 +18,7 @@ namespace SharpAlert.ProgramWorker
         internal static Thread DataProcThread { get; set; } = DummyThread();
         internal static Thread HistoryProcThread { get; set; } = DummyThread();
         internal static Thread NotificationThread { get; set; } = DummyThread();
+        internal static Thread PhoningThread { get; set; } = DummyThread();
         internal static Thread ServerThread { get; set; } = DummyThread();
         internal static Thread HeartbeatThread { get; set; } = DummyThread();
     }

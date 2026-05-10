@@ -41,6 +41,7 @@
             public string AlertExpiryDate { get; set; } = string.Empty;
             public List<string> AlertFriendlyLocations { get; set; } = [];
             public string AlertEventType { get; set; } = string.Empty;
+            public string AlertEventSAMEType { get; set; } = string.Empty;
             public string AlertMessageType { get; set; } = string.Empty;
             public string AlertSeverity { get; set; } = string.Empty;
             public string AlertIntroText { get; set; } = string.Empty;

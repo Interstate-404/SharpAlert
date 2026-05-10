@@ -300,6 +300,7 @@ namespace SharpAlert.AlertComponents
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Style", "IDE0037:Use inferred member name", Justification = "<Pending>")]
         public static void SendEmbeddedMessage(
             string FeedSource,
+            string SAMECode,
             string message,
             string title,
             string description1,
@@ -434,6 +435,7 @@ namespace SharpAlert.AlertComponents
                     //});
 
                     var EventDecode = AlertDetails.SAME_AlertCodes.Find(t => t.Name == title);
+                    EventDecode ??= AlertDetails.SAME_AlertCodes.Find(t => t.ID.Equals(SAMECode, StringComparison.InvariantCultureIgnoreCase)); // thanks VS, it's less readable now
 
                     string ThumbnailURL = $"https://bunnytub.com/SharpAlert-Assets/Misc/UNK.png";
 

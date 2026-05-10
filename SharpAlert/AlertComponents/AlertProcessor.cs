@@ -14,6 +14,7 @@ using System.Text;
 using SharpAlert.Properties;
 using SharpAlert.Languages;
 using static SharpAlertPluginBase.AlertContents;
+using SharpAlert.DataProcessing;
 
 namespace SharpAlert.AlertComponents
 {
@@ -233,6 +234,7 @@ namespace SharpAlert.AlertComponents
                     string Effective = string.Empty;
                     string Expiry = string.Empty;
                     string EventTypeFull = string.Empty;
+                    string EventTypeSAME = string.Empty;
                     string PrimaryURL = string.Empty;
                     string Source = string.Empty;
                     string SenderName = string.Empty;
@@ -329,6 +331,11 @@ namespace SharpAlert.AlertComponents
 
                         if (TranslationSuccessful)
                         {
+                            if (string.IsNullOrEmpty(EventTypeSAME))
+                            {
+                                EventTypeSAME = EventType; // aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+                            }
+
                             if (string.IsNullOrEmpty(EventTypeFull))
                             {
                                 EventTypeFull = EventTypeTranslated;
@@ -745,6 +752,7 @@ namespace SharpAlert.AlertComponents
                         AlertExpiryDate = Expiry,
                         AlertFriendlyLocations = AllLocations,
                         AlertEventType = EventTypeFull,
+                        AlertEventSAMEType = EventTypeSAME,
                         AlertMessageType = MsgType,
                         AlertSeverity = MaxSeverity.ToString(),
                         AlertIntroText = FullIntro.Trim(),
@@ -1334,7 +1342,7 @@ namespace SharpAlert.AlertComponents
             }
         }
         
-        public static void ProcessAlertTest(bool AutoFillInfo = false)
+        public static void ProcessAlertTest(bool TestDiscord, bool TestWindow, bool TestPhone, bool AutoFillInfo = false)
         {
             try
             {
@@ -1342,30 +1350,47 @@ namespace SharpAlert.AlertComponents
                 {
                     string TestIdentifier = $"TEST_{DateTime.UtcNow.Ticks}_{Guid.NewGuid()}";
 
-                    string CompiledMessage = $"Test Alert | Location(s): Test Location"; // \r\n-# Process Time: {(int)(DateTime.UtcNow - startProc).TotalMilliseconds} ms
-                    if (!string.IsNullOrWhiteSpace(QuickSettings.Instance.DiscordWebhookAppend)) CompiledMessage += "\r\n" + QuickSettings.Instance.DiscordWebhookAppend;
+                    if (TestDiscord)
+                    {
+                        string CompiledMessage = $"Test Alert | Location(s): Test Location"; // \r\n-# Process Time: {(int)(DateTime.UtcNow - startProc).TotalMilliseconds} ms
+                        if (!string.IsNullOrWhiteSpace(QuickSettings.Instance.DiscordWebhookAppend)) CompiledMessage += "\r\n" + QuickSettings.Instance.DiscordWebhookAppend;
 
-                    DiscordWebhook.SendEmbeddedMessage(string.Empty,
-                        CompiledMessage,
-                        "Test Message",
-                        "Test. Test. Test.",
-                        Resources.TestScript,
-                        "https://bunnytub.com/SharpAlert",
-                        TestIdentifier,
-                        [""],
-                        [""],
-                        [""]);
+                        DiscordWebhook.SendEmbeddedMessage(string.Empty,
+                            "DMO",
+                            CompiledMessage,
+                            "Test Message",
+                            "Test. Test. Test.",
+                            Resources.TestScript,
+                            "https://bunnytub.com/SharpAlert",
+                            TestIdentifier,
+                            [""],
+                            [""],
+                            [""]);
+                    }
 
-                    RelayWindow(TestIdentifier,
-                        "Standard Test",
-                        new AlertTextClass
-                        { Intro = "Test. Test. Test.", Body = Resources.TestScript },
-                        "https://bunnytub.com/SharpAlert",
-                        "alert",
-                        "severe",
-                        [""],
-                        [""],
-                        [""]);
+                    if (TestWindow)
+                    {
+                        RelayWindow(TestIdentifier,
+                            "Standard Test",
+                            new AlertTextClass
+                            { Intro = "Test. Test. Test.", Body = Resources.TestScript },
+                            "https://bunnytub.com/SharpAlert",
+                            "alert",
+                            "severe",
+                            [""],
+                            [""],
+                            [""]);
+                    }
+
+                    if (TestPhone)
+                    {
+                        CallManager.AddNewAlertToCallList(new AlertInfo
+                        {
+                            AlertEventType = "SharpAlert Test Message",
+                            AlertIntroText = "Test. Test. Test.",
+                            AlertBodyText = Resources.TestScript
+                        });
+                    }
                 }
                 else
                 {
@@ -1403,27 +1428,44 @@ namespace SharpAlert.AlertComponents
                         //public List<string> AudioDeref = [];
                         //public List<string> ImageFiles = [];
 
-                        DiscordWebhook.SendEmbeddedMessage(string.Empty,
-                            CompiledMessage,
-                            "Test Message",
-                            "Test. Test. Test.",
-                            ctf.EventDescription,
-                            ctf.EventURL,
-                            TestIdentifier,
-                            [""],
-                            [""],
-                            [""]);
+                        if (TestDiscord)
+                        {
+                            DiscordWebhook.SendEmbeddedMessage(string.Empty,
+                                "DMO",
+                                CompiledMessage,
+                                "Test Message",
+                                "Test. Test. Test.",
+                                ctf.EventDescription,
+                                ctf.EventURL,
+                                TestIdentifier,
+                                [""],
+                                [""],
+                                [""]);
+                        }
 
-                        RelayWindow(TestIdentifier,
-                            ctf.EventType,
-                            new AlertTextClass
-                            { Intro = "Test. Test. Test.", Body = $"{ctf.EventDescription}" },
-                            ctf.EventURL,
-                            "alert",
-                            Severity,
-                            [""],
-                            [""],
-                            [""]);
+                        if (TestWindow)
+                        {
+                            RelayWindow(TestIdentifier,
+                                ctf.EventType,
+                                new AlertTextClass
+                                { Intro = "Test. Test. Test.", Body = $"{ctf.EventDescription}" },
+                                ctf.EventURL,
+                                "alert",
+                                Severity,
+                                [""],
+                                [""],
+                                [""]);
+                        }
+
+                        if (TestPhone)
+                        {
+                            CallManager.AddNewAlertToCallList(new AlertInfo
+                            {
+                                AlertEventType = "SharpAlert Test Message",
+                                AlertIntroText = "Test. Test. Test.",
+                                AlertBodyText = Resources.TestScript
+                            });
+                        }
                     });
 
                     ctf.Dispose();
@@ -2544,15 +2586,12 @@ namespace SharpAlert.AlertComponents
 
         static string TimeCorrection(string value)
         {
-            //Regex TimeCorrectionRegex = new Regex(@"\b(\d{1,4})\s*(AM|PM)\b", RegexOptions.IgnoreCase);
-
             return TimeCorrectionRegex.Replace(value, timeMatch =>
             {
                 string timePart = timeMatch.Groups[1].Value.PadLeft(4, '0');
                 string meridian = timeMatch.Groups[2].Value.ToUpperInvariant();
 
-                return DateTime.ParseExact(timePart, "hhmm", CultureInfo.InvariantCulture)
-                .ToString("hh:mm tt", CultureInfo.InvariantCulture);
+                return DateTime.ParseExact(timePart, "hhmm", CultureInfo.InvariantCulture).ToString("hh:mm", CultureInfo.InvariantCulture) + $"\x20{meridian}";
             });
         }
 

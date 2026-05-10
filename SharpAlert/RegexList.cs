@@ -7,7 +7,7 @@ namespace SharpAlert
 	{
         public static string MatchOrDefault(this Regex regex, string input, string defaultValue = "")
         {
-            if (regex == null) throw new ArgumentNullException(nameof(regex));
+            ArgumentNullException.ThrowIfNull(regex);
             if (input == null) return defaultValue;
 
             var match = regex.Match(input);

@@ -196,9 +196,6 @@ namespace SharpAlert.ProgramWorker
 
             Console.WriteLine("[Haida] Initializing Hyper Server.");
             hyper = new HyperServer();
-            
-            //Console.WriteLine("[Haida] Initializing Call Manager.");
-            //CallManager.InitCallManager();
 
             string PluginFolder = $"{QuickSettings.ConfigDirPath}\\Plugins";
 
@@ -270,6 +267,8 @@ namespace SharpAlert.ProgramWorker
             }
 
             //Thread.Sleep(10000);
+
+            PhoningThread = StartCatchAllThread("Call Manager", CallManager.AlertCheckerLoop, true);
 
             NotificationThread = StartCatchAllThread("Notifications", () =>
             {
@@ -973,8 +972,8 @@ namespace SharpAlert.ProgramWorker
         //    }
         //}
 
-        public static int LowPower = 20;
-        public static int CriticalPower = 20;
+        internal static int LowPower = 20;
+        internal static int CriticalPower = 20;
 
         [DllImport("kernel32.dll")]
         static extern uint SetThreadExecutionState(uint esFlags);
@@ -1112,18 +1111,18 @@ namespace SharpAlert.ProgramWorker
         }
 
         [DllImport("kernel32.dll", SetLastError = true)]
-        public static extern bool AllocConsole();
+        internal static extern bool AllocConsole();
 
         [DllImport("kernel32.dll", SetLastError = true)]
-        public static extern bool FreeConsole();
+        internal static extern bool FreeConsole();
 
         [DllImport("kernel32.dll", SetLastError = true)]
-        public static extern bool SetStdHandle(int nStdHandle, IntPtr hHandle);
+        internal static extern bool SetStdHandle(int nStdHandle, IntPtr hHandle);
 
         //[DllImport("kernel32.dll", SetLastError = true)]
-        //public static extern IntPtr GetStdHandle(int nStdHandle);
+        //internal static extern IntPtr GetStdHandle(int nStdHandle);
 
-        [DllImport("kernel32.dll", SetLastError = true)]
+        [DllImport("kernel32.dll", SetLastError = true, CharSet = CharSet.Unicode)]
         private static extern IntPtr CreateFile(
             string lpFileName,
             uint dwDesiredAccess,
@@ -1134,10 +1133,10 @@ namespace SharpAlert.ProgramWorker
             IntPtr hTemplateFile);
 
         [DllImport("kernel32.dll", SetLastError = true)]
-        public static extern IntPtr GetConsoleWindow();
+        internal static extern IntPtr GetConsoleWindow();
 
         [DllImport("user32.dll", SetLastError = true)]
-        public static extern bool PostMessage(IntPtr hWnd, uint Msg, IntPtr wParam, IntPtr lParam);
+        internal static extern bool PostMessage(IntPtr hWnd, uint Msg, IntPtr wParam, IntPtr lParam);
 
         internal const int STD_OUTPUT_HANDLE = -11;
         internal const uint GENERIC_WRITE = 0x40000000;
@@ -1175,6 +1174,8 @@ namespace SharpAlert.ProgramWorker
             CTRL_SHUTDOWN_EVENT = 6
         }
 
+        private static StreamWriter? writer = null;
+
         public static void AllocateTerminal(bool Popups = true)
         {
             bool allocateSuccess = AllocConsole();
@@ -1201,12 +1202,12 @@ namespace SharpAlert.ProgramWorker
                 }
 
                 SetStdHandle(STD_OUTPUT_HANDLE, consoleHandle);
-#pragma warning disable CA2000
-                var writer = new StreamWriter(Console.OpenStandardOutput())
+
+                writer = new(Console.OpenStandardOutput())
                 {
                     AutoFlush = true,
                 };
-#pragma warning restore CA2000
+
                 Console.SetOut(writer);
 
                 object LockObject = new();
@@ -1249,12 +1250,11 @@ namespace SharpAlert.ProgramWorker
                     PostMessage(consoleWindowHandle, WM_CLOSE, IntPtr.Zero, IntPtr.Zero);
                 }
 
-#pragma warning disable CA2000
-                var defaultOutput = new StreamWriter(Console.OpenStandardOutput())
+                using var defaultOutput = new StreamWriter(Console.OpenStandardOutput())
                 {
                     AutoFlush = true
                 };
-#pragma warning restore CA2000
+
                 Console.SetOut(defaultOutput);
             }
         }

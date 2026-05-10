@@ -10,12 +10,40 @@ using System.Windows.Forms;
 using static SharpAlertPluginBase.AlertContents;
 using static SharpAlert.ProgramWorker.NotificationWorker;
 using SharpAlert.ProgramWorker;
+using System.Threading.Tasks;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace SharpAlert.DataProcessing
 {
     internal static class CallManager
     {
-        public static void MakeAlertCall(AlertInfo info)
+        private static readonly List<AlertInfo> IncomingAlerts = [];
+
+        public static void AlertCheckerLoop()
+        {
+            while (true)
+            {
+                lock (IncomingAlerts)
+                {
+                    if (IncomingAlerts.Count != 0)
+                    {
+                        AlertInfo alert = IncomingAlerts.First();
+                        IncomingAlerts.Remove(alert);
+                        MakeAlertCall(alert);
+                    }
+                }
+
+                Thread.Sleep(1000);
+            }
+        }
+
+        public static void AddNewAlertToCallList(AlertInfo info)
+        {
+            lock (IncomingAlerts) IncomingAlerts.Add(info);
+        }
+        
+        private static void MakeAlertCall(AlertInfo info)
         {
             try
             {

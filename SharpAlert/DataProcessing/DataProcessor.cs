@@ -235,7 +235,7 @@ namespace SharpAlert.DataProcessing
 
                                                     DashboardManager.AddNewAlertToDashboard(info);
 
-                                                    CallManager.MakeAlertCall(info);
+                                                    CallManager.AddNewAlertToCallList(info);
 
                                                     if (ReplayMode)
                                                     {
@@ -346,6 +346,7 @@ namespace SharpAlert.DataProcessing
                                                             //    color);
 
                                                             DiscordWebhook.SendEmbeddedMessage(info.AlertSource,
+                                                                info.AlertEventSAMEType,
                                                                 CompiledMessage,
                                                                 ProcessedEvent,
                                                                 info.AlertIntroText,

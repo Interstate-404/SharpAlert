@@ -124,8 +124,14 @@
   <data name="minor_alert" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\minor_alert.wav;System.IO.MemoryStream, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
+  <data name="SharpWX-black-v2" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\SharpWX-black-v2.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
   <data name="Character_Sergio" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\Character_Sergio.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="TaskBarExample" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\TaskBarExample.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="gear-solid" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\gear-solid.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
@@ -157,6 +163,9 @@
   <data name="square-xmark-solid" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\square-xmark-solid.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
+  <data name="arrows-rotate-solid" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\arrows-rotate-solid.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
   <data name="ui_nothing_1" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\ui_nothing_1.wav;System.IO.MemoryStream, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
@@ -171,6 +180,12 @@
   </data>
   <data name="trash-can-solid" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\trash-can-solid.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="StyleMinified" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\StyleMinified.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="StripesBacking" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\StripesBacking.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="AlertIcon" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\AlertIcon.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
@@ -187,14 +202,17 @@
   <data name="StyleFullboard" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\StyleFullboard.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="TaskBarExample" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\TaskBarExample.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  <data name="Characters" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Characters.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="StripesBacking2" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\StripesBacking2.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="TrayLightIcon" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\TrayLightIcon.ico;System.Drawing.Icon, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="StyleMinified" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\StyleMinified.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  <data name="SharpWX-white-v2" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\SharpWX-white-v2.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="bell-slash-solid" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\bell-slash-solid.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
@@ -217,13 +235,7 @@
   <data name="WarningApp_Splash" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\WarningApp_Splash.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="Characters" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\Characters.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="SharpWX-white-v2" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\SharpWX-white-v2.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="SharpWX-black-v2" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\SharpWX-black-v2.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  <data name="arrows-rotate-solid-28x28" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\arrows-rotate-solid-28x28.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
 </root>
