@@ -667,42 +667,42 @@ namespace SharpAlert.ProgramWorker
                 return null;
         }
 
-        private static readonly UpdateManager UpdateMgr = new(new GithubSource("https://github.com/BunnyTub/SharpAlert", string.Empty, false));
+        //private static readonly UpdateManager UpdateMgr = new(new GithubSource("https://github.com/BunnyTub/SharpAlert", string.Empty, false));
 
-        private static bool NotInstalledMessageShown = false;
+        //private static bool NotInstalledMessageShown = false;
 
-        internal static async Task<UpdateInfo?> CheckUpdate()
-        {
-            try
-            {
-                UpdateInfo? info = await UpdateMgr.CheckForUpdatesAsync();
-                return info;
-            }
-            catch (NotInstalledException)
-            {
-                if (!NotInstalledMessageShown)
-                {
-                    NotInstalledMessageShown = true;
-                    MessageBox.Show("SharpAlert doesn't seem to be installed. Updates won't be available. Check https://bunnytub.com/SharpAlert for up-to-date downloads.", "SharpAlert - Update", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                }
+        //internal static async Task<UpdateInfo?> CheckUpdate()
+        //{
+        //    try
+        //    {
+        //        UpdateInfo? info = await UpdateMgr.CheckForUpdatesAsync();
+        //        return info;
+        //    }
+        //    catch (NotInstalledException)
+        //    {
+        //        if (!NotInstalledMessageShown)
+        //        {
+        //            NotInstalledMessageShown = true;
+        //            MessageBox.Show("SharpAlert doesn't seem to be installed. Updates won't be available. Check https://bunnytub.com/SharpAlert for up-to-date downloads.", "SharpAlert - Update", MessageBoxButtons.OK, MessageBoxIcon.Information);
+        //        }
 
-                return null;
-            }
-        }
+        //        return null;
+        //    }
+        //}
 
-        internal static int UpdateProgress = -1;
+        //internal static int UpdateProgress = -1;
 
-        internal static async Task DoUpdate(UpdateInfo info)
-        {
-            await UpdateMgr.DownloadUpdatesAsync(info, (int progress) =>
-            {
-                UpdateProgress = progress;
-            });
+        //internal static async Task DoUpdate(UpdateInfo info)
+        //{
+        //    await UpdateMgr.DownloadUpdatesAsync(info, (int progress) =>
+        //    {
+        //        UpdateProgress = progress;
+        //    });
 
-            QuickSettings.Instance.Save();
+        //    QuickSettings.Instance.Save();
 
-            UpdateMgr.ApplyUpdatesAndRestart(info, ["-fr"]);
-        }
+        //    UpdateMgr.ApplyUpdatesAndRestart(info, ["-fr"]);
+        //}
 
         private static readonly uint TH32CS_SNAPPROCESS = 2;
 

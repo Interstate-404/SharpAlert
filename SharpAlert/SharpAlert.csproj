@@ -58,7 +58,7 @@
 
 	<!-- NuGet dependencies -->
 	<ItemGroup>
-		<PackageReference Include="AwokenNotifications" Version="1.0.4" />
+		<PackageReference Include="AwokenNotifications" Version="1.0.5" />
 		<PackageReference Include="DiscordRichPresence" Version="1.6.1.70" />
 		<PackageReference Include="Newtonsoft.Json" Version="13.0.4" />
 		<PackageReference Include="NAudio" Version="2.2.1" />
