@@ -137,10 +137,10 @@ namespace SharpAlert.AlertComponents
 
             hyper.RecentAlert = alert;
 
-            if (QuickSettings.Instance.alertAutoPrintingEnabled)
-            {
-                PrinterController.Print(alert.EventTypeFull, $"{alert._AlertText.Intro}\r\n\r\n{alert._AlertText.Body}".Trim());
-            }
+            //if (QuickSettings.Instance.alertAutoPrintingEnabled)
+            //{
+            //    PrinterController.Print(alert.EventTypeFull, $"{alert._AlertText.Intro}\r\n\r\n{alert._AlertText.Body}".Trim());
+            //}
 
             if (QuickSettings.Instance.alertNoGUI)
             {

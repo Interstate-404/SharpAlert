@@ -70,7 +70,9 @@ namespace SharpAlert.ProgramWorker
 
             try
             {
-                icon = Icon.ExtractAssociatedIcon(AssemblyFile);
+                Icon? ic = Icon.ExtractAssociatedIcon(AssemblyFile);
+                if (ic != null) icon = ic;
+                else icon = SystemIcons.Application;
             }
             catch (Exception)
             {
@@ -81,75 +83,6 @@ namespace SharpAlert.ProgramWorker
             {
                 MessageBox.Show("It seems like SharpAlert has a non-original filename. This is fine for standalone, but you must rename it back to \"SharpAlert.exe\" (case-insensitive) if you've installed it! Otherwise, things such as running at startup, and shortcuts, may break.", "SharpAlert - Rename Warning", MessageBoxButtons.OK, MessageBoxIcon.Warning);
             }
-
-            //double Scaling = GetWindowsScreenScalingFactor();
-
-            // this code is so ass, but I don't want to deal with scaling right now
-
-            //if (Scaling > 100)
-            //{
-            //    try
-            //    {
-            //        string SubKey = @"Software\Microsoft\Windows NT\CurrentVersion\AppCompatFlags\Layers";
-
-            //        RegistryKey key = Registry.CurrentUser.CreateSubKey(SubKey) ?? throw new Exception("Cannot create compatibility key.");
-            //        object value = key.GetValue(AssemblyFile);
-            //        bool valid = false;
-
-            //        //string DPIScalingUnderCompatibilityOptions = "~ GDIDPISCALING DPIUNAWARE";
-            //        string DPIScalingUnderCompatibilityOptions = "~ DPIUNAWARE";
-
-            //        if (value != null)
-            //        {
-            //            string valueString = (string)value;
-            //            if (valueString == DPIScalingUnderCompatibilityOptions)
-            //            {
-            //                valid = true;
-            //            }
-            //            else
-            //            {
-            //                if (Scaling > 100)
-            //                {
-            //                    Console.WriteLine($"[Haida] The system DPI is larger than 100%.");
-            //                    MessageBox.Show($"Your display scaling of {Math.Floor(Scaling)}% may cause panels to display incorrectly. SharpAlert will attempt to correct this behavior, and then automatically restart.",
-            //                        "SharpAlert - DPI Scaling Warning",
-            //                        MessageBoxButtons.OK,
-            //                        MessageBoxIcon.Warning);
-            //                }
-            //                else
-            //                {
-            //                    Console.WriteLine($"[Haida] The compatibility settings have been modified, which may cause problems.");
-            //                    MessageBox.Show($"There are currently unsupported compatibility settings enabled for this program. SharpAlert will attempt to correct your settings, and then automatically restart.",
-            //                        "SharpAlert - Compatibility Settings Warning",
-            //                        MessageBoxButtons.OK,
-            //                        MessageBoxIcon.Warning);
-            //                }
-            //            }
-            //        }
-
-            //        if (!valid)
-            //        {
-            //            key.SetValue(AssemblyFile, DPIScalingUnderCompatibilityOptions, RegistryValueKind.String);
-            //            key.Close();
-            //            key.Dispose();
-
-            //            Console.WriteLine($"[Haida] Adjusted the program compatibility settings.");
-            //            Environment.Exit(100);
-            //            return;
-            //        }
-            //        else
-            //        {
-            //            //Console.WriteLine($"[Haida] The scaling issues have previously been already corrected.");
-            //        }
-
-            //        key.Close();
-            //        key.Dispose();
-            //    }
-            //    catch (Exception ex)
-            //    {
-            //        Console.WriteLine($"[Haida] Cannot adjust program DPI settings. {ex.Message}");
-            //    }
-            //}
 
             string RemoteVersion = UpdateWorker.TryGetRemoteVersion();
 
@@ -355,7 +288,9 @@ namespace SharpAlert.ProgramWorker
 
                         if (!QuickSettings.Instance.HideNetworkErrors)
                         {
-                            if (Notify.ContextMenuStrip.Items["HideNetworkButton"] == null)
+                            if (Notify?.ContextMenuStrip != null)
+                            {
+                                if (Notify.ContextMenuStrip.Items["HideNetworkButton"] == null)
                             {
                                 Notify.ContextMenuStrip.Items.Add(new ToolStripSeparator { Name = "HideNetworkSeparator" });
 
@@ -380,8 +315,10 @@ namespace SharpAlert.ProgramWorker
                                     }
                                 }, "HideNetworkButton"));
                             }
+                            }
 
-                            Notify.ShowNotification("There was an issue connecting to some alert servers. Check your internet connection.",
+
+                            Notify?.ShowNotification("There was an issue connecting to some alert servers. Check your internet connection.",
                                 $"{NetFailureCount} failure(s) in 1 minute", ToolTipIcon.Warning);
                         }
                     }
@@ -439,7 +376,7 @@ namespace SharpAlert.ProgramWorker
                                     server = server.Replace("http://", string.Empty).Replace("https://", string.Empty);
                                     Console.WriteLine($"[Haida] Adding server \"{server}\" on line {LineNumber}.");
                                     var VisualServer = new FeedCapture.ServerInfo { ServerName = $"{CustomURLsFileName} | Line {LineNumber}", ServerPath = $"{server}" };
-                                    feed.servers.Add(VisualServer);
+                                    feed?.servers.Add(VisualServer);
                                     FoundValidServer = true;
                                     continue;
                                 }
@@ -937,7 +874,7 @@ namespace SharpAlert.ProgramWorker
 
             QuickSettings.Instance.Save();
 
-            if (QuickSettings.Instance.PlayChimeOnRun) AwokenNotifier.ShowBasicText("SharpAlert has started.");
+            if (QuickSettings.Instance.PlayChimeOnRun) AwokenNotifier?.ShowBasicText("SharpAlert has started.");
         }
 
         //[DllImport("gdi32.dll", CharSet = CharSet.Auto, SetLastError = true, ExactSpelling = true)]
@@ -1163,7 +1100,7 @@ namespace SharpAlert.ProgramWorker
         [DllImport("Kernel32")]
         private static extern bool SetConsoleCtrlHandler(ConsoleCtrlDelegate handler, bool add);
 
-        private static ConsoleCtrlDelegate _handler;
+        private static ConsoleCtrlDelegate? _handler = null;
 
         private enum CtrlTypes
         {
@@ -1333,55 +1270,58 @@ namespace SharpAlert.ProgramWorker
                 MatchCollection alertMatches = AlertRegex.Matches(data);
                 int alertIndex = 0;
 
-                if (alertMatches != null || alertMatches.Count != 0)
+                if (alertMatches != null)
                 {
-                    foreach (Match alert in alertMatches)
+                    if (alertMatches.Count != 0)
                     {
-                        try
+                        foreach (Match alert in alertMatches)
                         {
-                            alertIndex++;
-                            if (alert.Value is null) continue;
-
-                            string filename = IdentifierRegex.MatchOrDefault(alert.Value, CreateMD5(alert.Value));
-
-                            //if (string.IsNullOrWhiteSpace(filename))
-                            //{
-                            //    Console.WriteLine("[HTTP Feed Capture] Identifier not found. An MD5 value will be assigned to this alert instead.");
-                            //    filename = CreateMD5(alert.Value);
-                            //}
-
-                            Console.WriteLine($"[File Capture] {alertIndex} -> {filename}");
-
-                            //string StartingSharpAlertReplay = "<SharpAlertReplay>";
-                            //string EndingSharpAlertReplay = "<SharpAlertReplay>";
-                            //if (!alert.Value.Contains($"{StartingSharpAlertReplay}") || !alert.Value.Contains($"{EndingSharpAlertReplay}"))
-                            //{
-                            //    string alertReplayValue = alert.Value + "<SharpAlertReplay>false</SharpAlertReplay>";
-                            //}
-
-                            SharpDataItem item = new(filename, alert.Value);
-
-                            if (reset)
+                            try
                             {
-                                TryRemoveDataFromHistory(item);
+                                alertIndex++;
+                                if (alert.Value is null) continue;
+
+                                string filename = IdentifierRegex.MatchOrDefault(alert.Value, CreateMD5(alert.Value));
+
+                                //if (string.IsNullOrWhiteSpace(filename))
+                                //{
+                                //    Console.WriteLine("[HTTP Feed Capture] Identifier not found. An MD5 value will be assigned to this alert instead.");
+                                //    filename = CreateMD5(alert.Value);
+                                //}
+
+                                Console.WriteLine($"[File Capture] {alertIndex} -> {filename}");
+
+                                //string StartingSharpAlertReplay = "<SharpAlertReplay>";
+                                //string EndingSharpAlertReplay = "<SharpAlertReplay>";
+                                //if (!alert.Value.Contains($"{StartingSharpAlertReplay}") || !alert.Value.Contains($"{EndingSharpAlertReplay}"))
+                                //{
+                                //    string alertReplayValue = alert.Value + "<SharpAlertReplay>false</SharpAlertReplay>";
+                                //}
+
+                                SharpDataItem item = new(filename, alert.Value);
+
+                                if (reset)
+                                {
+                                    TryRemoveDataFromHistory(item);
+                                }
+
+                                if (TryAddDataToQueue(item))
+                                {
+                                    Console.WriteLine($"[File Capture] Alert {alertIndex} ({filename}) has been saved for processing.");
+                                }
+                                else
+                                {
+                                    Console.WriteLine($"[File Capture] Alert {alertIndex} ({filename}) has been discarded (already queued or is in history).");
+                                }
                             }
-
-                            if (TryAddDataToQueue(item))
+                            catch (Exception ex)
                             {
-                                Console.WriteLine($"[File Capture] Alert {alertIndex} ({filename}) has been saved for processing.");
-                            }
-                            else
-                            {
-                                Console.WriteLine($"[File Capture] Alert {alertIndex} ({filename}) has been discarded (already queued or is in history).");
+                                Console.WriteLine($"[File Capture] Couldn't check the data for alert {alertIndex}. {ex.Message}");
                             }
                         }
-                        catch (Exception ex)
-                        {
-                            Console.WriteLine($"[File Capture] Couldn't check the data for alert {alertIndex}. {ex.Message}");
-                        }
+                        if (alertIndex != 0) Console.WriteLine($"[File Capture] {alertIndex} alert(s) checked.");
+                        else Console.WriteLine($"[File Capture] No alerts were checked.");
                     }
-                    if (alertIndex != 0) Console.WriteLine($"[File Capture] {alertIndex} alert(s) checked.");
-                    else Console.WriteLine($"[File Capture] No alerts were checked.");
                 }
                 else
                 {

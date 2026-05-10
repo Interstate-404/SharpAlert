@@ -19,9 +19,9 @@ namespace SharpAlert.ProgramWorker
             else return false;
         }
 
-        internal static NotifyIcon Notify = null;
-        private static ConfigurationForm mf = null;
-        private static SimpleConfigurationForm smf = null;
+        internal static NotifyIcon? Notify = null;
+        private static ConfigurationForm? mf = null;
+        private static SimpleConfigurationForm? smf = null;
         //private static ShareAlertsForm saf = null;
         //private static bool NotifyIconCalled = false;
         internal static bool IgnoreRightClick = false;
@@ -183,14 +183,17 @@ namespace SharpAlert.ProgramWorker
             bool SharpWXFound = false;
 
             string uninstallKey = @"SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall";
-            using (RegistryKey key = Registry.CurrentUser.OpenSubKey(uninstallKey))
+            using (RegistryKey? key = Registry.CurrentUser.OpenSubKey(uninstallKey))
             {
-                foreach (string sub in key.GetSubKeyNames())
+                if (key != null)
                 {
-                    if (sub.Trim().Contains("BunnyTubby.SharpWX", StringComparison.InvariantCultureIgnoreCase))
+                    foreach (string sub in key.GetSubKeyNames())
                     {
-                        SharpWXFound = true;
-                        break;
+                        if (sub.Trim().Contains("BunnyTubby.SharpWX", StringComparison.InvariantCultureIgnoreCase))
+                        {
+                            SharpWXFound = true;
+                            break;
+                        }
                     }
                 }
             }
@@ -544,7 +547,7 @@ namespace SharpAlert.ProgramWorker
 
         private static readonly DeveloperMessageForm dmf = new();
 
-        private static void Notify_BalloonTipClicked(object sender, EventArgs e)
+        private static void Notify_BalloonTipClicked(object? sender, EventArgs e)
         {
             //if (!LogAvailable)
             //{

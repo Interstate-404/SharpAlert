@@ -118,8 +118,22 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="LogOutput.Text" xml:space="preserve">
-    <value>This is a major release, I hope you enjoy it!
-Reviewed by BunnyTub and MaybeConnor.
+    <value>&lt;&lt; Attention &gt;&gt;
+If you have SharpAlert installed, not standalone, you will be required to install the next upcoming update manually due to the switch of the updater to a new library called Velopack. This new library will provide auto updates in a less janky way.
+
+To get the latest updates automatically, follow these instructions.
+
+Step 1.
+Uninstall SharpAlert. This won't remove your settings.
+
+Step 2.
+Go to https://bunnytub.com/SharpAlert, and download the v19.0 (or newer) installer.
+You may need to wait a few hours to see the new installer download.
+
+Step 3.
+Open the installer, and you're all good to go!
+
+---
 
 - Add more missing locations for SAME. - Interstate404
 - Using SAME as severity is now turned on by default. - BunnyTub

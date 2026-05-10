@@ -26,6 +26,7 @@
 		<SupportedOSPlatformVersion>10.0.17763.0</SupportedOSPlatformVersion>
 		<ProduceReferenceAssembly>False</ProduceReferenceAssembly>
 		<BaseOutputPath>C:\Users\rivera\source\repos\SharpAlert\SharpAlert\bin</BaseOutputPath>
+		<Nullable>enable</Nullable>
 	</PropertyGroup>
 	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
 	  <NoWarn>1701;1702;SYSLIB1054</NoWarn>
@@ -66,6 +67,7 @@
 		<PackageReference Include="SIPSorceryMedia.Windows" Version="8.0.14" />
 		<PackageReference Include="System.Resources.Extensions" Version="10.0.3" />
 		<PackageReference Include="System.Speech" Version="10.0.3" />
+		<PackageReference Include="Velopack" Version="0.0.1298" />
 	</ItemGroup>
 
 	<!-- Embedded resources -->

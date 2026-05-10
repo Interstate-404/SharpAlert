@@ -17,7 +17,11 @@ using System.Security.Cryptography;
 using System.Security.Principal;
 using System.Text;
 using System.Threading;
+using System.Threading.Tasks;
 using System.Windows.Forms;
+using Velopack;
+using Velopack.Exceptions;
+using Velopack.Sources;
 using static SharpAlert.ProgramWorker.HaidaWorker;
 using static SharpAlert.ProgramWorker.NotificationWorker;
 
@@ -47,12 +51,12 @@ namespace SharpAlert.ProgramWorker
             }
         }
 
-        public static FeedCapture feed;
-        public static WeatherAtomCapture atomfeed;
-        public static DirectFeedCapture directfeed;
-        public static IDAPFeedCapture idapfeed;
-        //public static CacheCapture cache;
-        public static DataProcessor dataproc;
+        public static FeedCapture? feed;
+        public static WeatherAtomCapture? atomfeed;
+        public static DirectFeedCapture? directfeed;
+        public static IDAPFeedCapture? idapfeed;
+        //public static CacheCapture? cache;
+        public static DataProcessor? dataproc;
         //public static TeleIdleForm idle;
         //public static StatusForm status;
         public static bool CloseIdleWindow = false;
@@ -60,7 +64,7 @@ namespace SharpAlert.ProgramWorker
         public static object IdleWindowLock = new();
         public static object StatusWindowLock = new();
         public static object AudioOutputLock = new();
-        public static HyperServer hyper;
+        public static HyperServer? hyper;
         public static object AlertValuesLock = new();
         private static bool _AlertDisplaying = false;
         public static DateTime AlertDisplayingBeginTime { get; private set; } = DateTime.MinValue;
@@ -84,8 +88,21 @@ namespace SharpAlert.ProgramWorker
         public static List<SharpDataItem> SharpDataHistory { get; } = [];
         public static List<string> SharpDataRelayedNamesHistory { get; } = [];
         
-        public static readonly string AssemblyFile = Environment.ProcessPath;
-        public static readonly string AssemblyDirectory = Path.GetDirectoryName(AssemblyFile);
+        public static string AssemblyFile
+        {
+            get
+            {
+                return Environment.ProcessPath ?? string.Empty;
+            }
+        }
+
+        public static string AssemblyDirectory
+        {
+            get
+            {
+                return Path.GetDirectoryName(Environment.ProcessPath) ?? string.Empty;
+            }
+        }
 
         public static readonly string CustomURLsFileName = "feeds.txt";
 
@@ -231,7 +248,7 @@ namespace SharpAlert.ProgramWorker
 
         public static bool IsAdministrator => new WindowsPrincipal(WindowsIdentity.GetCurrent()).IsInRole(WindowsBuiltInRole.Administrator);
         public static bool ServiceMode { get; private set; } = false;
-        public static List<string> Args { get; private set; } = null;
+        public static List<string> Args { get; private set; } = [];
         // --alt-config-1/2/3/4
 
         //private static bool Secret = false;
@@ -285,7 +302,7 @@ namespace SharpAlert.ProgramWorker
         } = 0;
 
         public static readonly DateTimeOffset DateUpTime = DateTimeOffset.UtcNow;
-        public static Awoken AwokenNotifier;
+        public static Awoken? AwokenNotifier = null;
 
         /// <summary>
         /// Starts everything.
@@ -298,7 +315,8 @@ namespace SharpAlert.ProgramWorker
 
             AppDomain.CurrentDomain.UnhandledException += (s, e) =>
             {
-                Exception ex = e.ExceptionObject as Exception;
+                Exception ex = new("Unknown exception.");
+                if (e.ExceptionObject is Exception exc) ex = exc;
 
                 if (MessageBox.Show($"{ex.Message}\r\n{ex.StackTrace}" +
                     $"\r\n\r\n" +
@@ -336,106 +354,13 @@ namespace SharpAlert.ProgramWorker
 
             Language.Load(QuickSettings.Instance.LanguageCode);
 
-            //ThreadDrool.StartAndForget(() =>
-            //{
-            //    AlertInfo info1 = new()
-            //    {
-            //        AlertSource = "NAADS Primary",
-            //        AlertURL = "https://google.com",
-            //        AlertID = "ABCD123456-ABCDABCDABCDABCD",
-            //        AlertIntroText = "1. Flash Flood Warning. For the following, Bayamon Municipio, Puerto Rico; Catano Municipio, Puerto Rico; Guaynabo Municipio, Puerto Rico; San Juan Municipio, Puerto Rico; Trujillo Alto Municipio, Puerto Rico. This alert begins 01:43 PM EST, September 22, 2025, and ends at 03:45 PM EST, September 22, 2025. Issued by NWS San Juan PR. Sourced from FEMA IPAWS (WEA). \r\n\r\n2. Flash Flood Warning. For the following, Bayamon Municipio, Puerto Rico; Catano Municipio, Puerto Rico; Guaynabo Municipio, Puerto Rico; San Juan Municipio, Puerto Rico; Trujillo Alto Municipio, Puerto Rico. This alert begins 01:43 PM EST, September 22, 2025, and ends at 03:45 PM EST, September 22, 2025. Issued by NWS San Juan PR. Sourced from FEMA IPAWS (WEA).",
-            //        AlertBodyText = "1. NWS: FLASH FLOOD WARNING this area til 3:12:45 AM AST. Avoid flooded areas. National Weather Service: A FLASH FLOOD WARNING is in effect for this area until 3:12:45 AM AST. This is a dangerous and life-threatening situation. Do not attempt to travel unless you are fleeing an area subject to flooding or under an evacuation order.\r\n\r\n2. SNM: AVISO DE INUNDACIONES REPENTINAS hasta 3:12:45 AM AST. Evite areas inundadas. Servicio Nacional de Meteorologia: AVISO DE INUNDACIONES REPENTINAS en efecto para esta area hasta las 3:12:45 AM AST. Esta es una situacion peligrosa y amenaza la vida. No intente viajar a menos que sea para abandonar un area propensa a inundaciones o bajo una orden de desalojo.",
-            //        AlertMessageType = "alert",
-            //        AlertSeverity = "severe",
-            //        AlertSentDate = $"{DateTime.UtcNow:s}",
-            //        AlertExpiryDate = $"{DateTime.UtcNow.AddSeconds(15):s}",
-            //        AlertFriendlyLocations =
-            //        [
-            //            "Bayamon Municipio, Puerto Rico;",
-            //            "Catano Municipio, Puerto Rico;",
-            //            "Guaynabo Municipio, Puerto Rico;",
-            //            "San Juan Municipio, Puerto Rico;",
-            //            "Trujillo Alto Municipio, Puerto Rico"
-            //        ],
-            //        AlertAudioURL = "https://bunnytub.com/media/AMERICA.mp3",
-            //        AlertImageURL = "https://bunnytub.com/media/uranium.png"
-            //    };
-                
-            //    AlertInfo info2 = new()
-            //    {
-            //        AlertSource = "SASMEX",
-            //        AlertURL = "https://google.com",
-            //        AlertID = "ABCD123456-ABCDABCDABCDABCD",
-            //        AlertIntroText = "1. EARTHQUAKE. For the following, Bayamon Municipio, Puerto Rico; Catano Municipio, Puerto Rico; Guaynabo Municipio, Puerto Rico; San Juan Municipio, Puerto Rico; Trujillo Alto Municipio, Puerto Rico. This alert begins 01:43 PM EST, September 22, 2025, and ends at 03:45 PM EST, September 22, 2025. Issued by NWS San Juan PR. Sourced from FEMA IPAWS (WEA). \r\n\r\n2. Flash Flood Warning. For the following, Bayamon Municipio, Puerto Rico; Catano Municipio, Puerto Rico; Guaynabo Municipio, Puerto Rico; San Juan Municipio, Puerto Rico; Trujillo Alto Municipio, Puerto Rico. This alert begins 01:43 PM EST, September 22, 2025, and ends at 03:45 PM EST, September 22, 2025. Issued by NWS San Juan PR. Sourced from FEMA IPAWS (WEA).",
-            //        AlertBodyText = "1. NWS: EARTHQUAKE WARNING this area til 3:12:45 AM AST. Avoid flooded areas. National Weather Service: A FLASH FLOOD WARNING is in effect for this area until 3:12:45 AM AST. This is a dangerous and life-threatening situation. Do not attempt to travel unless you are fleeing an area subject to flooding or under an evacuation order.\r\n\r\n2. SNM: AVISO DE INUNDACIONES REPENTINAS hasta 3:12:45 AM AST. Evite areas inundadas. Servicio Nacional de Meteorologia: AVISO DE INUNDACIONES REPENTINAS en efecto para esta area hasta las 3:12:45 AM AST. Esta es una situacion peligrosa y amenaza la vida. No intente viajar a menos que sea para abandonar un area propensa a inundaciones o bajo una orden de desalojo.",
-            //        AlertMessageType = "update",
-            //        AlertSeverity = "minor",
-            //        AlertSentDate = $"{DateTime.UtcNow:s}",
-            //        AlertExpiryDate = $"{DateTime.UtcNow.AddSeconds(15):s}",
-            //        AlertFriendlyLocations =
-            //        [
-            //            "Bayamon Municipio, Puerto Rico;",
-            //            "Catano Municipio, Puerto Rico;",
-            //            "Guaynabo Municipio, Puerto Rico;",
-            //            "San Juan Municipio, Puerto Rico;",
-            //            "Trujillo Alto Municipio, Puerto Rico"
-            //        ],
-            //        AlertAudioURL = "https://bunnytub.com/media/AMERICA.mp3",
-            //        AlertImageURL = "https://bunnytub.com/media/uranium.png"
-            //    };
-
-            //    while (true)
-            //    {
-            //        Thread.Sleep(5000);
-            //        DashboardManager.AddNewAlertToDashboard(info1);
-            //        Thread.Sleep(5000);
-            //        DashboardManager.AddNewAlertToDashboard(info2);
-            //    }
-            //});
-
-            //return;
-
-            //ThreadDrool.StartAndForget(() => { while (true) new AlertTableForm().ShowDialog(); });
-
-            // Registry code for detecting .NET Framework is not even needed anymore, because .NET detects itself without any real work
-
             if (Args.Count >= 2)
             {
-                //if (Args.Contains("--uninstalling"))
-                //{
-                //    int currentId = Environment.ProcessId;
-
-                //    foreach (var proc in Process.GetProcesses())
-                //    {
-                //        try
-                //        {
-                //            if (proc.Id == currentId)
-                //                continue;
-
-                //            string procPath = proc.MainModule.FileName;
-                //            if (string.Equals(procPath, AssemblyFile, StringComparison.OrdinalIgnoreCase))
-                //            {
-                //                proc.Kill();
-                //            }
-                //        }
-                //        catch
-                //        {
-                //        }
-                //    }
-
-                //    UninstallingForm uf = new();
-                //    uf.ShowDialog();
-                //    uf.Dispose();
-
-                //    Environment.Exit(0);
-                //    return;
-                //}
-
                 if (Args.Contains("--wait-until-parent-closes"))
                 {
                     try
                     {
-                        GetParentProcess().WaitForExit(10000);
+                        _ = GetParentProcess()?.WaitForExit(10000);
                     }
                     catch (Exception ex)
                     {
@@ -517,9 +442,14 @@ namespace SharpAlert.ProgramWorker
                                         {
                                             foreach (Process proc in Process.GetProcessesByName(Path.GetFileNameWithoutExtension(AssemblyFile)))
                                             {
-                                                if (proc.MainModule.FileName.Equals(AssemblyFile, StringComparison.InvariantCultureIgnoreCase))
+                                                ProcessModule? procMod = proc.MainModule;
+                                                
+                                                if (procMod != null)
                                                 {
-                                                    if (proc != curProc) proc.Kill();
+                                                    if (procMod.FileName.Equals(AssemblyFile, StringComparison.InvariantCultureIgnoreCase))
+                                                    {
+                                                        if (proc != curProc) proc.Kill();
+                                                    }
                                                 }
                                             }
                                         }
@@ -527,25 +457,38 @@ namespace SharpAlert.ProgramWorker
                                         {
                                         }
                                     }
+
                                     Environment.Exit(0);
+                                    return;
                                 }
+
+                                //VelopackApp.Build().Run();
                             }
                         }
 
-                        new Thread(() => ServiceRun()).Start();
+                        new Thread(ServiceRun).Start();
 
                         if (!ServiceMode)
                         {
                             try
                             {
-                                Process parentProc = GetParentProcess();
+                                Process? parentProc = GetParentProcess();
 
-                                if (parentProc.MainModule.FileName.Equals(AssemblyFile, StringComparison.InvariantCultureIgnoreCase))
+                                if (parentProc != null)
                                 {
-                                    parentProc.WaitForExit();
-                                    QuickSettings.Instance.Save();
-                                    SafeExit();
+                                    ProcessModule? mainMod = parentProc.MainModule;
+
+                                    if (mainMod != null)
+                                    {
+                                        if (mainMod.FileName.Equals(AssemblyFile, StringComparison.InvariantCultureIgnoreCase))
+                                        {
+                                            parentProc.WaitForExit();
+                                            QuickSettings.Instance.Save();
+                                            SafeExit();
+                                        }
+                                    }
                                 }
+
                             }
                             catch (Exception)
                             {
@@ -692,7 +635,7 @@ namespace SharpAlert.ProgramWorker
             }
         }
 
-        private static Process GetParentProcess()
+        private static Process? GetParentProcess()
         {
             int iParentPid = 0;
             int iCurrentPid = Environment.ProcessId;
@@ -722,6 +665,43 @@ namespace SharpAlert.ProgramWorker
                 return Process.GetProcessById(iParentPid);
             else
                 return null;
+        }
+
+        private static readonly UpdateManager UpdateMgr = new(new GithubSource("https://github.com/BunnyTub/SharpAlert", string.Empty, false));
+
+        private static bool NotInstalledMessageShown = false;
+
+        internal static async Task<UpdateInfo?> CheckUpdate()
+        {
+            try
+            {
+                UpdateInfo? info = await UpdateMgr.CheckForUpdatesAsync();
+                return info;
+            }
+            catch (NotInstalledException)
+            {
+                if (!NotInstalledMessageShown)
+                {
+                    NotInstalledMessageShown = true;
+                    MessageBox.Show("SharpAlert doesn't seem to be installed. Updates won't be available. Check https://bunnytub.com/SharpAlert for up-to-date downloads.", "SharpAlert - Update", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                }
+
+                return null;
+            }
+        }
+
+        internal static int UpdateProgress = -1;
+
+        internal static async Task DoUpdate(UpdateInfo info)
+        {
+            await UpdateMgr.DownloadUpdatesAsync(info, (int progress) =>
+            {
+                UpdateProgress = progress;
+            });
+
+            QuickSettings.Instance.Save();
+
+            UpdateMgr.ApplyUpdatesAndRestart(info, ["-fr"]);
         }
 
         private static readonly uint TH32CS_SNAPPROCESS = 2;
@@ -851,12 +831,12 @@ namespace SharpAlert.ProgramWorker
                     {
                         SharpDataHistory.Clear();
                         SharpDataRelayedNamesHistory.Clear();
-                        AwokenNotifier.ShowBasicText("The alert history was destroyed.");
+                        AwokenNotifier?.ShowBasicText("The alert history was destroyed.");
                         return true;
                     }
                     else
                     {
-                        AwokenNotifier.ShowBasicText("The alert history is already empty!");
+                        AwokenNotifier?.ShowBasicText("The alert history is already empty!");
                         return false;
                     }
                 }
