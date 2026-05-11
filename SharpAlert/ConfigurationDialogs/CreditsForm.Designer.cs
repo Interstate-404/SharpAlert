@@ -36,22 +36,17 @@
             WindowShake = new System.Windows.Forms.Timer(components);
             InterstateLink = new System.Windows.Forms.LinkLabel();
             ShowLibrariesButton = new System.Windows.Forms.Button();
-            ConnorLink = new System.Windows.Forms.LinkLabel();
-            Anon1Link = new System.Windows.Forms.LinkLabel();
-            KwaziizLink = new System.Windows.Forms.LinkLabel();
             LogoAnimation = new System.Windows.Forms.Timer(components);
             CharactersPicture = new System.Windows.Forms.PictureBox();
             Bouncer = new System.Windows.Forms.Timer(components);
-            label1 = new System.Windows.Forms.Label();
+            ConnorLink = new System.Windows.Forms.LinkLabel();
+            Anon1Link = new System.Windows.Forms.LinkLabel();
+            KwaziizLink = new System.Windows.Forms.LinkLabel();
             label2 = new System.Windows.Forms.Label();
-            panel1 = new System.Windows.Forms.Panel();
-            ScrollText5 = new SharpAlert.WinFormsControls.ToolboxStuff.MarqueeLabel();
-            ScrollText4 = new SharpAlert.WinFormsControls.ToolboxStuff.MarqueeLabel();
-            ScrollText3 = new SharpAlert.WinFormsControls.ToolboxStuff.MarqueeLabel();
-            ScrollText2 = new SharpAlert.WinFormsControls.ToolboxStuff.MarqueeLabel();
-            ScrollText1 = new SharpAlert.WinFormsControls.ToolboxStuff.MarqueeLabel();
+            label1 = new System.Windows.Forms.Label();
+            label3 = new System.Windows.Forms.Label();
+            linkLabel1 = new System.Windows.Forms.LinkLabel();
             ((System.ComponentModel.ISupportInitialize)CharactersPicture).BeginInit();
-            panel1.SuspendLayout();
             SuspendLayout();
             // 
             // label5
@@ -62,9 +57,10 @@
             label5.Location = new System.Drawing.Point(9, 9);
             label5.Margin = new System.Windows.Forms.Padding(0);
             label5.Name = "label5";
-            label5.Size = new System.Drawing.Size(576, 21);
+            label5.Size = new System.Drawing.Size(576, 42);
             label5.TabIndex = 0;
-            label5.Text = "SharpAlert is a project created by BunnyTub, written and built in C# (.NET).";
+            label5.Text = "SharpAlert is a project created by BunnyTub, written and built in C# (.NET).\r\nThis fork was made by Interstate 404 // Sevyn.";
+            label5.Click += label5_Click;
             label5.DoubleClick += label5_DoubleClick;
             // 
             // BoxedApplePieLink
@@ -77,7 +73,7 @@
             BoxedApplePieLink.Location = new System.Drawing.Point(9, 83);
             BoxedApplePieLink.Margin = new System.Windows.Forms.Padding(0, 0, 0, 3);
             BoxedApplePieLink.Name = "BoxedApplePieLink";
-            BoxedApplePieLink.Size = new System.Drawing.Size(199, 15);
+            BoxedApplePieLink.Size = new System.Drawing.Size(198, 15);
             BoxedApplePieLink.TabIndex = 2;
             BoxedApplePieLink.TabStop = true;
             BoxedApplePieLink.Text = "BoxedApplePie (Other OC drawings)";
@@ -126,7 +122,7 @@
             ShowLibrariesButton.Anchor = System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right;
             ShowLibrariesButton.BackColor = System.Drawing.Color.FromArgb(60, 60, 60);
             ShowLibrariesButton.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
-            ShowLibrariesButton.Location = new System.Drawing.Point(10, 37);
+            ShowLibrariesButton.Location = new System.Drawing.Point(727, 41);
             ShowLibrariesButton.Margin = new System.Windows.Forms.Padding(3, 5, 3, 5);
             ShowLibrariesButton.Name = "ShowLibrariesButton";
             ShowLibrariesButton.Size = new System.Drawing.Size(116, 23);
@@ -134,6 +130,31 @@
             ShowLibrariesButton.Text = "Show Libraries";
             ShowLibrariesButton.UseVisualStyleBackColor = false;
             ShowLibrariesButton.Click += ShowLibrariesButton_Click;
+            // 
+            // LogoAnimation
+            // 
+            LogoAnimation.Enabled = true;
+            LogoAnimation.Interval = 15;
+            LogoAnimation.Tick += LogoAnimation_Tick;
+            // 
+            // CharactersPicture
+            // 
+            CharactersPicture.Dock = System.Windows.Forms.DockStyle.Top;
+            CharactersPicture.Image = Properties.Resources.Characters2;
+            CharactersPicture.Location = new System.Drawing.Point(0, 0);
+            CharactersPicture.Name = "CharactersPicture";
+            CharactersPicture.Size = new System.Drawing.Size(855, 375);
+            CharactersPicture.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
+            CharactersPicture.TabIndex = 110;
+            CharactersPicture.TabStop = false;
+            CharactersPicture.Click += CharactersPicture_Click;
+            CharactersPicture.MouseEnter += CharactersPicture_MouseEnter;
+            CharactersPicture.MouseLeave += CharactersPicture_MouseLeave;
+            // 
+            // Bouncer
+            // 
+            Bouncer.Interval = 250;
+            Bouncer.Tick += Bouncer_Tick;
             // 
             // ConnorLink
             // 
@@ -177,150 +198,73 @@
             KwaziizLink.Location = new System.Drawing.Point(9, 155);
             KwaziizLink.Margin = new System.Windows.Forms.Padding(0, 0, 0, 3);
             KwaziizLink.Name = "KwaziizLink";
-            KwaziizLink.Size = new System.Drawing.Size(200, 15);
+            KwaziizLink.Size = new System.Drawing.Size(201, 15);
             KwaziizLink.TabIndex = 6;
             KwaziizLink.TabStop = true;
             KwaziizLink.Text = "Kwaziiz (BunnyTub's OC drawn here)";
             KwaziizLink.LinkClicked += KwaziizLink_LinkClicked;
-            // 
-            // LogoAnimation
-            // 
-            LogoAnimation.Enabled = true;
-            LogoAnimation.Interval = 15;
-            LogoAnimation.Tick += LogoAnimation_Tick;
-            // 
-            // CharactersPicture
-            // 
-            CharactersPicture.Dock = System.Windows.Forms.DockStyle.Top;
-            CharactersPicture.Image = Properties.Resources.Characters;
-            CharactersPicture.Location = new System.Drawing.Point(0, 0);
-            CharactersPicture.Name = "CharactersPicture";
-            CharactersPicture.Size = new System.Drawing.Size(620, 375);
-            CharactersPicture.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
-            CharactersPicture.TabIndex = 110;
-            CharactersPicture.TabStop = false;
-            CharactersPicture.MouseEnter += CharactersPicture_MouseEnter;
-            CharactersPicture.MouseLeave += CharactersPicture_MouseLeave;
-            // 
-            // Bouncer
-            // 
-            Bouncer.Interval = 250;
-            Bouncer.Tick += Bouncer_Tick;
-            // 
-            // label1
-            // 
-            label1.AutoSize = true;
-            label1.BackColor = System.Drawing.Color.Transparent;
-            label1.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Bold);
-            label1.Location = new System.Drawing.Point(254, 91);
-            label1.Margin = new System.Windows.Forms.Padding(0);
-            label1.Name = "label1";
-            label1.Size = new System.Drawing.Size(74, 19);
-            label1.TabIndex = 111;
-            label1.Text = "BunnyTub";
             // 
             // label2
             // 
             label2.AutoSize = true;
             label2.BackColor = System.Drawing.Color.Transparent;
             label2.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Bold);
-            label2.Location = new System.Drawing.Point(456, 91);
+            label2.Location = new System.Drawing.Point(610, 101);
             label2.Margin = new System.Windows.Forms.Padding(0);
             label2.Name = "label2";
             label2.Size = new System.Drawing.Size(58, 19);
             label2.TabIndex = 112;
             label2.Text = "Connor";
             // 
-            // panel1
+            // label1
             // 
-            panel1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            panel1.Controls.Add(ScrollText5);
-            panel1.Controls.Add(ScrollText4);
-            panel1.Controls.Add(ScrollText3);
-            panel1.Controls.Add(ScrollText2);
-            panel1.Controls.Add(ScrollText1);
-            panel1.Location = new System.Drawing.Point(9, 176);
-            panel1.Name = "panel1";
-            panel1.Size = new System.Drawing.Size(244, 162);
-            panel1.TabIndex = 113;
+            label1.AutoSize = true;
+            label1.BackColor = System.Drawing.Color.Transparent;
+            label1.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Bold);
+            label1.Location = new System.Drawing.Point(408, 101);
+            label1.Margin = new System.Windows.Forms.Padding(0);
+            label1.Name = "label1";
+            label1.Size = new System.Drawing.Size(74, 19);
+            label1.TabIndex = 111;
+            label1.Text = "BunnyTub";
             // 
-            // ScrollText5
+            // label3
             // 
-            ScrollText5.Dock = System.Windows.Forms.DockStyle.Top;
-            ScrollText5.Font = new System.Drawing.Font("Arial", 14F, System.Drawing.FontStyle.Bold);
-            ScrollText5.Location = new System.Drawing.Point(0, 128);
-            ScrollText5.Name = "ScrollText5";
-            ScrollText5.ScrollInterval = 22D;
-            ScrollText5.ScrollSpeed = 1.5F;
-            ScrollText5.Size = new System.Drawing.Size(242, 32);
-            ScrollText5.TabIndex = 20;
-            ScrollText5.Text = "Thank you Logic44 of WENF-FM for using SharpAlert! \"Proud early adopter since v9.0, serving Sand Ridge since 2025.\" - Logic44";
-            ScrollText5.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            ScrollText5.Click += ScrollText5_Click;
+            label3.AutoSize = true;
+            label3.BackColor = System.Drawing.Color.Transparent;
+            label3.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Bold);
+            label3.Location = new System.Drawing.Point(287, 115);
+            label3.Margin = new System.Windows.Forms.Padding(0);
+            label3.Name = "label3";
+            label3.Size = new System.Drawing.Size(100, 19);
+            label3.TabIndex = 114;
+            label3.Text = "Interstate 404";
+            label3.Click += label3_Click;
             // 
-            // ScrollText4
+            // linkLabel1
             // 
-            ScrollText4.Dock = System.Windows.Forms.DockStyle.Top;
-            ScrollText4.Font = new System.Drawing.Font("Arial", 14F, System.Drawing.FontStyle.Bold);
-            ScrollText4.Location = new System.Drawing.Point(0, 96);
-            ScrollText4.Name = "ScrollText4";
-            ScrollText4.ScrollInterval = 22D;
-            ScrollText4.ScrollSpeed = 2F;
-            ScrollText4.Size = new System.Drawing.Size(242, 32);
-            ScrollText4.TabIndex = 19;
-            ScrollText4.Text = "Thank you Interstate404 for using and contributing to SharpAlert! \"I like SharpAlert because I tortured myself into making the marine locations, you're welcome.\" - Interstate404";
-            ScrollText4.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            ScrollText4.Click += ScrollText4_Click;
-            // 
-            // ScrollText3
-            // 
-            ScrollText3.Dock = System.Windows.Forms.DockStyle.Top;
-            ScrollText3.Font = new System.Drawing.Font("Arial", 14F, System.Drawing.FontStyle.Bold);
-            ScrollText3.Location = new System.Drawing.Point(0, 64);
-            ScrollText3.Name = "ScrollText3";
-            ScrollText3.ScrollInterval = 22D;
-            ScrollText3.ScrollSpeed = 1.5F;
-            ScrollText3.Size = new System.Drawing.Size(242, 32);
-            ScrollText3.TabIndex = 18;
-            ScrollText3.Text = "Thank you MaybeConnor for using and contributing to SharpAlert! \"SharpAlert makes a great marriage counselor.\" - MaybeConnor";
-            ScrollText3.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            ScrollText3.Click += ScrollText3_Click;
-            // 
-            // ScrollText2
-            // 
-            ScrollText2.Dock = System.Windows.Forms.DockStyle.Top;
-            ScrollText2.Font = new System.Drawing.Font("Arial", 14F, System.Drawing.FontStyle.Bold);
-            ScrollText2.Location = new System.Drawing.Point(0, 32);
-            ScrollText2.Name = "ScrollText2";
-            ScrollText2.ScrollInterval = 22D;
-            ScrollText2.ScrollSpeed = 2F;
-            ScrollText2.Size = new System.Drawing.Size(242, 32);
-            ScrollText2.TabIndex = 17;
-            ScrollText2.Text = "Thank you JavaMR for using SharpAlert! \"It's useful for living in Tornado Alley.\" - JavaMR";
-            ScrollText2.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            ScrollText2.Click += ScrollText2_Click;
-            // 
-            // ScrollText1
-            // 
-            ScrollText1.Dock = System.Windows.Forms.DockStyle.Top;
-            ScrollText1.Font = new System.Drawing.Font("Arial", 14F, System.Drawing.FontStyle.Bold);
-            ScrollText1.Location = new System.Drawing.Point(0, 0);
-            ScrollText1.Name = "ScrollText1";
-            ScrollText1.ScrollInterval = 22D;
-            ScrollText1.ScrollSpeed = 1.5F;
-            ScrollText1.Size = new System.Drawing.Size(242, 32);
-            ScrollText1.TabIndex = 16;
-            ScrollText1.Text = "Thank you AllieW for using SharpAlert! \"Decent desktop app for CAP alerting that I keep recommending to people!\" - AllieW";
-            ScrollText1.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            ScrollText1.Click += ScrollText1_Click;
+            linkLabel1.Anchor = System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left;
+            linkLabel1.AutoSize = true;
+            linkLabel1.BackColor = System.Drawing.Color.Transparent;
+            linkLabel1.LinkBehavior = System.Windows.Forms.LinkBehavior.HoverUnderline;
+            linkLabel1.LinkColor = System.Drawing.Color.DeepSkyBlue;
+            linkLabel1.Location = new System.Drawing.Point(9, 173);
+            linkLabel1.Margin = new System.Windows.Forms.Padding(0, 0, 0, 3);
+            linkLabel1.Name = "linkLabel1";
+            linkLabel1.Size = new System.Drawing.Size(249, 15);
+            linkLabel1.TabIndex = 115;
+            linkLabel1.TabStop = true;
+            linkLabel1.Text = "SPCHalethorpe09 (Interstate's OC drawn here)";
+            linkLabel1.LinkClicked += linkLabel1_LinkClicked;
             // 
             // CreditsForm
             // 
             AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
             BackColor = System.Drawing.Color.FromArgb(20, 20, 20);
             BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
-            ClientSize = new System.Drawing.Size(620, 350);
-            Controls.Add(panel1);
+            ClientSize = new System.Drawing.Size(855, 350);
+            Controls.Add(linkLabel1);
+            Controls.Add(label3);
             Controls.Add(label2);
             Controls.Add(label1);
             Controls.Add(KwaziizLink);
@@ -346,7 +290,6 @@
             HelpButtonClicked += CreditsForm_HelpButtonClicked;
             Load += CreditsForm_Load;
             ((System.ComponentModel.ISupportInitialize)CharactersPicture).EndInit();
-            panel1.ResumeLayout(false);
             ResumeLayout(false);
             PerformLayout();
 
@@ -360,19 +303,15 @@
         private System.Windows.Forms.Timer WindowShake;
         private System.Windows.Forms.LinkLabel InterstateLink;
         private System.Windows.Forms.Button ShowLibrariesButton;
-        private System.Windows.Forms.LinkLabel ConnorLink;
-        private System.Windows.Forms.LinkLabel Anon1Link;
-        private System.Windows.Forms.LinkLabel KwaziizLink;
         private System.Windows.Forms.Timer LogoAnimation;
         private System.Windows.Forms.PictureBox CharactersPicture;
         private System.Windows.Forms.Timer Bouncer;
-        private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.LinkLabel ConnorLink;
+        private System.Windows.Forms.LinkLabel Anon1Link;
+        private System.Windows.Forms.LinkLabel KwaziizLink;
         private System.Windows.Forms.Label label2;
-        private System.Windows.Forms.Panel panel1;
-        private WinFormsControls.ToolboxStuff.MarqueeLabel ScrollText1;
-        private WinFormsControls.ToolboxStuff.MarqueeLabel ScrollText2;
-        private WinFormsControls.ToolboxStuff.MarqueeLabel ScrollText5;
-        private WinFormsControls.ToolboxStuff.MarqueeLabel ScrollText4;
-        private WinFormsControls.ToolboxStuff.MarqueeLabel ScrollText3;
+        private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.Label label3;
+        private System.Windows.Forms.LinkLabel linkLabel1;
     }
 }
