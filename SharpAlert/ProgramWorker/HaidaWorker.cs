@@ -1,5 +1,4 @@
-﻿using AwokenNotifications;
-using DiscordRPC;
+﻿using DiscordRPC;
 using Microsoft.Win32;
 using SharpAlert.AlertComponents;
 using SharpAlert.ConfigurationDialogs;
@@ -874,7 +873,7 @@ namespace SharpAlert.ProgramWorker
 
             QuickSettings.Instance.Save();
 
-            if (QuickSettings.Instance.PlayChimeOnRun) AwokenNotifier.ShowBasicText("SharpAlert (Interstate 404 // Sevyn Fork) has started.");
+            if (QuickSettings.Instance.PlayChimeOnRun) AwokenNotifier?.ShowText(new("SharpAlert (Interstate 404 // Sevyn Fork) has started.", Color.White, Color.Green, Color.Black));
         }
 
         //[DllImport("gdi32.dll", CharSet = CharSet.Auto, SetLastError = true, ExactSpelling = true)]
