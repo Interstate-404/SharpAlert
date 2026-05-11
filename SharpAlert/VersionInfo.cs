@@ -7,7 +7,7 @@ namespace SharpAlert
     {
         // last build was 1891 before the upgrade to .NET 8
         public static int MajorVersion { get; } = 2;
-        public static int MinorVersion { get; } = 0;
+        public static int MinorVersion { get; } = 1;
         public static bool IsBetaVersion { get; } = false;
         public static string ShortFriendlyVersion
         {
@@ -32,12 +32,12 @@ namespace SharpAlert
                 if (!IsBetaVersion)
                 {
                     //return $"SharpAlert | Release v{MajorVersion}.{MinorVersion} (Build {BuildNumber}) | Built on {BuiltOnDate} {BuiltOnTime} ({BuiltTimeZone})";
-                    return $"SharpAlert (Interstate 404 // Sevyn Fork) | Release v{MajorVersion}.{MinorVersion} | Safety is never a non-priority";
+                    return $"SAlert (Sevyn Fork) | Release v{MajorVersion}.{MinorVersion} | Safety is never a non-priority";
                 }
                 else
                 {
                     //return $"SharpAlert | Beta v{MajorVersion}.{MinorVersion}-b (Build {BuildNumber}) | Built on {BuiltOnDate} {BuiltOnTime} ({BuiltTimeZone})";
-                    return $"SharpAlert (Interstate 404 // Sevyn Fork) | Beta v{MajorVersion}.{MinorVersion}-b | Safety is never a non-priority";
+                    return $"SAlert (Sevyn Fork) | Beta v{MajorVersion}.{MinorVersion}-b | Safety is never a non-priority";
                 }
             }
         }

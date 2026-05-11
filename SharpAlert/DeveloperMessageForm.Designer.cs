@@ -101,7 +101,7 @@
             LogOutput.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
             LogOutput.Size = new System.Drawing.Size(501, 189);
             LogOutput.TabIndex = 15;
-            LogOutput.Text = resources.GetString("LogOutput.Text");
+            LogOutput.Text = "Marine locations, particularly those out 20 to 60 nautical miles, have been added.\r\nTTS now reads \"nm\" & \"NM\" as \"nautical miles.\"\r\nInternally reordered locations, you should see no difference.\r\n";
             LogOutput.TextChanged += LogOutput_TextChanged;
             // 
             // WindowShake

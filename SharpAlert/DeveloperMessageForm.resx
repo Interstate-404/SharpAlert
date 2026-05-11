@@ -117,19 +117,6 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="LogOutput.Text" xml:space="preserve">
-    <value>This is the first public release of the Interstate 404 // Sevyn fork of SharpAlert.
-
-Forked from BunnyTub's SharpAlert v18.0.
-
-Visible changes from that version:
-TTS no longer stops in between line breaks and no longer reads asterisks.
-Changed "About SharpAlert" to reflect the fact this is MY fork.
-
-Issues:
-I'm aware that SharpAlert tells you to update to v18.0, which is Tubby's SharpAlert's current version, please ignore and disable automatic alerts at this time until I can get that fixed. You will need to reinstall once there is another update. The .exe is just the standalone version.
-</value>
-  </data>
   <metadata name="WindowShake.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
     <value>17, 17</value>
   </metadata>
