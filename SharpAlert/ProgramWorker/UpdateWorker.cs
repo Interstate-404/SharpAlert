@@ -13,7 +13,7 @@ namespace SharpAlert.ProgramWorker
 {
     public static class UpdateWorker
     {
-        private static string IdentityURL = "https://bunnytub.com/SharpAlert";
+        private static string IdentityURL = "https://interstate-404.github.io/SharpAlert";
         public static string CurrentStatus { get; set; } = "Please wait...";
 
         private static HttpClient UpdateClient_ = null;

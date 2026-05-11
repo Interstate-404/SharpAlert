@@ -55,11 +55,9 @@ namespace SharpAlert
             }
         }
 
-        private void EnableNewFeatureButton_Click(object sender, EventArgs e)
+        private void LogOutput_TextChanged(object sender, EventArgs e)
         {
-            EnableNewFeatureButton.Enabled = false;
-            QuickSettings.Instance.UseSAMEAsSeverityWhenPossible = true;
-            QuickSettings.Instance.Save();
+
         }
     }
 }
