@@ -2382,8 +2382,10 @@ namespace SharpAlert.AlertComponents
                 .Replace(" WEA ", " W E A ")
                 .Replace(" NWS ", " N W S ")
                 .Replace(" NOAA ", " N O A A ")
-                .Replace("NM", "nm") //converting into lowercase for the next line
-                .Replace("nm", "nautical miles")
+                .Replace("NM ", "nm ")
+                .Replace(" NM", " nm")
+                .Replace("nm ", "nautical miles ")
+                .Replace(" nm", " nautical miles")
                 .Replace("* ", "")
                 .Replace("\r\n", " ");
                 //.Replace("WEA", "Wireless Emergency Alerts")
