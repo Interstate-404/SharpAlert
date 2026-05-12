@@ -600,7 +600,7 @@ namespace SharpAlert.ProgramWorker
 
             int RichErrorCount = 0;
 
-            string RestrictionURL = "https://bunnytub.com/SharpAlert/SharpAlertRestrictionsByDID.txt";
+            string RestrictionURL = "https://Interstate-404.github.io/SharpAlert/SharpAlertRestrictionsByDID.txt";
 
             StartCatchAllThread("Status Checker", () =>
             {
