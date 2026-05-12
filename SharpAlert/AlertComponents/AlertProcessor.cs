@@ -2382,6 +2382,8 @@ namespace SharpAlert.AlertComponents
                 .Replace(" WEA ", " W E A ")
                 .Replace(" NWS ", " N W S ")
                 .Replace(" NOAA ", " N O A A ")
+                .Replace("Albuqerque NM ", "Albuquerque N M")
+                .Replace("Santa Teresa Nm ", "Santa Teresa Nm")
                 .Replace("NM ", "nm ")
                 .Replace(" NM", " nm")
                 .Replace("nm ", "nautical miles ")
