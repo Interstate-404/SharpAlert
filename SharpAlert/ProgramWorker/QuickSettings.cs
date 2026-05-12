@@ -166,6 +166,9 @@ namespace SharpAlert.ProgramWorker
         public string StartToneLowLocation { get; set; } = string.Empty;
         public string EndToneLocation { get; set; } = string.Empty;
         public string ProgramVoice { get; set; } = string.Empty;
+        // SAPI rate/pitch: SAPI range is -10..+10 where 0 is default.
+        public int VoiceRate { get; set; } = 0;
+        public int VoicePitch { get; set; } = 0;
         public string ProgramAudioOutput { get; set; } = string.Empty;
         // "MakiVersion" is unused.
         //public string MakiVersion { get; set; } = string.Empty;
