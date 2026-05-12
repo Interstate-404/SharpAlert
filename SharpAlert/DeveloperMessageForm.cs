@@ -1,4 +1,4 @@
-﻿using SharpAlert.ProgramWorker;
+using SharpAlert.ProgramWorker;
 using System;
 using System.Drawing;
 using System.Windows.Forms;
