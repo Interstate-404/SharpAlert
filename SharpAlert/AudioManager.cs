@@ -86,6 +86,7 @@ namespace SharpAlert
                     else
                     {
                         HoldIt = NoEOM;
+                        SapiInterop.CancelLiveSynthesis();
 
                         List<WasapiOut> Outs = new List<WasapiOut>();
                         lock (Outputs)
@@ -146,6 +147,7 @@ namespace SharpAlert
                 {
                     HoldIt = true;
                     TTSHoldIt = true;
+                    SapiInterop.CancelLiveSynthesis();
 
                     List<WasapiOut> Outs = [];
                     lock (Outputs)
@@ -206,6 +208,7 @@ namespace SharpAlert
                 else
                 {
                     TTSHoldIt = true;
+                    SapiInterop.CancelLiveSynthesis();
 
                     List<WasapiOut> Outs = [];
                     lock (Outputs)
@@ -859,82 +862,23 @@ namespace SharpAlert
                 {
                     void playAudio()
                     {
-                        Console.WriteLine("[Audio Manager] Queued TTS audio.");
+                        Console.WriteLine("[Audio Manager] Queued TTS audio (live).");
                         try
                         {
-                            lock (AudioOutputLock)
+                            string voiceTokenId = null;
+                            if (!string.IsNullOrWhiteSpace(QuickSettings.Instance.ProgramVoice))
                             {
-                                //LockedQueue = true;
-                                Console.WriteLine("[Audio Manager] Audio queue locked.");
-                                using (MemoryStream stream = new MemoryStream())
-                                {
-                                    //bool UseMaki = false;
-                                    lock (engine)
-                                    {
-                                        if (!string.IsNullOrWhiteSpace(QuickSettings.Instance.ProgramVoice))
-                                        {
-                                            try
-                                            {
-                                                engine.SelectVoice(QuickSettings.Instance.ProgramVoice);
-                                            }
-                                            catch (Exception ex)
-                                            {
-                                                Console.WriteLine(ex.Message);
-                                                //UseMaki = true;
-                                            }
-                                        }
-
-                                        //bool MakiSuccess = false;
-
-                                        //if (UseMaki)
-                                        //{
-                                        //    //$"{AssemblyDirectory}\\Maki.exe", $"--voice-syntax-console \"{QuickSettings.Instance.ProgramVoice}|{tts.Replace("|", "_")}\""
-                                        //    ProcessStartInfo maki = new ProcessStartInfo
-                                        //    {
-                                        //        FileName = $"{AssemblyDirectory}\\Maki.exe",
-                                        //        Arguments = $"--voice-syntax-console \"{QuickSettings.Instance.ProgramVoice}|{tts.Replace("|", "_")}\"",
-                                        //        RedirectStandardOutput = true
-                                        //    };
-                                        //    Process MakiProcess = Process.Start(maki);
-                                        //    MakiProcess.WaitForExit();
-                                        //    if (MakiProcess.ExitCode == 0)
-                                        //    {
-                                        //        using (var MakiOut = MakiProcess.StandardOutput.BaseStream)
-                                        //        {
-                                        //            MakiOut.CopyTo(stream);
-                                        //        }
-                                        //    }
-
-                                        //    MakiSuccess = true;
-                                        //}
-
-                                        //if (!MakiSuccess)
-                                        {
-                                            engine.SetOutputToWaveStream(stream);
-                                            engine.Speak(tts);
-                                        }
-
-                                        using (var mf = new StreamMediaFoundationReader(stream))
-                                        {
-                                            WasapiOut AudioOutput = AudioDeviceSpecificWasapiOut();
-                                            float volume = QuickSettings.Instance.alertVolume / 10f;
-                                            AudioOutput.Init(mf);
-                                            for (int i = 0; i < AudioOutput.AudioStreamVolume.ChannelCount; i++) AudioOutput.AudioStreamVolume.SetChannelVolume(i, volume);
-                                            AudioOutput.Play();
-                                            TTSOutputs.Add(AudioOutput);
-                                            while (AudioOutput.PlaybackState == PlaybackState.Playing & !TTSHoldIt)
-                                            {
-                                                Thread.Sleep(50);
-                                            }
-                                            if (TTSHoldIt)
-                                            {
-                                                Console.WriteLine("[Audio Manager] Audio cleared from queue and unlocked.");
-                                                return;
-                                            }
-                                        }
-                                    }
-                                }
+                                var voice = SapiInterop.FindVoice(QuickSettings.Instance.ProgramVoice);
+                                if (voice != null)
+                                    voiceTokenId = voice.TokenId;
+                                else
+                                    Console.WriteLine($"[Audio Manager] Voice '{QuickSettings.Instance.ProgramVoice}' not found via SAPI interop.");
                             }
+
+                            int volume = QuickSettings.Instance.alertVolume * 10;
+                            SapiInterop.SynthesizeLive(tts, voiceTokenId, volume,
+                                QuickSettings.Instance.VoiceRate,
+                                QuickSettings.Instance.VoicePitch);
                         }
                         catch (Exception ex)
                         {
@@ -943,7 +887,7 @@ namespace SharpAlert
                                 "SharpAlert is having issues",
                                 ToolTipIcon.Warning);
                         }
-                        Console.WriteLine("[Audio Manager] Audio queue unlocked.");
+                        Console.WriteLine("[Audio Manager] TTS playback complete.");
                     }
                     if (wait) playAudio();
                     else ThreadDrool.StartAndForget(() => playAudio());

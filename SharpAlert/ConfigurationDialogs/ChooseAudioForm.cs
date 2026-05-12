@@ -235,8 +235,8 @@ namespace SharpAlert.ConfigurationDialogs
 
         private void TTSButton_Click(object sender, EventArgs e)
         {
-            Process.Start("C:\\Windows\\system32\\rundll32.exe", "shell32.dll,Control_RunDLL C:\\Windows\\system32\\speech\\speechux\\sapi.cpl");
-            return;
+            using var ttsForm = new TTSSettingsForm();
+            ttsForm.ShowDialog(this);
         }
 
         private void SupportedLinesButton_Click(object sender, EventArgs e)
