@@ -41,9 +41,10 @@
             ToolTipInformation = new System.Windows.Forms.ToolTip(components);
             AdvancedModeButton = new System.Windows.Forms.Button();
             SlidesBox = new System.Windows.Forms.PictureBox();
+            AlertManagerButton = new System.Windows.Forms.Button();
             Reloader = new System.Windows.Forms.Timer(components);
             WindowShake = new System.Windows.Forms.Timer(components);
-            AlertManagerButton = new System.Windows.Forms.Button();
+            CheckUserStatus = new System.Windows.Forms.Timer(components);
             ((System.ComponentModel.ISupportInitialize)SlidesBox).BeginInit();
             SuspendLayout();
             // 
@@ -217,18 +218,6 @@
             ToolTipInformation.SetToolTip(SlidesBox, "Click here to go to the website associated with this slide.");
             SlidesBox.Click += SlidesBox_Click;
             // 
-            // Reloader
-            // 
-            Reloader.Enabled = true;
-            Reloader.Interval = 60000;
-            Reloader.Tick += Reloader_Tick;
-            // 
-            // WindowShake
-            // 
-            WindowShake.Enabled = true;
-            WindowShake.Interval = 500;
-            WindowShake.Tick += WindowShake_Tick;
-            // 
             // AlertManagerButton
             // 
             AlertManagerButton.BackColor = System.Drawing.Color.FromArgb(60, 60, 60);
@@ -245,6 +234,24 @@
             AlertManagerButton.UseMnemonic = false;
             AlertManagerButton.UseVisualStyleBackColor = false;
             AlertManagerButton.Click += AlertManagerButton_Click;
+            // 
+            // Reloader
+            // 
+            Reloader.Enabled = true;
+            Reloader.Interval = 60000;
+            Reloader.Tick += Reloader_Tick;
+            // 
+            // WindowShake
+            // 
+            WindowShake.Enabled = true;
+            WindowShake.Interval = 500;
+            WindowShake.Tick += WindowShake_Tick;
+            // 
+            // CheckUserStatus
+            // 
+            CheckUserStatus.Enabled = true;
+            CheckUserStatus.Interval = 500;
+            CheckUserStatus.Tick += CheckUserStatus_Tick;
             // 
             // SimpleConfigurationForm
             // 
@@ -297,5 +304,6 @@
         private System.Windows.Forms.Timer Reloader;
         private System.Windows.Forms.Timer WindowShake;
         private System.Windows.Forms.Button AlertManagerButton;
+        private System.Windows.Forms.Timer CheckUserStatus;
     }
 }

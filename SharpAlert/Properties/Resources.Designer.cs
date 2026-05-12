@@ -238,6 +238,26 @@ namespace SharpAlert.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap Restricted {
+            get {
+                object obj = ResourceManager.GetObject("Restricted", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap RestrictedBar {
+            get {
+                object obj = ResourceManager.GetObject("RestrictedBar", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap right_from_bracket_solid {
             get {
                 object obj = ResourceManager.GetObject("right-from-bracket-solid", resourceCulture);

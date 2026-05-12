@@ -89,6 +89,57 @@ namespace SharpAlert.ConfigurationDialogs
                 UpDown = !UpDown;
             }
         }
+
+        private void SwapToRestrictionStatusButton_Click(object sender, EventArgs e)
+        {
+            SwapTabs(sender, new DiscordRestrictionUserControl(HaidaWorker.RestrictionMessage));
+        }
+
+        private bool Restricted = false;
+
+        private void RestrictionCheck_Tick(object sender, EventArgs e)
+        {
+            if (HaidaWorker.DiscordUserIsRestricted == HaidaWorker.DiscordUserRestriction.CannotDetermine ||
+                HaidaWorker.DiscordUserIsRestricted == HaidaWorker.DiscordUserRestriction.NotDetermined ||
+                HaidaWorker.DiscordUserIsRestricted == HaidaWorker.DiscordUserRestriction.None)
+            {
+                SwapToRPCButton.Enabled = true;
+                SwapToDiscordWebhooksButton.Enabled = true;
+                SwapToRestrictionStatusButton.Enabled = false;
+                SwapToRestrictionStatusButton.Visible = false;
+
+                if (Restricted)
+                {
+                    SwapToRPCButton.PerformClick();
+                }
+
+                Restricted = false;
+                return;
+            }
+
+            if (HaidaWorker.DiscordUserIsRestricted == HaidaWorker.DiscordUserRestriction.RichPresenceNotAllowed)
+            {
+                SwapToRPCButton.Enabled = false;
+                SwapToDiscordWebhooksButton.Enabled = true;
+                SwapToRestrictionStatusButton.Enabled = true;
+                SwapToRestrictionStatusButton.Visible = true;
+            }
+            
+            if (HaidaWorker.DiscordUserIsRestricted == HaidaWorker.DiscordUserRestriction.RichPresenceAndWebhooksNotAllowed)
+            {
+                SwapToRPCButton.Enabled = false;
+                SwapToDiscordWebhooksButton.Enabled = false;
+                SwapToRestrictionStatusButton.Enabled = true;
+                SwapToRestrictionStatusButton.Visible = true;
+            }
+
+            if (!Restricted)
+            {
+                SwapToRestrictionStatusButton.PerformClick();
+            }
+            
+            Restricted = true;
+        }
     }
 }
 

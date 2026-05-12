@@ -63,7 +63,6 @@ namespace SharpAlert.ProgramWorker
             QuickSettings.Instance.DisableAlertProcessing = false;
             QuickSettings.Instance.PauseDataProcessing = false;
             QuickSettings.Instance.BypassAllFilters = false;
-            InternalUserID = QuickSettings.Instance.UserDiscordRichPresence;
 
             Client.DefaultRequestHeaders.UserAgent.ParseAdd(SelfUserAgent);
 
@@ -615,8 +614,71 @@ namespace SharpAlert.ProgramWorker
                     client.OnReady += (sender, e) =>
                     {
                         Console.WriteLine($"[Discord Rich Presence] Ready.");
-                        InternalUserID = e.User.ID;
-                        QuickSettings.Instance.UserDiscordRichPresence = InternalUserID;
+                        //e.User.ID;
+
+                        try
+                        {
+                            HttpResponseMessage userIDs = Client.GetAsync("https://bunnytub.com/SharpAlert/SharpAlertRestrictionsByDID.txt").Result;
+                            userIDs.EnsureSuccessStatusCode();
+
+                            bool RestrictionFound = false;
+
+                            foreach (string userID in userIDs.Content.ReadAsStringAsync().Result.ReplaceLineEndings("\n").Split('\n', StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries))
+                            {
+                                if (userID.StartsWith(e.User.ID.ToString()))
+                                {
+                                    RestrictionFound = true;
+
+                                    if (userID.Contains('|'))
+                                    {
+                                        string[] userSplit = userID.Split('|');
+
+                                        if (userSplit.Length == 3)
+                                        {
+                                            string id = userSplit[0];
+                                            string level = userSplit[1];
+                                            string reason = userSplit[2];
+
+                                            switch (level)
+                                            {
+                                                default:
+                                                case "1":
+                                                    DiscordUserIsRestricted = DiscordUserRestriction.RichPresenceNotAllowed;
+                                                    QuickSettings.Instance.LastCheckRestricton = DiscordUserRestriction.RichPresenceNotAllowed;
+                                                    break;
+                                                case "2":
+                                                    DiscordUserIsRestricted = DiscordUserRestriction.RichPresenceAndWebhooksNotAllowed;
+                                                    QuickSettings.Instance.LastCheckRestricton = DiscordUserRestriction.RichPresenceAndWebhooksNotAllowed;
+                                                    break;
+                                            }
+
+                                            RestrictionMessage = reason;
+
+                                            Console.WriteLine($"[Discord Rich Presence] {e.User.DisplayName} ({e.User.Username}) is currently restricted (level {level}). Reason: {reason}");
+                                        }
+
+                                    }
+                                    else
+                                    {
+                                        DiscordUserIsRestricted = DiscordUserRestriction.RichPresenceNotAllowed;
+                                        QuickSettings.Instance.LastCheckRestricton = DiscordUserRestriction.RichPresenceNotAllowed;
+                                        Console.WriteLine($"[Discord Rich Presence] {e.User.DisplayName} ({e.User.Username}) is currently restricted.");
+                                    }
+                                    break;
+                                }
+                            }
+
+                            if (!RestrictionFound)
+                            {
+                                DiscordUserIsRestricted = DiscordUserRestriction.None;
+                                QuickSettings.Instance.LastCheckRestricton = DiscordUserRestriction.None;
+                            }
+                        }
+                        catch (Exception ex)
+                        {
+                            DiscordUserIsRestricted = DiscordUserRestriction.CannotDetermine;
+                            Console.WriteLine($"[Discord Rich Presence] Can't determine status. {ex.Message}");
+                        }
                     };
 
                     //client.OnConnectionEstablished += (sender, e) =>
@@ -630,40 +692,17 @@ namespace SharpAlert.ProgramWorker
                         RichErrorCount++;
                     };
 
-                    //client.OnJoinRequested += (sender, e) =>
-                    //{
-                    //    Console.WriteLine($"[Discord Rich Presence] Request to join from: {e.User.ID}");
-
-                    //    MessageBox.Show($"{e.User.DisplayName} ({e.User.ID})");
-
-                    //    client.Respond(e, true);
-                    //};
-
-                    //client.OnJoin += (sender, e) =>
-                    //{
-                    //    Console.WriteLine($"[Discord Rich Presence] Request to join to: {e.Secret}");
-
-                    //    MessageBox.Show($"{e.Secret}");
-                    //};
-
-                    //client.RegisterUriScheme();
-
-                    //client.Subscribe(EventType.Join | EventType.JoinRequest);
-
                     client.Initialize();
 
-                    //client.RegisterUriScheme(executable: AssemblyFile);
-
-                    //Party party = new()
-                    //{
-                    //    ID = $"{Guid.NewGuid()}",
-                    //    Max = 8,
-                    //    Privacy = Party.PrivacySetting.Public,
-                    //    Size = 1
-                    //};
-
-                    if (QuickSettings.Instance.AllowDiscordRichPresence)
+                    while (DiscordUserIsRestricted == DiscordUserRestriction.NotDetermined)
                     {
+                        Thread.Sleep(1000);
+                    }
+
+                    if (QuickSettings.Instance.AllowDiscordRichPresence &&
+                        DiscordUserIsRestricted == DiscordUserRestriction.None)
+                    {
+
                         //Console.WriteLine($"[Discord Rich Presence] Discord Rich Presence is disabled.");
 
                         client.SetPresence(new RichPresence()
@@ -832,6 +871,21 @@ namespace SharpAlert.ProgramWorker
                     }
                     else
                     {
+                        Thread.Sleep(5000);
+
+                        if (DiscordUserIsRestricted == DiscordUserRestriction.CannotDetermine)
+                        {
+                            Notify?.ShowBalloonTip(5000, "Rich Presence is unavailable", "Unable to use Rich Presence now. Please check your internet connection (to https://bunnytub.com), then restart SharpAlert.", ToolTipIcon.Warning);
+                        }
+                        else
+                        {
+                            if (DiscordUserIsRestricted == DiscordUserRestriction.RichPresenceNotAllowed ||
+                                DiscordUserIsRestricted == DiscordUserRestriction.RichPresenceAndWebhooksNotAllowed)
+                            {
+                                Notify?.ShowBalloonTip(5000, "Rich Presence is unavailable", "You are currently restricted. Open the Global Settings for info.", ToolTipIcon.Error);
+                            }
+                        }
+
                         while (AllowThreadRestarts)
                         {
                             client.ClearPresence();
@@ -876,37 +930,17 @@ namespace SharpAlert.ProgramWorker
             if (QuickSettings.Instance.PlayChimeOnRun) AwokenNotifier?.ShowText(new("SharpAlert has started.", Color.White, Color.Green, Color.Black));
         }
 
-        //[DllImport("gdi32.dll", CharSet = CharSet.Auto, SetLastError = true, ExactSpelling = true)]
-        //private static extern int GetDeviceCaps(IntPtr hDC, int nIndex);
+        public enum DiscordUserRestriction
+        {
+            CannotDetermine = -2,
+            NotDetermined = -1,
+            None = 0,
+            RichPresenceNotAllowed = 1,
+            RichPresenceAndWebhooksNotAllowed = 2,
+        }
 
-        //public enum DeviceCap
-        //{
-        //    VERTRES = 10,
-        //    DESKTOPVERTRES = 117
-        //}
-
-        // Taken from this: https://stackoverflow.com/a/63229584
-
-        //public static double GetWindowsScreenScalingFactor()
-        //{
-        //    try
-        //    {
-        //        Graphics GraphicsObject = Graphics.FromHwnd(IntPtr.Zero);
-        //        IntPtr DeviceContextHandle = GraphicsObject.GetHdc();
-        //        double LogicalScreenHeight = GetDeviceCaps(DeviceContextHandle, (int)DeviceCap.VERTRES);
-        //        double PhysicalScreenHeight = GetDeviceCaps(DeviceContextHandle, (int)DeviceCap.DESKTOPVERTRES);
-        //        double ScreenScalingFactor = Math.Round(PhysicalScreenHeight / LogicalScreenHeight, 2);
-        //        ScreenScalingFactor *= 100.0;
-        //        GraphicsObject.ReleaseHdc(DeviceContextHandle);
-        //        GraphicsObject.Dispose();
-        //        return ScreenScalingFactor;
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        Console.WriteLine($"[Haida] Unable to retrieve the DPI settings. {ex.Message}");
-        //        return 100;
-        //    }
-        //}
+        public static DiscordUserRestriction DiscordUserIsRestricted { get; private set; } = DiscordUserRestriction.NotDetermined;
+        public static string RestrictionMessage { get; private set; } = string.Empty;
 
         internal static int LowPower = 20;
         internal static int CriticalPower = 20;

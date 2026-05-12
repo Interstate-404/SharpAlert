@@ -16,7 +16,7 @@ namespace SharpAlert.ProgramWorker
         private static string IdentityURL = "https://bunnytub.com/SharpAlert";
         public static string CurrentStatus { get; set; } = "Please wait...";
 
-        private static HttpClient UpdateClient_ = null;
+        private static HttpClient? UpdateClient_ = null;
         private static HttpClient UpdateClient
         {
             get

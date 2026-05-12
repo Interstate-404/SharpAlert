@@ -49,6 +49,7 @@
             AlertManagerButton = new System.Windows.Forms.Button();
             Reloader = new System.Windows.Forms.Timer(components);
             WindowShake = new System.Windows.Forms.Timer(components);
+            CheckUserStatus = new System.Windows.Forms.Timer(components);
             ((System.ComponentModel.ISupportInitialize)SlidesBox).BeginInit();
             SuspendLayout();
             // 
@@ -337,6 +338,12 @@
             WindowShake.Interval = 500;
             WindowShake.Tick += WindowShake_Tick;
             // 
+            // CheckUserStatus
+            // 
+            CheckUserStatus.Enabled = true;
+            CheckUserStatus.Interval = 1000;
+            CheckUserStatus.Tick += CheckUserStatus_Tick;
+            // 
             // ConfigurationForm
             // 
             AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
@@ -398,5 +405,6 @@
         private System.Windows.Forms.Timer WindowShake;
         private System.Windows.Forms.Button CAPSettingsButton;
         private System.Windows.Forms.Button AlertManagerButton;
+        private System.Windows.Forms.Timer CheckUserStatus;
     }
 }
