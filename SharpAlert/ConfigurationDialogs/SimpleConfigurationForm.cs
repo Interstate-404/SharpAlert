@@ -50,7 +50,7 @@ namespace SharpAlert.ConfigurationDialogs
             this.Close();
         }
 
-        private SimpleAlertConfigurationForm acf = null;
+        private SimpleAlertConfigurationForm? acf = null;
 
         private void CAPSettingsButton_Click(object sender, EventArgs e)
         {
@@ -59,7 +59,7 @@ namespace SharpAlert.ConfigurationDialogs
             acf.Activate();
         }
 
-        private StyleConfigurationForm csf = null;
+        private StyleConfigurationForm? csf = null;
 
         private void StyleSettingsButton_Click(object sender, EventArgs e)
         {
@@ -68,7 +68,7 @@ namespace SharpAlert.ConfigurationDialogs
             csf.Activate();
         }
 
-        private ChooseAudioForm caf = null;
+        private ChooseAudioForm? caf = null;
 
         private void SoundSettingsButton_Click(object sender, EventArgs e)
         {
@@ -81,7 +81,7 @@ namespace SharpAlert.ConfigurationDialogs
             this.Text = OldTitle;
         }
 
-        private ChooseRegionForm crf = null;
+        private ChooseRegionForm? crf = null;
 
         private void RegionButton_Click(object sender, EventArgs e)
         {
@@ -90,7 +90,7 @@ namespace SharpAlert.ConfigurationDialogs
             crf.Activate();
         }
 
-        private ServerConfigurationForm scf = null;
+        private ServerConfigurationForm? scf = null;
 
         private void ServerSettingsButton_Click(object sender, EventArgs e)
         {
@@ -99,7 +99,7 @@ namespace SharpAlert.ConfigurationDialogs
             scf.Activate();
         }
 
-        private DiscordConfigurationForm dcf = null;
+        private DiscordConfigurationForm? dcf = null;
 
         private void DiscordSettingsButton_Click(object sender, EventArgs e)
         {
@@ -177,7 +177,7 @@ namespace SharpAlert.ConfigurationDialogs
                 MessageBoxIcon.Information);
         }
 
-        private CreditsForm cf = null;
+        private CreditsForm? cf = null;
 
         private void ProgramCreditsButton_Click(object sender, EventArgs e)
         {
@@ -240,7 +240,7 @@ namespace SharpAlert.ConfigurationDialogs
             }
         }
 
-        private SaveSlotsConfigurationForm slots = null;
+        private SaveSlotsConfigurationForm? slots = null;
 
         private void SaveSlotsButton_Click(object sender, EventArgs e)
         {
@@ -263,14 +263,23 @@ namespace SharpAlert.ConfigurationDialogs
             SlidesBox.LoadAsync("https://bunnytub.com/SharpAlert-Slides/Announcement.png");
         }
 
+        private bool IsRestricted = false;
+
         private void SlidesBox_Click(object sender, EventArgs e)
         {
-            try
+            if (IsRestricted)
             {
-                HackyWorkarounds.OpenURL(Client.GetStringAsync("https://bunnytub.com/SharpAlert-Slides/Announcement.txt").Result);
+                DiscordSettingsButton.PerformClick();
             }
-            catch (Exception)
+            else
             {
+                try
+                {
+                    HackyWorkarounds.OpenURL(Client.GetStringAsync("https://bunnytub.com/SharpAlert-Slides/Announcement.txt").Result);
+                }
+                catch (Exception)
+                {
+                }
             }
         }
 
@@ -293,13 +302,29 @@ namespace SharpAlert.ConfigurationDialogs
             }
         }
 
-        private AlertListForm alf = null;
+        private AlertListForm? alf = null;
 
         private void AlertManagerButton_Click(object sender, EventArgs e)
         {
             if (alf == null || alf.IsDisposed) alf = new AlertListForm();
             alf.Show();
             alf.Activate();
+        }
+
+        private void CheckUserStatus_Tick(object sender, EventArgs e)
+        {
+            if (DiscordUserIsRestricted == DiscordUserRestriction.CannotDetermine ||
+                DiscordUserIsRestricted == DiscordUserRestriction.NotDetermined ||
+                DiscordUserIsRestricted == DiscordUserRestriction.None)
+            {
+                IsRestricted = false;
+                BackColor = Color.FromArgb(20, 20, 20);
+                return;
+            }
+
+            IsRestricted = true;
+            SlidesBox.Image = Resources.Restricted;
+            BackColor = Color.FromArgb(50, 10, 10);
         }
     }
 }

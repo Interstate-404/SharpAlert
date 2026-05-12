@@ -14,22 +14,15 @@ namespace SharpAlert.AlertComponents
 {
     public static class DiscordWebhook
     {
-        public class DiscordWebhookData
+        public class DiscordWebhookData(string webhook, byte[] data, string contentType)
         {
-            public DiscordWebhookData(string webhook, byte[] data, string contentType)
-            {
-                Webhook = webhook;
-                Data = data;
-                ContentType = contentType;
-            }
-
-            public string Webhook;
-            public byte[] Data;
-            public string ContentType;
+            public string Webhook = webhook;
+            public byte[] Data = data;
+            public string? ContentType = contentType;
         }
 
         private static readonly WebClient discordClient = new();
-        private static List<DiscordWebhookData> DiscordWebhookDataQueue = [];
+        private static readonly List<DiscordWebhookData> DiscordWebhookDataQueue = [];
 
         public static void ServiceRun()
         {
@@ -41,9 +34,9 @@ namespace SharpAlert.AlertComponents
                     Console.BackgroundColor = ConsoleColor.DarkGray;
                     lock (discordClient)
                     {
-                        string webhook;
-                        byte[] data;
-                        string contentType;
+                        string? webhook;
+                        byte[]? data;
+                        string? contentType;
 
                         lock (DiscordWebhookDataQueue)
                         {
@@ -54,60 +47,63 @@ namespace SharpAlert.AlertComponents
                             contentType = varData.ContentType;
                         }
 
-                        //Client.GetStringAsync("https://bunnytub.com/SharpAlert/BanList.txt");
-
-                        //Console.WriteLine($"[Discord Webhook] Cannot process request, account is banned -> {webhook}");
-                        
-                        Console.WriteLine($"[Discord Webhook] Processing request -> {webhook}");
-
-                        try
+                        if (DiscordUserIsRestricted == DiscordUserRestriction.RichPresenceAndWebhooksNotAllowed)
                         {
-                            discordClient.Headers.Set(HttpRequestHeader.UserAgent, SelfUserAgent);
-                            discordClient.Headers.Set(HttpRequestHeader.ContentType, contentType);
-
-                            Thread.Sleep(1000 + 100);
-                            byte[] bytes = discordClient.UploadData(webhook, data);
-                            Console.WriteLine("[Discord Webhook] Sent message to webhook.");
-                            Console.WriteLine($"[Discord Webhook] Returned body: {Encoding.UTF8.GetString(bytes)}");
+                            Console.WriteLine($"[Discord Webhook] Cannot process request, account is restricted -> {webhook}");
                         }
-                        catch (Exception ex)
+                        else
                         {
-                            if (ex is WebException webex)
-                            {
-                                Console.WriteLine($"[Discord Webhook] {webex.Status}");
-
-                                if (webex.Response is HttpWebResponse response)
-                                {
-                                    Console.WriteLine($"[Discord Webhook] Returned status code: {(int)response.StatusCode} {response.StatusDescription}");
-
-                                    using var stream = response.GetResponseStream();
-                                    using var reader = new StreamReader(stream);
-                                    Console.WriteLine($"[Discord Webhook] Returned body: {reader.ReadToEnd()}");
-                                }
-
-                                Console.WriteLine(Encoding.UTF8.GetString(data));
-                            }
-
-                            Console.WriteLine($"[Discord Webhook] {ex.Message}");
+                            Console.WriteLine($"[Discord Webhook] Processing request -> {webhook}");
+                            
                             try
                             {
-                                Thread.Sleep(3000 + 100);
-                                discordClient.UploadData(webhook, data);
+                                discordClient.Headers.Set(HttpRequestHeader.UserAgent, SelfUserAgent);
+                                discordClient.Headers.Set(HttpRequestHeader.ContentType, contentType);
+
+                                Thread.Sleep(1000 + 100);
+                                byte[]? bytes = discordClient.UploadData(webhook, data);
                                 Console.WriteLine("[Discord Webhook] Sent message to webhook.");
+                                Console.WriteLine($"[Discord Webhook] Returned body: {Encoding.UTF8.GetString(bytes)}");
                             }
-                            catch (Exception exx)
+                            catch (Exception ex)
                             {
-                                Console.WriteLine($"[Discord Webhook] {exx.Message}");
+                                if (ex is WebException webex)
+                                {
+                                    Console.WriteLine($"[Discord Webhook] {webex.Status}");
+
+                                    if (webex.Response is HttpWebResponse response)
+                                    {
+                                        Console.WriteLine($"[Discord Webhook] Returned status code: {(int)response.StatusCode} {response.StatusDescription}");
+
+                                        using var stream = response.GetResponseStream();
+                                        using var reader = new StreamReader(stream);
+                                        Console.WriteLine($"[Discord Webhook] Returned body: {reader.ReadToEnd()}");
+                                    }
+
+                                    Console.WriteLine(Encoding.UTF8.GetString(data));
+                                }
+
+                                Console.WriteLine($"[Discord Webhook] {ex.Message}");
                                 try
                                 {
-                                    Console.WriteLine($"[Discord Webhook] Rate limited or bad connection. Pausing for 15 seconds to cool down.");
-                                    Thread.Sleep((15 * 1000) + 100);
+                                    Thread.Sleep(3000 + 100);
                                     discordClient.UploadData(webhook, data);
-                                    Console.WriteLine("[Discord Webhook] Sent message webhook.");
+                                    Console.WriteLine("[Discord Webhook] Sent message to webhook.");
                                 }
-                                catch (Exception exxx)
+                                catch (Exception exx)
                                 {
-                                    Console.WriteLine($"[Discord Webhook] Request failed after multiple retries. {exxx.Message}");
+                                    Console.WriteLine($"[Discord Webhook] {exx.Message}");
+                                    try
+                                    {
+                                        Console.WriteLine($"[Discord Webhook] Rate limited or bad connection. Pausing for 15 seconds to cool down.");
+                                        Thread.Sleep((15 * 1000) + 100);
+                                        discordClient.UploadData(webhook, data);
+                                        Console.WriteLine("[Discord Webhook] Sent message webhook.");
+                                    }
+                                    catch (Exception exxx)
+                                    {
+                                        Console.WriteLine($"[Discord Webhook] Request failed after multiple retries. {exxx.Message}");
+                                    }
                                 }
                             }
                         }
@@ -128,7 +124,7 @@ namespace SharpAlert.AlertComponents
 
             (string subURL, string subAppend) SubSourceName()
             {
-                string source = SourceName.ToUpperInvariant();
+                string? source = SourceName.ToUpperInvariant();
 
                 if (source.Contains("EAS"))
                 {
@@ -214,13 +210,13 @@ namespace SharpAlert.AlertComponents
         {
             try
             {
-                string webhook = $"{QuickSettings.Instance.DiscordWebhook}";
+                string? webhook = $"{QuickSettings.Instance.DiscordWebhook}";
                 if (!string.IsNullOrWhiteSpace(QuickSettings.Instance.DiscordWebhook))
                 {
                     lock (discordClient)
                     {
                         var payloadObject = new { content = message };
-                        string payloadJson = JsonSerializer.Serialize(payloadObject);
+                        string? payloadJson = JsonSerializer.Serialize(payloadObject);
                         UploadData(webhook, payloadJson, "application/json");
                     }
                 }
@@ -236,7 +232,7 @@ namespace SharpAlert.AlertComponents
         {
             try
             {
-                string webhook = $"{QuickSettings.Instance.DiscordWebhook}";
+                string? webhook = $"{QuickSettings.Instance.DiscordWebhook}";
                 if (!string.IsNullOrWhiteSpace(QuickSettings.Instance.DiscordWebhook))
                 {
                     lock (discordClient)
@@ -252,7 +248,7 @@ namespace SharpAlert.AlertComponents
                                 }
                             }
                         };
-                        string payloadJson = JsonSerializer.Serialize(payloadObject);
+                        string? payloadJson = JsonSerializer.Serialize(payloadObject);
                         UploadData(webhook, payloadJson, "application/json");
                     }
                 }
@@ -268,7 +264,7 @@ namespace SharpAlert.AlertComponents
         {
             try
             {
-                string webhook = $"{GetDiscordWebhookURLFromSourceName(FeedSource).URL}";
+                string? webhook = $"{GetDiscordWebhookURLFromSourceName(FeedSource).URL}";
                 if (!string.IsNullOrWhiteSpace(webhook))
                 {
                     lock (discordClient)
@@ -286,7 +282,7 @@ namespace SharpAlert.AlertComponents
                             },
                             content = normal
                         };
-                        string payloadJson = JsonSerializer.Serialize(payloadObject);
+                        string? payloadJson = JsonSerializer.Serialize(payloadObject);
                         UploadData(webhook, payloadJson, "application/json");
                     }
                 }
@@ -316,7 +312,7 @@ namespace SharpAlert.AlertComponents
             {
                 Console.WriteLine("[Discord Webhook] Preparing to send an alert message to a Discord webhook.");
 
-                string webhook = $"{GetDiscordWebhookURLFromSourceName(FeedSource).URL}";
+                string? webhook = $"{GetDiscordWebhookURLFromSourceName(FeedSource).URL}";
                 if (string.IsNullOrWhiteSpace(webhook))
                 {
                     //webhook = Settings.Default.DiscordWebhook;
@@ -326,11 +322,11 @@ namespace SharpAlert.AlertComponents
 
                 lock (discordClient)
                 {
-                    string boundary = "----SharpBoundary" + DateTime.UtcNow.Ticks;
+                    string? boundary = "----SharpBoundary" + DateTime.UtcNow.Ticks;
 
-                    string AudioURL = (AudioFileURL != null && AudioFileURL.Count != 0) ? AudioFileURL[0] : null;
-                    string AudioDeref = (AudioFileDeref != null && AudioFileDeref.Count != 0) ? AudioFileDeref[0] : null;
-                    string ImageURL = (ImageFileURL != null && ImageFileURL.Count != 0) ? ImageFileURL[0] : null;
+                    string? AudioURL = (AudioFileURL != null && AudioFileURL.Count != 0) ? AudioFileURL[0] : null;
+                    string? AudioDeref = (AudioFileDeref != null && AudioFileDeref.Count != 0) ? AudioFileDeref[0] : null;
+                    string? ImageURL = (ImageFileURL != null && ImageFileURL.Count != 0) ? ImageFileURL[0] : null;
 
                     //if (!string.IsNullOrEmpty(title) && description1.Length >= 128)
                     //{
@@ -341,9 +337,9 @@ namespace SharpAlert.AlertComponents
                     int TruncuationLengthPerDescription = 1780;
                     bool TruncationOccurred = false;
 
-                    string truncMessage = message;
-                    string truncDescription1 = description1;
-                    string truncDescription2 = description2;
+                    string? truncMessage = message;
+                    string? truncDescription1 = description1;
+                    string? truncDescription2 = description2;
 
                     try
                     {
@@ -403,7 +399,7 @@ namespace SharpAlert.AlertComponents
                         Console.WriteLine($"[Discord Webhook] Truncation error. {ex.Message}");
                     }
 
-                    string Fields = string.Empty;
+                    string? Fields = string.Empty;
 
                     if (QuickSettings.Instance.AddIntroText && !string.IsNullOrWhiteSpace(truncDescription1))
                     {
@@ -437,7 +433,7 @@ namespace SharpAlert.AlertComponents
                     var EventDecode = AlertDetails.SAME_AlertCodes.Find(t => t.Name == title);
                     EventDecode ??= AlertDetails.SAME_AlertCodes.Find(t => t.ID.Equals(SAMECode, StringComparison.InvariantCultureIgnoreCase)); // thanks VS, it's less readable now
 
-                    string ThumbnailURL = $"https://bunnytub.com/SharpAlert-Assets/Misc/UNK.png";
+                    string? ThumbnailURL = $"https://bunnytub.com/SharpAlert-Assets/Misc/UNK.png";
 
                     if (EventDecode != null)
                     {
@@ -511,18 +507,18 @@ namespace SharpAlert.AlertComponents
                         }
                     };
 
-                    string payloadJson = JsonSerializer.Serialize(payloadObject);
-                    byte[] payloadJsonBytes = Encoding.UTF8.GetBytes(payloadJson);
+                    string? payloadJson = JsonSerializer.Serialize(payloadObject);
+                    byte[]? payloadJsonBytes = Encoding.UTF8.GetBytes(payloadJson);
                     var sbPre = new StringBuilder();
                     sbPre.Append("--").Append(boundary).Append("\r\n");
                     sbPre.Append("Content-Disposition: form-data; name=\"payload_json\"").Append("\r\n");
                     sbPre.Append("Content-Type: application/json; charset=utf-8").Append("\r\n");
                     sbPre.Append("\r\n");
-                    byte[] preFileBytes = Encoding.UTF8.GetBytes(sbPre.ToString());
-                    byte[] TextFileHeaderBytes = null;
-                    byte[] AudioFileHeaderBytes = null;
-                    byte[] textBytes = null;
-                    byte[] audioBytes = null;
+                    byte[]? preFileBytes = Encoding.UTF8.GetBytes(sbPre.ToString());
+                    byte[]? TextFileHeaderBytes = null;
+                    byte[]? AudioFileHeaderBytes = null;
+                    byte[]? textBytes = null;
+                    byte[]? audioBytes = null;
 
                     if (TruncationOccurred)
                     {
@@ -535,7 +531,7 @@ namespace SharpAlert.AlertComponents
                         TextFileHeaderBytes = Encoding.UTF8.GetBytes(sbFile.ToString());
 
                         // Convert the truncated text to bytes
-                        string text = "SharpAlert determined the message is too big to fully display as a message.\r\n\r\n" +
+                        string? text = "SharpAlert determined the message is too big to fully display as a message.\r\n\r\n" +
                             "--- Alert Info ---\r\n\r\n" +
                             $"{description1}\r\n\r\n" +
                             "--- Alert Text ---\r\n\r\n" +
@@ -594,7 +590,7 @@ namespace SharpAlert.AlertComponents
                         }
                     }
 
-                    byte[] closingBytes = Encoding.UTF8.GetBytes("\r\n--" + boundary + "--\r\n");
+                    byte[]? closingBytes = Encoding.UTF8.GetBytes("\r\n--" + boundary + "--\r\n");
 
                     using var ms = new MemoryStream();
                     ms.Write(preFileBytes, 0, preFileBytes.Length);

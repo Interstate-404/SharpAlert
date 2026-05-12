@@ -36,6 +36,8 @@
             TabPanel = new System.Windows.Forms.Panel();
             SwappingText = new System.Windows.Forms.Label();
             WindowShake = new System.Windows.Forms.Timer(components);
+            SwapToRestrictionStatusButton = new System.Windows.Forms.Button();
+            RestrictionCheck = new System.Windows.Forms.Timer(components);
             TabPanel.SuspendLayout();
             SuspendLayout();
             // 
@@ -112,11 +114,37 @@
             WindowShake.Interval = 500;
             WindowShake.Tick += WindowShake_Tick;
             // 
+            // SwapToRestrictionStatusButton
+            // 
+            SwapToRestrictionStatusButton.BackColor = System.Drawing.Color.Gainsboro;
+            SwapToRestrictionStatusButton.Enabled = false;
+            SwapToRestrictionStatusButton.FlatAppearance.BorderColor = System.Drawing.Color.White;
+            SwapToRestrictionStatusButton.FlatAppearance.BorderSize = 2;
+            SwapToRestrictionStatusButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            SwapToRestrictionStatusButton.Font = new System.Drawing.Font("Segoe UI", 10F);
+            SwapToRestrictionStatusButton.ForeColor = System.Drawing.Color.Black;
+            SwapToRestrictionStatusButton.Location = new System.Drawing.Point(384, 12);
+            SwapToRestrictionStatusButton.Name = "SwapToRestrictionStatusButton";
+            SwapToRestrictionStatusButton.Size = new System.Drawing.Size(180, 30);
+            SwapToRestrictionStatusButton.TabIndex = 26;
+            SwapToRestrictionStatusButton.Tag = "SwapTabButton";
+            SwapToRestrictionStatusButton.Text = "Restriction Status";
+            SwapToRestrictionStatusButton.UseVisualStyleBackColor = false;
+            SwapToRestrictionStatusButton.Visible = false;
+            SwapToRestrictionStatusButton.Click += SwapToRestrictionStatusButton_Click;
+            // 
+            // RestrictionCheck
+            // 
+            RestrictionCheck.Enabled = true;
+            RestrictionCheck.Interval = 1000;
+            RestrictionCheck.Tick += RestrictionCheck_Tick;
+            // 
             // DiscordConfigurationForm
             // 
             AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
             BackColor = System.Drawing.Color.FromArgb(20, 20, 20);
             ClientSize = new System.Drawing.Size(784, 461);
+            Controls.Add(SwapToRestrictionStatusButton);
             Controls.Add(TabPanel);
             Controls.Add(SwapToDiscordWebhooksButton);
             Controls.Add(SwapToRPCButton);
@@ -143,5 +171,7 @@
         private System.Windows.Forms.Panel TabPanel;
         private System.Windows.Forms.Label SwappingText;
         private System.Windows.Forms.Timer WindowShake;
+        private System.Windows.Forms.Button SwapToRestrictionStatusButton;
+        private System.Windows.Forms.Timer RestrictionCheck;
     }
 }

@@ -1,7 +1,6 @@
 ﻿using AwokenNotifications;
 using SharpAlert.AlertComponents;
 using SharpAlert.DataProcessing;
-using SharpAlert.DisplayDialogs;
 using SharpAlert.Languages;
 using SharpAlert.SourceCapturing;
 using SharpAlert.SourceCapturing.SystemSpecific;
@@ -17,11 +16,7 @@ using System.Security.Cryptography;
 using System.Security.Principal;
 using System.Text;
 using System.Threading;
-using System.Threading.Tasks;
 using System.Windows.Forms;
-using Velopack;
-using Velopack.Exceptions;
-using Velopack.Sources;
 using static SharpAlert.ProgramWorker.HaidaWorker;
 using static SharpAlert.ProgramWorker.NotificationWorker;
 
@@ -250,56 +245,6 @@ namespace SharpAlert.ProgramWorker
         public static bool ServiceMode { get; private set; } = false;
         public static List<string> Args { get; private set; } = [];
         // --alt-config-1/2/3/4
-
-        //private static bool Secret = false;
-        //public static bool IsUserSuperSecretAccessor()
-        //{
-        //    try
-        //    {
-        //        string userIDs = client.GetStringAsync("https://bunnytub.com/SharpAlert/SharpAlert.shfile").Result;
-        //        foreach (string userID in userIDs.Split())
-        //        {
-        //            if (userID.Contains(InternalUserID.ToString()))
-        //            {
-        //                Secret = true;
-        //                return true;
-        //            }
-        //        }
-        //        return false;
-        //    }
-        //    catch (Exception)
-        //    {
-        //        return Secret;
-        //    }
-        //}
-
-        //private static bool Locked = false;
-        //public static bool IsUserLocked()
-        //{
-        //    try
-        //    {
-        //        string userIDs = client.GetStringAsync("https://bunnytub.com/SharpAlert/SharpAlert.lkfile").Result;
-        //        foreach (string userID in userIDs.Split())
-        //        {
-        //            if (userID.Contains(InternalUserID.ToString()))
-        //            {
-        //                Locked = true;
-        //                return true;
-        //            }
-        //        }
-        //        return false;
-        //    }
-        //    catch (Exception)
-        //    {
-        //        return Locked;
-        //    }
-        //}
-
-        public static ulong InternalUserID
-        {
-            get;
-            set;
-        } = 0;
 
         public static readonly DateTimeOffset DateUpTime = DateTimeOffset.UtcNow;
         public static Awoken? AwokenNotifier = null;

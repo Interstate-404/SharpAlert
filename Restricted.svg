@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   width="262"
+   height="40"
+   viewBox="0 0 69.320832 10.583333"
+   version="1.1"
+   id="svg1"
+   inkscape:export-filename="Restricted.png"
+   inkscape:export-xdpi="96"
+   inkscape:export-ydpi="96"
+   inkscape:version="1.4.2 (f4327f4, 2025-05-13)"
+   sodipodi:docname="YouAreRestricted.svg"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg">
+  <sodipodi:namedview
+     id="namedview1"
+     pagecolor="#505050"
+     bordercolor="#eeeeee"
+     borderopacity="1"
+     inkscape:showpageshadow="0"
+     inkscape:pageopacity="0"
+     inkscape:pagecheckerboard="0"
+     inkscape:deskcolor="#505050"
+     inkscape:document-units="px"
+     inkscape:zoom="2.2823572"
+     inkscape:cx="139.76778"
+     inkscape:cy="88.724061"
+     inkscape:window-width="1920"
+     inkscape:window-height="1017"
+     inkscape:window-x="-8"
+     inkscape:window-y="-8"
+     inkscape:window-maximized="1"
+     inkscape:current-layer="layer1" />
+  <defs
+     id="defs1" />
+  <g
+     inkscape:label="Layer 1"
+     inkscape:groupmode="layer"
+     id="layer1">
+    <rect
+       style="fill:#3c1414;stroke-width:1.05833;stroke-linecap:square;stroke-dasharray:1.05833, 3.175;fill-opacity:1"
+       id="rect2"
+       width="69.320831"
+       height="10.583333"
+       x="0"
+       y="0" />
+    <text
+       xml:space="preserve"
+       style="font-weight:bold;font-size:5.64444px;line-height:0.75;font-family:'Malgun Gothic';-inkscape-font-specification:'Malgun Gothic Bold';text-align:start;letter-spacing:0.264583px;writing-mode:lr-tb;direction:ltr;text-anchor:start;fill:#ff6868;fill-opacity:1;stroke-width:1.05833;stroke-linecap:square;stroke-dasharray:1.05833, 3.175"
+       x="1.190625"
+       y="5.0303149"
+       id="text1"><tspan
+         sodipodi:role="line"
+         id="tspan1"
+         style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:5.64444px;line-height:0.75;font-family:'Segoe UI';-inkscape-font-specification:'Segoe UI Bold';fill:#ff6868;fill-opacity:1;stroke-width:1.05833"
+         x="1.190625"
+         y="5.0303149">You are restricted.</tspan><tspan
+         sodipodi:role="line"
+         style="font-style:normal;font-variant:normal;font-weight:600;font-stretch:normal;font-size:4.23333px;line-height:0.75;font-family:'Segoe UI';-inkscape-font-specification:'Segoe UI Semi-Bold';fill:#ff6868;fill-opacity:1;stroke-width:1.05833"
+         x="1.190625"
+         y="9.399395"
+         id="tspan2">Click here for more info.</tspan></text>
+    <path
+       sodipodi:type="star"
+       style="opacity:0.75;fill:#ff6868;fill-opacity:1;stroke:none;stroke-width:1.09127;stroke-linecap:square;stroke-dasharray:1.09127, 3.27383"
+       id="path3"
+       inkscape:flatsided="true"
+       sodipodi:sides="3"
+       sodipodi:cx="47.065739"
+       sodipodi:cy="-19.707329"
+       sodipodi:r1="5.6077261"
+       sodipodi:r2="2.803863"
+       sodipodi:arg1="0.52359878"
+       sodipodi:arg2="1.5707963"
+       inkscape:rounded="0.12"
+       inkscape:randomized="0"
+       d="m 51.922172,-16.903466 c -0.582772,1.009391 -9.130095,1.009391 -9.712867,0 -0.582772,-1.00939 3.69089,-8.411589 4.856434,-8.411589 1.165544,0 5.439205,7.402199 4.856433,8.411589 z"
+       inkscape:transform-center-y="-0.91189338"
+       transform="matrix(0.96435349,0.10275284,-0.10275284,0.96435349,16.445248,20.372253)"
+       inkscape:transform-center-x="0.25999315" />
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-variant:normal;font-weight:600;font-stretch:normal;font-size:7.76111px;line-height:0.75;font-family:'Segoe UI';-inkscape-font-specification:'Segoe UI Semi-Bold';text-align:start;letter-spacing:0.264583px;writing-mode:lr-tb;direction:ltr;text-anchor:start;opacity:0.75;fill:#ffffff;fill-opacity:1;stroke:none;stroke-width:1.05833;stroke-linecap:square;stroke-dasharray:1.05833, 3.175"
+       x="62.886566"
+       y="1.4633076"
+       id="text3"
+       transform="rotate(6.0819759)"><tspan
+         sodipodi:role="line"
+         id="tspan3"
+         style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:7.76111px;font-family:'Segoe UI';-inkscape-font-specification:'Segoe UI Bold';fill:#ffffff;fill-opacity:1;stroke-width:1.05833"
+         x="62.886566"
+         y="1.4633076">!</tspan></text>
+  </g>
+</svg>

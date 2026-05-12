@@ -4431,4 +4431,3 @@ namespace SharpAlert.AlertComponents
         ];
     }
 }
-

@@ -27,6 +27,7 @@
 		<ProduceReferenceAssembly>False</ProduceReferenceAssembly>
 		<BaseOutputPath>\bin\</BaseOutputPath>
 		<Nullable>enable</Nullable>
+		<PublishRelease>true</PublishRelease>
 	</PropertyGroup>
 	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
 	  <NoWarn>1701;1702;SYSLIB1054</NoWarn>
@@ -117,9 +118,6 @@
 		  <SubType>Form</SubType>
 		</Compile>
 		<Compile Update="Languages\LanguageSelectionForm.cs">
-		  <SubType>Form</SubType>
-		</Compile>
-		<Compile Update="ProgramWorker\UninstallingForm.cs">
 		  <SubType>Form</SubType>
 		</Compile>
 		<Compile Update="Properties\Resources.Designer.cs">

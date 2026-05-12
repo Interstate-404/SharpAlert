@@ -55,7 +55,7 @@ namespace SharpAlert.ProgramWorker
 
         //public event EventHandler SettingsSaving;
 
-        private static QuickSettings _instance;
+        private static QuickSettings? _instance;
 
         public static QuickSettings Instance
         {
@@ -79,10 +79,10 @@ namespace SharpAlert.ProgramWorker
         // Discord Rich Presence
         public bool AskedForDiscordRichPresence { get; set; } = false;
         public bool AllowDiscordRichPresence { get; set; } = false;
-        public ulong UserDiscordRichPresence { get; set; } = 0;
         // Dashboard
         public bool OpenDashboardAutomatically { get; set; } = false;
         // System
+        public HaidaWorker.DiscordUserRestriction LastCheckRestricton { get; set; } = HaidaWorker.DiscordUserRestriction.NotDetermined;
         public bool NoSystemSleep { get; set; } = false;
         public bool PlayChimeOnRun { get; set; } = false;
         public bool ChildLock { get; set; } = false;
