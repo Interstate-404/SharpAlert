@@ -268,6 +268,16 @@ namespace SharpAlert.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap RestrictedBar100 {
+            get {
+                object obj = ResourceManager.GetObject("RestrictedBar100", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap right_from_bracket_solid {
             get {
                 object obj = ResourceManager.GetObject("right-from-bracket-solid", resourceCulture);
@@ -292,6 +302,15 @@ namespace SharpAlert.Properties {
             get {
                 object obj = ResourceManager.GetObject("SharpWX-white-v2", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.IO.UnmanagedMemoryStream similar to System.IO.MemoryStream.
+        /// </summary>
+        internal static System.IO.UnmanagedMemoryStream SomeoneWasRestricted {
+            get {
+                return ResourceManager.GetStream("SomeoneWasRestricted", resourceCulture);
             }
         }
         

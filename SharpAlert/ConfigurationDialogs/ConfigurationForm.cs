@@ -191,6 +191,7 @@ namespace SharpAlert.ConfigurationDialogs
         private void ConfigurationForm_Load(object sender, EventArgs e)
         {
             EnableUpdatesBox.Checked = QuickSettings.Instance.AllowPerformingUpdates;
+            AnnounceRestrictionsBox.Checked = QuickSettings.Instance.AnnounceRestrictions;
             AllowNotifications = true;
             //ProhibitUsers_Tick(this, EventArgs.Empty);
             //if (IsUserLocked)
@@ -223,6 +224,12 @@ namespace SharpAlert.ConfigurationDialogs
 
             QuickSettings.Instance.AskedForAutomaticUpdates = true;
             QuickSettings.Instance.AllowPerformingUpdates = EnableUpdatesBox.Checked;
+        }
+
+        private void AnnounceRestrictionsBox_CheckedChanged(object sender, EventArgs e)
+        {
+            if (!AllowNotifications) return;
+            QuickSettings.Instance.AnnounceRestrictions = AnnounceRestrictionsBox.Checked;
         }
 
         //private SecretConfigurationForm secret = null;
