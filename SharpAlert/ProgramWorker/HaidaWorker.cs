@@ -506,10 +506,10 @@ namespace SharpAlert.ProgramWorker
             if (QuickSettings.Instance.RegionBrazil)
             {
                 //Console.WriteLine("[Haida] Capturing from Brazil (IDAP) is unavailable.");
-                StartAndForget(() =>
-                {
-                    new IDAPNoticeForm().ShowDialog();
-                });
+                //StartAndForget(() =>
+                //{
+                //    new IDAPNoticeForm().ShowDialog();
+                //});
                 IdapfeedThread = StartCatchAllThread("IDAP Feed Capture", () => idapfeed.ServiceRun(true), false);
                 // removed Brazil IDAP from being able to be used for now
             }
