@@ -82,7 +82,8 @@ namespace SharpAlert.ProgramWorker
         // Dashboard
         public bool OpenDashboardAutomatically { get; set; } = false;
         // System
-        public HaidaWorker.DiscordUserRestriction LastCheckRestricton { get; set; } = HaidaWorker.DiscordUserRestriction.NotDetermined;
+        public bool ClientRestrictionLock { get; set; } = false;
+        public bool AnnounceRestrictions { get; set; } = false;
         public bool NoSystemSleep { get; set; } = false;
         public bool PlayChimeOnRun { get; set; } = false;
         public bool ChildLock { get; set; } = false;

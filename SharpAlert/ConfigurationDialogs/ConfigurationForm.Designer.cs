@@ -50,6 +50,7 @@
             Reloader = new System.Windows.Forms.Timer(components);
             WindowShake = new System.Windows.Forms.Timer(components);
             CheckUserStatus = new System.Windows.Forms.Timer(components);
+            AnnounceRestrictionsBox = new System.Windows.Forms.CheckBox();
             ((System.ComponentModel.ISupportInitialize)SlidesBox).BeginInit();
             SuspendLayout();
             // 
@@ -344,12 +345,27 @@
             CheckUserStatus.Interval = 1000;
             CheckUserStatus.Tick += CheckUserStatus_Tick;
             // 
+            // AnnounceRestrictionsBox
+            // 
+            AnnounceRestrictionsBox.Anchor = System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right;
+            AnnounceRestrictionsBox.AutoSize = true;
+            AnnounceRestrictionsBox.CheckAlign = System.Drawing.ContentAlignment.MiddleRight;
+            AnnounceRestrictionsBox.Location = new System.Drawing.Point(203, 226);
+            AnnounceRestrictionsBox.Name = "AnnounceRestrictionsBox";
+            AnnounceRestrictionsBox.Size = new System.Drawing.Size(205, 19);
+            AnnounceRestrictionsBox.TabIndex = 19;
+            AnnounceRestrictionsBox.Text = "Show Restriction Announcements";
+            ToolTipInformation.SetToolTip(AnnounceRestrictionsBox, "Displays an overlay when someone gets restricted. (¬‿¬)");
+            AnnounceRestrictionsBox.UseVisualStyleBackColor = true;
+            AnnounceRestrictionsBox.CheckedChanged += AnnounceRestrictionsBox_CheckedChanged;
+            // 
             // ConfigurationForm
             // 
             AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
             BackColor = System.Drawing.Color.FromArgb(20, 20, 20);
             ClientSize = new System.Drawing.Size(420, 332);
             ControlBox = false;
+            Controls.Add(AnnounceRestrictionsBox);
             Controls.Add(CAPSettingsButton);
             Controls.Add(AlertManagerButton);
             Controls.Add(SlidesBox);
@@ -406,5 +422,6 @@
         private System.Windows.Forms.Button CAPSettingsButton;
         private System.Windows.Forms.Button AlertManagerButton;
         private System.Windows.Forms.Timer CheckUserStatus;
+        private System.Windows.Forms.CheckBox AnnounceRestrictionsBox;
     }
 }

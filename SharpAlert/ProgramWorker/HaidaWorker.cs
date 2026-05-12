@@ -2,6 +2,7 @@
 using Microsoft.Win32;
 using SharpAlert.AlertComponents;
 using SharpAlert.ConfigurationDialogs;
+using SharpAlert.ConfigurationDialogs.DiscordPanels;
 using SharpAlert.DataProcessing;
 using SharpAlert.DisplayDialogs;
 using SharpAlert.Languages;
@@ -16,6 +17,7 @@ using System.Drawing;
 using System.Globalization;
 using System.IO;
 using System.Linq;
+using System.Media;
 using System.Net.Http;
 using System.Runtime.InteropServices;
 using System.Text.RegularExpressions;
@@ -46,6 +48,7 @@ namespace SharpAlert.ProgramWorker
             $"{VersionInfo.MajorVersion}.{VersionInfo.MinorVersion}; bunnytub@bunnytub.com)";
 
         public static bool ServiceRunnerScheduled { get; private set; } = false;
+        private static readonly SoundPlayer SomeoneWasRestrictedSound = new(Resources.SomeoneWasRestricted);
 
         public static void ServiceRun()
         {
@@ -100,6 +103,422 @@ namespace SharpAlert.ProgramWorker
             {
                 RemoteVersion = "service";
             }
+
+            Console.WriteLine("[Haida] Setting up status and Discord features.");
+
+            if (QuickSettings.Instance.ClientRestrictionLock)
+            {
+                Console.WriteLine("[Haida] Nevermind, the client is locked.");
+                DiscordUserIsRestricted = DiscordUserRestriction.RichPresenceAndWebhooksNotAllowed;
+                RestrictedInFullForm riff = new();
+                Application.Run(riff);
+                riff.Dispose();
+                // Your client is currently locked.
+                Environment.Exit(0);
+            }
+
+            int RichErrorCount = 0;
+
+            string RestrictionURL = "https://bunnytub.com/SharpAlert/SharpAlertRestrictionsByDID_v2.txt";
+
+            List<RestrictionInformation>? GetRestrictions()
+            {
+                try
+                {
+                    HttpResponseMessage userIDs = Client.GetAsync(RestrictionURL).Result;
+                    userIDs.EnsureSuccessStatusCode();
+
+                    string CurrentStatus = userIDs.Content.ReadAsStringAsync().Result;
+
+                    List<RestrictionInformation> Restrictions = [];
+
+                    foreach (string userID in userIDs.Content.ReadAsStringAsync().Result.ReplaceLineEndings("\n").Split('\n', StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries))
+                    {
+                        if (userID.Contains('|'))
+                        {
+                            string[] userSplit = userID.Split('|');
+
+                            if (userSplit.Length == 4)
+                            {
+                                Restrictions.Add(new RestrictionInformation(userSplit[0], userSplit[1], userSplit[2], userSplit[3]));
+                                //Console.WriteLine($"[Restrictions] Discord user \"{userSplit[1]}\" ({userSplit[0]}) is currently restricted (level {userSplit[2]}). Reason (if any): {userSplit[3]}");
+                            }
+                            else
+                            {
+                                Restrictions.Add(new RestrictionInformation(userID, "Unknown User", "1", "No reason was given."));
+                                //Console.WriteLine($"[Restrictions] Unrecognized data may be a user ID? \"{userID}\" (raw)");
+                            }
+                        }
+                    }
+
+                    return Restrictions;
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine($"[Restrictions] {ex.Message}");
+                    return null;
+                }
+            }
+
+            ulong localUserID = 0;
+
+            StartCatchAllThread("Status Checker", () =>
+            {
+                List<RestrictionInformation>? LastRestrictions = GetRestrictions();
+                bool FirstCheck = true;
+
+                while (AllowThreadRestarts)
+                {
+                    Thread.Sleep(30000);
+
+                    List<RestrictionInformation>? CurrentRestrictions = GetRestrictions();
+                    if (CurrentRestrictions == null) continue;
+
+                    if (FirstCheck)
+                    {
+                        FirstCheck = false;
+
+                        if (LastRestrictions == null)
+                        {
+                            FirstCheck = true;
+                            continue;
+                        }
+
+                        LastRestrictions = CurrentRestrictions;
+                        continue;
+                    }
+
+                    if (LastRestrictions == null) continue;
+
+                    List<RestrictionInformation> NewRestrictions = [.. CurrentRestrictions.Where(current => !LastRestrictions.Any(last => last.UserID == current.UserID))];
+
+                    LastRestrictions = CurrentRestrictions;
+
+                    if (NewRestrictions.Count != 0)
+                    {
+                        if (AwokenNotifier != null) AwokenNotifier.PlayChime = false;
+
+                        foreach (RestrictionInformation info in NewRestrictions)
+                        {
+                            if (info.UserID == localUserID.ToString())
+                            {
+                                if (info.RestrictionLevel == "100") QuickSettings.Instance.ClientRestrictionLock = true;
+                                QuickSettings.Instance.Save();
+                                AwokenNotifier?.ShowText(new($"You have been restricted.", Color.Yellow, Color.Red, Color.Black));
+                                SomeoneWasRestrictedSound.Play();
+                                Thread.Sleep(3000);
+                                Environment.Exit(100);
+                                return;
+                            }
+
+                            if (QuickSettings.Instance.AnnounceRestrictions)
+                            {
+                                AwokenNotifier?.ShowText(new($"{info.Name} ({info.UserID}) has been restricted!", Color.Yellow, Color.Maroon, Color.Black));
+                                SomeoneWasRestrictedSound.Play();
+                            }
+
+                            Thread.Sleep(5000);
+                        }
+                    }
+                }
+            }, true, false);
+
+            StartCatchAllThread("Discord Rich Presence", () =>
+            {
+                while (AllowThreadRestarts)
+                {
+                    Console.WriteLine($"[Discord Rich Presence] Setting up Discord RPC.");
+
+                    var client = new DiscordRpcClient("1184397437985620028")
+                    {
+                        Logger = new DiscordRPC.Logging.ConsoleLogger(DiscordRPC.Logging.LogLevel.Error, false)
+                    };
+
+                    client.OnReady += (sender, e) =>
+                    {
+                        Console.WriteLine($"[Discord Rich Presence] Ready.");
+                        localUserID = e.User.ID;
+
+                        try
+                        {
+                            var Restrictions = GetRestrictions();
+
+                            if (Restrictions != null)
+                            {
+                                bool RestrictionFound = false;
+
+                                foreach (RestrictionInformation info in Restrictions)
+                                {
+                                    if (info.UserID == e.User.ID.ToString())
+                                    {
+                                        RestrictionFound = true;
+
+                                        switch (info.RestrictionLevel)
+                                        {
+                                            default:
+                                            case "1":
+                                                DiscordUserIsRestricted = DiscordUserRestriction.RichPresenceNotAllowed;
+                                                //QuickSettings.Instance.LastCheckRestricton = DiscordUserRestriction.RichPresenceNotAllowed;
+                                                break;
+                                            case "2":
+                                                DiscordUserIsRestricted = DiscordUserRestriction.RichPresenceAndWebhooksNotAllowed;
+                                                //QuickSettings.Instance.LastCheckRestricton = DiscordUserRestriction.RichPresenceAndWebhooksNotAllowed;
+                                                break;
+                                            case "100":
+                                                DiscordUserIsRestricted = DiscordUserRestriction.RichPresenceAndWebhooksNotAllowed;
+                                                QuickSettings.Instance.ClientRestrictionLock = true;
+                                                QuickSettings.Instance.Save();
+                                                AwokenNotifier?.ShowText(new($"Your Discord account is currently fully restricted on SharpAlert.\r\nThe app will be locked.", Color.Yellow, Color.Red, Color.Black));
+                                                Thread.Sleep(3000);
+                                                Environment.Exit(100);
+                                                //QuickSettings.Instance.LastCheckRestricton = DiscordUserRestriction.RichPresenceAndWebhooksNotAllowed;
+                                                break;
+                                        }
+
+                                        AwokenNotifier?.ShowText(new($"Your Discord account is currently restricted on SharpAlert.\r\nOpen Global Settings for more information.", Color.Yellow, Color.Red, Color.Black));
+
+                                        RestrictionMessage = info.RestrictionReason;
+                                        break;
+                                    }
+                                }
+
+                                if (!RestrictionFound)
+                                {
+                                    DiscordUserIsRestricted = DiscordUserRestriction.None;
+
+                                    //QuickSettings.Instance.LastCheckRestricton = DiscordUserRestriction.None;
+                                }
+                            }
+
+                        }
+                        catch (Exception ex)
+                        {
+                            DiscordUserIsRestricted = DiscordUserRestriction.CannotDetermine;
+                            Console.WriteLine($"[Discord Rich Presence] Can't determine status. {ex.Message}");
+                        }
+                    };
+
+                    //client.OnConnectionEstablished += (sender, e) =>
+                    //{
+                    //    Console.WriteLine($"[Discord Rich Presence] Connection established: {e.TimeCreated}");
+                    //};
+
+                    client.OnConnectionFailed += (sender, e) =>
+                    {
+                        Console.WriteLine($"[Discord Rich Presence] Connection failed (is Discord running?): {e.FailedPipe}");
+                        RichErrorCount++;
+                    };
+
+                    client.Initialize();
+
+                    while (DiscordUserIsRestricted == DiscordUserRestriction.NotDetermined)
+                    {
+                        Thread.Sleep(1000);
+                    }
+
+                    if (QuickSettings.Instance.AllowDiscordRichPresence &&
+                        DiscordUserIsRestricted == DiscordUserRestriction.None)
+                    {
+                        Console.WriteLine($"[Discord Rich Presence] Discord Rich Presence is available.");
+
+                        client.SetPresence(new RichPresence()
+                        {
+                            Details = $"SharpAlert v{VersionInfo.MajorVersion}.{VersionInfo.MinorVersion}",
+                            //DetailsUrl = "https://bunnytub.com/SharpAlert",
+                            State = $"Relayed {AlertProcessor.AlertsRelayed} alert(s).",
+                            Type = ActivityType.Playing,
+                            Assets = new Assets()
+                            {
+                                LargeImageKey = "sharpalert_squaredicon_gray",
+                                LargeImageText = "SharpAlert",
+                            },
+                            StatusDisplay = StatusDisplayType.Details,
+                            //Party = party,
+                            //Secrets = new Secrets
+                            //{
+                            //    // max128
+                            //    JoinSecret = $"MTI4NzM0OjFpMmhuZToxMjMxMjM="
+                            //},
+                            //Buttons =
+                            //[
+                            //    new DiscordRPC.Button { Label = "Get SharpAlert", Url = "https://bunnytub.com/SharpAlert" }
+                            //]
+                        });
+
+                        //client.SetSubscription(EventType.JoinRequest);
+
+                        int Page = 0;
+                        bool ShowURLImage = true;
+
+                        var (info, date) = DataProcessor.LastAlertToBeRelayed;
+
+                        while (AllowThreadRestarts)
+                        {
+                            Thread.Sleep(5000);
+
+                            var (infoB, dateB) = DataProcessor.LastAlertToBeRelayed;
+
+                            if (info != infoB && date != dateB)
+                            {
+                                info = infoB;
+                                date = dateB;
+                            }
+
+                            if (info != null && date > DateTimeOffset.UtcNow.AddMinutes(-15)) // make user configurable someday
+                            {
+                                string Details = string.Empty;
+                                string State = string.Empty; // $"Sent by {info.AlertSender}. {info.AlertURL}".Trim(),
+
+                                if (Details.Length > 96) Details = Details[..96] + "...(truncated)";
+
+                                Page++;
+
+                            switcharea:
+
+                                switch (Page)
+                                {
+                                    case 1:
+                                        State = $"[1/3] This is a {info.AlertSeverity.ToUpperInvariant()} alert. Sent by {info.AlertSender}.";
+                                        if (!string.IsNullOrWhiteSpace(info.AlertURL)) State += "\x20This alert has a link attached.";
+                                        if (State.Length > 96) State = State[..96] + "...(truncated)";
+                                        Details = $"{info.AlertSeverity.ToUpperInvariant()} ALERT";
+                                        break;
+                                    case 2:
+                                        State = $"[2/3] Event type is {info.AlertEventType}.";
+                                        if (State.Length > 96) State = State[..96] + "...(truncated)";
+
+                                        Details = $"{info.AlertEventType}";
+                                        if (Details.Length > 32) Details = Details[..32] + "...(truncated)";
+                                        break;
+                                    case 3:
+                                        string XLocations = string.Empty;
+
+                                        foreach (string location in info.AlertFriendlyLocations)
+                                        {
+                                            XLocations += location + ",\x20";
+                                        }
+
+                                        if (!string.IsNullOrWhiteSpace(XLocations)) XLocations = XLocations.Trim().TrimEnd(',') + ".";
+                                        else XLocations = "Unknown";
+
+                                        State = $"[3/3] Locations: {XLocations}".Trim();
+                                        if (State.Length > 96) State = State[..96] + "...(truncated)";
+
+                                        Details = $"{XLocations}";
+                                        if (Details.Length > 96) Details = Details[..96] + "...(truncated)";
+                                        break;
+                                    default:
+                                        Page = 1;
+                                        goto switcharea;
+                                }
+
+                                DateTime End = date.AddMinutes(15).UtcDateTime;
+
+                                try
+                                {
+                                    End = DateTime.Parse(info.AlertExpiryDate, CultureInfo.InvariantCulture, DateTimeStyles.AssumeUniversal | DateTimeStyles.AdjustToUniversal);
+                                    date = End;
+                                }
+                                catch (Exception)
+                                {
+                                }
+
+                                string ImageKey = "sharpalert_squaredicon";
+                                string ImageText = "SharpAlert";
+
+                                if (!string.IsNullOrWhiteSpace(info.AlertURL))
+                                {
+                                    if (ShowURLImage) ImageKey = "sharpalert_squaredicon_link";
+                                    ImageText = $"Visit URL: {info.AlertURL}";
+                                    if (ImageText.Length > 64) ImageText = ImageText[..64] + "...(truncated)";
+                                }
+
+                                ShowURLImage = !ShowURLImage;
+
+                                client.SetPresence(new RichPresence()
+                                {
+                                    Details = Details,
+                                    //DetailsUrl = "https://bunnytub.com/SharpAlert",
+                                    State = State,
+                                    Type = ActivityType.Playing,
+                                    Assets = new Assets()
+                                    {
+                                        LargeImageKey = ImageKey,
+                                        LargeImageText = "SharpAlert",
+                                        LargeImageUrl = info.AlertURL,
+                                    },
+                                    StatusDisplay = StatusDisplayType.Details,
+                                    Timestamps = new Timestamps
+                                    {
+                                        Start = date.UtcDateTime,
+                                        End = End
+                                    },
+                                    StateUrl = info.AlertURL
+                                });
+                            }
+                            else
+                            {
+                                Page = 0;
+
+                                client.SetPresence(new RichPresence()
+                                {
+                                    Details = $"SharpAlert v{VersionInfo.MajorVersion}.{VersionInfo.MinorVersion}",
+                                    //DetailsUrl = "https://bunnytub.com/SharpAlert",
+                                    State = $"Relayed {AlertProcessor.AlertsRelayed} alert(s).",
+                                    Type = ActivityType.Playing,
+                                    Assets = new Assets()
+                                    {
+                                        LargeImageKey = "sharpalert_squaredicon_gray",
+                                        LargeImageText = "SharpAlert",
+                                    },
+                                    StatusDisplay = StatusDisplayType.Details,
+                                    Timestamps = new Timestamps
+                                    {
+                                        Start = DateUpTime.UtcDateTime
+                                    }
+                                });
+                            }
+
+                            //party.Size++;
+                            //Console.WriteLine("[Discord Rich Presence] Updated state.");
+                            //client.UpdateClearTime();
+                            //client.SetButton(new DiscordRPC.Button { Label = "Download SharpAlert", Url = "https://bunnytub.com/SharpAlert" });
+                        }
+                    }
+                    else
+                    {
+                        Thread.Sleep(5000);
+
+                        if (DiscordUserIsRestricted == DiscordUserRestriction.CannotDetermine)
+                        {
+                            Notify?.ShowBalloonTip(5000, "Rich Presence is unavailable", "Unable to use Rich Presence now. Please check your internet connection (to https://bunnytub.com), then restart SharpAlert.", ToolTipIcon.Warning);
+                        }
+                        else
+                        {
+                            if (DiscordUserIsRestricted == DiscordUserRestriction.RichPresenceNotAllowed ||
+                                DiscordUserIsRestricted == DiscordUserRestriction.RichPresenceAndWebhooksNotAllowed)
+                            {
+                                Notify?.ShowBalloonTip(5000, "Rich Presence is unavailable", "You are currently restricted. Open the Global Settings for info.", ToolTipIcon.Error);
+                            }
+                        }
+
+                        while (AllowThreadRestarts)
+                        {
+                            client.ClearPresence();
+                            Thread.Sleep(30000);
+                            //client.UpdateClearTime();
+                            //client.SetButton(new DiscordRPC.Button { Label = "Download SharpAlert", Url = "https://bunnytub.com/SharpAlert" });
+                        }
+                    }
+
+                    //client.ShutdownOnly = true;
+                    client.ClearPresence();
+                    client.Deinitialize();
+                    client.Dispose();
+                    //if (RichErrorCount >= 10) throw new NonRestartableException();
+                    Thread.Sleep(10000);
+                }
+            }, true);
 
             Console.WriteLine("[Haida] Initializing services.");
             // use threads you moron
@@ -598,389 +1017,6 @@ namespace SharpAlert.ProgramWorker
             //{
             //    Application.Run(new MessageWindow());
             //}, true);
-
-            int RichErrorCount = 0;
-
-            string RestrictionURL = "https://bunnytub.com/SharpAlert/SharpAlertRestrictionsByDID_v2.txt";
-
-            List<RestrictionInformation>? GetRestrictions()
-            {
-                try
-                {
-                    HttpResponseMessage userIDs = Client.GetAsync(RestrictionURL).Result;
-                    userIDs.EnsureSuccessStatusCode();
-
-                    string CurrentStatus = userIDs.Content.ReadAsStringAsync().Result;
-
-                    List<RestrictionInformation> Restrictions = [];
-
-                    foreach (string userID in userIDs.Content.ReadAsStringAsync().Result.ReplaceLineEndings("\n").Split('\n', StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries))
-                    {
-                        if (userID.Contains('|'))
-                        {
-                            string[] userSplit = userID.Split('|');
-
-                            if (userSplit.Length == 4)
-                            {
-                                Restrictions.Add(new RestrictionInformation(userSplit[0], userSplit[1], userSplit[2], userSplit[3]));
-                                Console.WriteLine($"[Restrictions] Discord user \"{userSplit[1]}\" ({userSplit[0]}) is currently restricted (level {userSplit[2]}). Reason (if any): {userSplit[3]}");
-                            }
-                            else
-                            {
-                                Restrictions.Add(new RestrictionInformation(userID, "Unknown User", "1", "No reason was given."));
-                                Console.WriteLine($"[Restrictions] Unrecognized data may be a user ID? \"{userID}\" (raw)");
-                            }
-                        }
-                    }
-
-                    return Restrictions;
-                }
-                catch (Exception ex)
-                {
-                    Console.WriteLine($"[Restrictions] {ex.Message}");
-                    return null;
-                }
-            }
-
-            ulong localUserID = 0;
-
-            StartCatchAllThread("Status Checker", () =>
-            {
-                List<RestrictionInformation>? LastRestrictions = GetRestrictions();
-                bool FirstCheck = true;
-
-                while (AllowThreadRestarts)
-                {
-                    Thread.Sleep(15000);
-
-                    List<RestrictionInformation>? CurrentRestrictions = GetRestrictions();
-                    if (CurrentRestrictions == null) continue;
-
-                    if (FirstCheck)
-                    {
-                        FirstCheck = false;
-                        
-                        if (LastRestrictions == null)
-                        {
-                            FirstCheck = true;
-                            continue;
-                        }
-
-                        LastRestrictions = CurrentRestrictions;
-                        continue;
-                    }
-
-                    if (LastRestrictions == null) continue;
-
-                    List<RestrictionInformation> NewRestrictions = [.. CurrentRestrictions.Where(current => !LastRestrictions.Any(last => last.UserID == current.UserID))];
-
-                    LastRestrictions = CurrentRestrictions;
-
-                    if (NewRestrictions.Count != 0)
-                    {
-                        foreach (RestrictionInformation info in NewRestrictions)
-                        {
-                            if (info.UserID == localUserID.ToString())
-                            {
-                                AwokenNotifier?.ShowText(new($"You have been restricted.", Color.Yellow, Color.Red, Color.Black));
-                                Thread.Sleep(3000);
-                                Environment.Exit(100);
-                            }
-
-                            AwokenNotifier?.ShowText(new($"{info.Name} ({info.UserID}) has been restricted!", Color.Yellow, Color.Maroon, Color.Black));
-                            Thread.Sleep(3000);
-                        }
-                    }
-                }
-            }, true, false);
-
-            StartCatchAllThread("Discord Rich Presence", () =>
-            {
-                while (AllowThreadRestarts)
-                {
-                    Console.WriteLine($"[Discord Rich Presence] Setting up Discord RPC.");
-
-                    var client = new DiscordRpcClient("1184397437985620028")
-                    {
-                        Logger = new DiscordRPC.Logging.ConsoleLogger(DiscordRPC.Logging.LogLevel.Error, false)
-                    };
-
-                    client.OnReady += (sender, e) =>
-                    {
-                        Console.WriteLine($"[Discord Rich Presence] Ready.");
-                        localUserID = e.User.ID;
-                        //e.User.ID;
-
-                        try
-                        {
-                            var Restrictions = GetRestrictions();
-
-                            if (Restrictions != null)
-                            {
-                                bool RestrictionFound = false;
-
-                                foreach (RestrictionInformation info in Restrictions)
-                                {
-                                    if (info.UserID == e.User.ID.ToString())
-                                    {
-                                        RestrictionFound = true;
-
-                                        switch (info.RestrictionLevel)
-                                        {
-                                            default:
-                                            case "1":
-                                                DiscordUserIsRestricted = DiscordUserRestriction.RichPresenceNotAllowed;
-                                                QuickSettings.Instance.LastCheckRestricton = DiscordUserRestriction.RichPresenceNotAllowed;
-                                                break;
-                                            case "2":
-                                                DiscordUserIsRestricted = DiscordUserRestriction.RichPresenceAndWebhooksNotAllowed;
-                                                QuickSettings.Instance.LastCheckRestricton = DiscordUserRestriction.RichPresenceAndWebhooksNotAllowed;
-                                                break;
-                                        }
-
-                                        AwokenNotifier?.ShowText(new($"Your Discord account is currently restricted on SharpAlert.\r\nOpen Global Settings for more information.", Color.Yellow, Color.Red, Color.Black));
-
-                                        RestrictionMessage = info.RestrictionReason;
-                                        break;
-                                    }
-                                }
-
-                                if (!RestrictionFound)
-                                {
-                                    DiscordUserIsRestricted = DiscordUserRestriction.None;
-                                    QuickSettings.Instance.LastCheckRestricton = DiscordUserRestriction.None;
-                                }
-                            }
-
-                        }
-                        catch (Exception ex)
-                        {
-                            DiscordUserIsRestricted = DiscordUserRestriction.CannotDetermine;
-                            Console.WriteLine($"[Discord Rich Presence] Can't determine status. {ex.Message}");
-                        }
-                    };
-
-                    //client.OnConnectionEstablished += (sender, e) =>
-                    //{
-                    //    Console.WriteLine($"[Discord Rich Presence] Connection established: {e.TimeCreated}");
-                    //};
-
-                    client.OnConnectionFailed += (sender, e) =>
-                    {
-                        Console.WriteLine($"[Discord Rich Presence] Connection failed (is Discord running?): {e.FailedPipe}");
-                        RichErrorCount++;
-                    };
-
-                    client.Initialize();
-
-                    while (DiscordUserIsRestricted == DiscordUserRestriction.NotDetermined)
-                    {
-                        Thread.Sleep(1000);
-                    }
-
-                    if (QuickSettings.Instance.AllowDiscordRichPresence &&
-                        DiscordUserIsRestricted == DiscordUserRestriction.None)
-                    {
-                        Console.WriteLine($"[Discord Rich Presence] Discord Rich Presence is available.");
-
-                        client.SetPresence(new RichPresence()
-                        {
-                            Details = $"SharpAlert v{VersionInfo.MajorVersion}.{VersionInfo.MinorVersion}",
-                            //DetailsUrl = "https://bunnytub.com/SharpAlert",
-                            State = $"Relayed {AlertProcessor.AlertsRelayed} alert(s).",
-                            Type = ActivityType.Playing,
-                            Assets = new Assets()
-                            {
-                                LargeImageKey = "sharpalert_squaredicon_gray",
-                                LargeImageText = "SharpAlert",
-                            },
-                            StatusDisplay = StatusDisplayType.Details,
-                            //Party = party,
-                            //Secrets = new Secrets
-                            //{
-                            //    // max128
-                            //    JoinSecret = $"MTI4NzM0OjFpMmhuZToxMjMxMjM="
-                            //},
-                            //Buttons =
-                            //[
-                            //    new DiscordRPC.Button { Label = "Get SharpAlert", Url = "https://bunnytub.com/SharpAlert" }
-                            //]
-                        });
-
-                        //client.SetSubscription(EventType.JoinRequest);
-
-                        int Page = 0;
-                        bool ShowURLImage = true;
-
-                        var (info, date) = DataProcessor.LastAlertToBeRelayed;
-
-                        while (AllowThreadRestarts)
-                        {
-                            Thread.Sleep(5000);
-
-                            var (infoB, dateB) = DataProcessor.LastAlertToBeRelayed;
-
-                            if (info != infoB && date != dateB)
-                            {
-                                info = infoB;
-                                date = dateB;
-                            }
-
-                            if (info != null && date > DateTimeOffset.UtcNow.AddMinutes(-15)) // make user configurable someday
-                            {
-                                string Details = string.Empty;
-                                string State = string.Empty; // $"Sent by {info.AlertSender}. {info.AlertURL}".Trim(),
-
-                                if (Details.Length > 96) Details = Details[..96] + "...(truncated)";
-
-                                Page++;
-
-                                switcharea:
-
-                                switch (Page)
-                                {
-                                    case 1:
-                                        State = $"[1/3] This is a {info.AlertSeverity.ToUpperInvariant()} alert. Sent by {info.AlertSender}.";
-                                        if (!string.IsNullOrWhiteSpace(info.AlertURL)) State += "\x20This alert has a link attached.";
-                                        if (State.Length > 96) State = State[..96] + "...(truncated)";
-                                        Details = $"{info.AlertSeverity.ToUpperInvariant()} ALERT";
-                                        break;
-                                    case 2:
-                                        State = $"[2/3] Event type is {info.AlertEventType}.";
-                                        if (State.Length > 96) State = State[..96] + "...(truncated)";
-
-                                        Details = $"{info.AlertEventType}";
-                                        if (Details.Length > 32) Details = Details[..32] + "...(truncated)";
-                                        break;
-                                    case 3:
-                                        string XLocations = string.Empty;
-
-                                        foreach (string location in info.AlertFriendlyLocations)
-                                        {
-                                            XLocations += location + ",\x20";
-                                        }
-
-                                        if (!string.IsNullOrWhiteSpace(XLocations)) XLocations = XLocations.Trim().TrimEnd(',') + ".";
-                                        else XLocations = "Unknown";
-
-                                        State = $"[3/3] Locations: {XLocations}".Trim();
-                                        if (State.Length > 96) State = State[..96] + "...(truncated)";
-
-                                        Details = $"{XLocations}";
-                                        if (Details.Length > 96) Details = Details[..96] + "...(truncated)";
-                                        break;
-                                    default:
-                                        Page = 1;
-                                        goto switcharea;
-                                }
-
-                                DateTime End = date.AddMinutes(15).UtcDateTime;
-
-                                try
-                                {
-                                    End = DateTime.Parse(info.AlertExpiryDate, CultureInfo.InvariantCulture, DateTimeStyles.AssumeUniversal | DateTimeStyles.AdjustToUniversal);
-                                    date = End;
-                                }
-                                catch (Exception)
-                                {
-                                }
-
-                                string ImageKey = "sharpalert_squaredicon";
-                                string ImageText = "SharpAlert";
-
-                                if (!string.IsNullOrWhiteSpace(info.AlertURL))
-                                {
-                                    if (ShowURLImage) ImageKey = "sharpalert_squaredicon_link";
-                                    ImageText = $"Visit URL: {info.AlertURL}";
-                                    if (ImageText.Length > 64) ImageText = ImageText[..64] + "...(truncated)";
-                                }
-
-                                ShowURLImage = !ShowURLImage;
-
-                                client.SetPresence(new RichPresence()
-                                {
-                                    Details = Details,
-                                    //DetailsUrl = "https://bunnytub.com/SharpAlert",
-                                    State = State,
-                                    Type = ActivityType.Playing,
-                                    Assets = new Assets()
-                                    {
-                                        LargeImageKey = ImageKey,
-                                        LargeImageText = "SharpAlert",
-                                        LargeImageUrl = info.AlertURL,
-                                    },
-                                    StatusDisplay = StatusDisplayType.Details,
-                                    Timestamps = new Timestamps
-                                    {
-                                        Start = date.UtcDateTime,
-                                        End = End
-                                    },
-                                    StateUrl = info.AlertURL
-                                });
-                            }
-                            else
-                            {
-                                Page = 0;
-
-                                client.SetPresence(new RichPresence()
-                                {
-                                    Details = $"SharpAlert v{VersionInfo.MajorVersion}.{VersionInfo.MinorVersion}",
-                                    //DetailsUrl = "https://bunnytub.com/SharpAlert",
-                                    State = $"Relayed {AlertProcessor.AlertsRelayed} alert(s).",
-                                    Type = ActivityType.Playing,
-                                    Assets = new Assets()
-                                    {
-                                        LargeImageKey = "sharpalert_squaredicon_gray",
-                                        LargeImageText = "SharpAlert",
-                                    },
-                                    StatusDisplay = StatusDisplayType.Details,
-                                    Timestamps = new Timestamps
-                                    {
-                                        Start = DateUpTime.UtcDateTime
-                                    }
-                                });
-                            }
-
-                            //party.Size++;
-                            //Console.WriteLine("[Discord Rich Presence] Updated state.");
-                            //client.UpdateClearTime();
-                            //client.SetButton(new DiscordRPC.Button { Label = "Download SharpAlert", Url = "https://bunnytub.com/SharpAlert" });
-                        }
-                    }
-                    else
-                    {
-                        Thread.Sleep(5000);
-
-                        if (DiscordUserIsRestricted == DiscordUserRestriction.CannotDetermine)
-                        {
-                            Notify?.ShowBalloonTip(5000, "Rich Presence is unavailable", "Unable to use Rich Presence now. Please check your internet connection (to https://bunnytub.com), then restart SharpAlert.", ToolTipIcon.Warning);
-                        }
-                        else
-                        {
-                            if (DiscordUserIsRestricted == DiscordUserRestriction.RichPresenceNotAllowed ||
-                                DiscordUserIsRestricted == DiscordUserRestriction.RichPresenceAndWebhooksNotAllowed)
-                            {
-                                Notify?.ShowBalloonTip(5000, "Rich Presence is unavailable", "You are currently restricted. Open the Global Settings for info.", ToolTipIcon.Error);
-                            }
-                        }
-
-                        while (AllowThreadRestarts)
-                        {
-                            client.ClearPresence();
-                            Thread.Sleep(30000);
-                            //client.UpdateClearTime();
-                            //client.SetButton(new DiscordRPC.Button { Label = "Download SharpAlert", Url = "https://bunnytub.com/SharpAlert" });
-                        }
-                    }
-
-                    //client.ShutdownOnly = true;
-                    client.ClearPresence();
-                    client.Deinitialize();
-                    client.Dispose();
-                    if (RichErrorCount >= 10) throw new NonRestartableException();
-                    Thread.Sleep(10000);
-                }
-            }, true);
 
             StartCatchAllThread("Update Worker", () =>
             {
