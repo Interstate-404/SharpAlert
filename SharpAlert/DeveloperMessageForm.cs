@@ -58,7 +58,7 @@ namespace SharpAlert
         private void EnableNewFeatureButton_Click(object sender, EventArgs e)
         {
             EnableNewFeatureButton.Enabled = false;
-            QuickSettings.Instance.UseSAMEAsSeverityWhenPossible = true;
+            QuickSettings.Instance.AnnounceRestrictions = true;
             QuickSettings.Instance.Save();
         }
     }

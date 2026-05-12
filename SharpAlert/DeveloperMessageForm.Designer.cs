@@ -122,10 +122,9 @@
             EnableNewFeatureButton.Name = "EnableNewFeatureButton";
             EnableNewFeatureButton.Size = new System.Drawing.Size(367, 40);
             EnableNewFeatureButton.TabIndex = 16;
-            EnableNewFeatureButton.Text = "Enable \"Use SAME as severity\"";
+            EnableNewFeatureButton.Text = "Enable \"Show Restrictions\"";
             EnableNewFeatureButton.UseMnemonic = false;
             EnableNewFeatureButton.UseVisualStyleBackColor = false;
-            EnableNewFeatureButton.Visible = false;
             EnableNewFeatureButton.Click += EnableNewFeatureButton_Click;
             // 
             // DeveloperMessageForm
