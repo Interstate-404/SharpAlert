@@ -41,7 +41,6 @@
             // 
             // IDIconBox
             // 
-            IDIconBox.Image = Properties.Resources.inbox_solid;
             IDIconBox.Location = new System.Drawing.Point(12, 12);
             IDIconBox.Name = "IDIconBox";
             IDIconBox.Size = new System.Drawing.Size(128, 128);
@@ -101,7 +100,7 @@
             LogOutput.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
             LogOutput.Size = new System.Drawing.Size(501, 189);
             LogOutput.TabIndex = 15;
-            LogOutput.Text = "Marine locations, mainly those out 20 to 60 nautical miles, have been added.\r\nTTS now reads \"nm\" & \"NM\" as \"nautical miles.\"\r\nInternally reordered locations, you should see no difference.\r\n";
+            LogOutput.Text = "Any changes from v18.1 and v18.2 have been pulled to this fork.\r\nAbbreviations of New Mexico being read as \"nautical miles\" issue fixed (probably).";
             LogOutput.TextChanged += LogOutput_TextChanged;
             // 
             // WindowShake
