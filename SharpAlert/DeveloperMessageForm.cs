@@ -1,4 +1,4 @@
-﻿using SharpAlert.ProgramWorker;
+using SharpAlert.ProgramWorker;
 using System;
 using System.Drawing;
 using System.Windows.Forms;
@@ -55,11 +55,9 @@ namespace SharpAlert
             }
         }
 
-        private void EnableNewFeatureButton_Click(object sender, EventArgs e)
+        private void LogOutput_TextChanged(object sender, EventArgs e)
         {
-            EnableNewFeatureButton.Enabled = false;
-            QuickSettings.Instance.AnnounceRestrictions = true;
-            QuickSettings.Instance.Save();
+
         }
     }
 }

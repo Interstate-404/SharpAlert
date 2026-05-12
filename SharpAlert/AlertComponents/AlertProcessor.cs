@@ -2381,7 +2381,15 @@ namespace SharpAlert.AlertComponents
                 .Replace(" 9-1-1 ", " 9 1 1 ")
                 .Replace(" WEA ", " W E A ")
                 .Replace(" NWS ", " N W S ")
-                .Replace(" NOAA ", " N O A A ");
+                .Replace(" NOAA ", " N O A A ")
+                .Replace("Albuqerque NM ", "Albuquerque N M")
+                .Replace("Santa Teresa Nm ", "Santa Teresa Nm")
+                .Replace("NM ", "nm ")
+                .Replace(" NM", " nm")
+                .Replace("nm ", "nautical miles ")
+                .Replace(" nm", " nautical miles")
+                .Replace("* ", "")
+                .Replace("\r\n", " ");
                 //.Replace("WEA", "Wireless Emergency Alerts")
                 //.Replace("NWS", "National Weather Service")
                 //.Replace("NOAA", "National Oceanic and Atmospheric Administration");

@@ -43,7 +43,7 @@ namespace SharpAlert.AlertComponents.Dashboard
             DashboardPanel.HorizontalScroll.Enabled = false;
             DashboardPanel.HorizontalScroll.Visible = false;
             DashboardPanel.HorizontalScroll.Maximum = 0;
-            BrandText.Text = $"SharpAlert v{VersionInfo.MajorVersion}.{VersionInfo.MinorVersion}";
+            BrandText.Text = $"SharpAlert (Interstate 404 // Sevyn Fork) v{VersionInfo.MajorVersion}.{VersionInfo.MinorVersion}";
         }
 
         private void UpdateExpiryTimer_Tick(object sender, EventArgs e)
