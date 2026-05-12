@@ -10,6 +10,7 @@ using SharpAlert.SourceCapturing;
 using SharpAlert.SourceCapturing.SystemSpecific;
 using SharpAlert.WebServer;
 using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.Drawing;
 using System.Globalization;
@@ -600,35 +601,96 @@ namespace SharpAlert.ProgramWorker
 
             int RichErrorCount = 0;
 
-            string RestrictionURL = "https://bunnytub.com/SharpAlert/SharpAlertRestrictionsByDID.txt";
+            string RestrictionURL = "https://bunnytub.com/SharpAlert/SharpAlertRestrictionsByDID_v2.txt";
 
-            StartCatchAllThread("Status Checker", () =>
+            List<RestrictionInformation>? GetRestrictions()
             {
-                string LastStatus = string.Empty;
-                bool FirstCheck = true;
-
-                Thread.Sleep(5000);
-
-                while (AllowThreadRestarts)
+                try
                 {
                     HttpResponseMessage userIDs = Client.GetAsync(RestrictionURL).Result;
                     userIDs.EnsureSuccessStatusCode();
 
                     string CurrentStatus = userIDs.Content.ReadAsStringAsync().Result;
 
+                    List<RestrictionInformation> Restrictions = [];
+
+                    foreach (string userID in userIDs.Content.ReadAsStringAsync().Result.ReplaceLineEndings("\n").Split('\n', StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries))
+                    {
+                        if (userID.Contains('|'))
+                        {
+                            string[] userSplit = userID.Split('|');
+
+                            if (userSplit.Length == 4)
+                            {
+                                Restrictions.Add(new RestrictionInformation(userSplit[0], userSplit[1], userSplit[2], userSplit[3]));
+                                Console.WriteLine($"[Restrictions] Discord user \"{userSplit[1]}\" ({userSplit[0]}) is currently restricted (level {userSplit[2]}). Reason (if any): {userSplit[3]}");
+                            }
+                            else
+                            {
+                                Restrictions.Add(new RestrictionInformation(userID, "Unknown User", "1", "No reason was given."));
+                                Console.WriteLine($"[Restrictions] Unrecognized data may be a user ID? \"{userID}\" (raw)");
+                            }
+                        }
+                    }
+
+                    return Restrictions;
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine($"[Restrictions] {ex.Message}");
+                    return null;
+                }
+            }
+
+            ulong localUserID = 0;
+
+            StartCatchAllThread("Status Checker", () =>
+            {
+                List<RestrictionInformation>? LastRestrictions = GetRestrictions();
+                bool FirstCheck = true;
+
+                while (AllowThreadRestarts)
+                {
+                    Thread.Sleep(15000);
+
+                    List<RestrictionInformation>? CurrentRestrictions = GetRestrictions();
+                    if (CurrentRestrictions == null) continue;
+
                     if (FirstCheck)
                     {
                         FirstCheck = false;
-                        LastStatus = CurrentStatus;
+                        
+                        if (LastRestrictions == null)
+                        {
+                            FirstCheck = true;
+                            continue;
+                        }
+
+                        LastRestrictions = CurrentRestrictions;
                         continue;
                     }
 
-                    if (LastStatus != CurrentStatus)
-                    {
-                        Environment.Exit(100);
-                    }
+                    if (LastRestrictions == null) continue;
 
-                    Thread.Sleep(30000);
+                    List<RestrictionInformation> NewRestrictions = [.. CurrentRestrictions.Where(current => !LastRestrictions.Any(last => last.UserID == current.UserID))];
+
+                    LastRestrictions = CurrentRestrictions;
+
+                    if (NewRestrictions.Count != 0)
+                    {
+                        foreach (RestrictionInformation info in NewRestrictions)
+                        {
+                            if (info.UserID == localUserID.ToString())
+                            {
+                                AwokenNotifier?.ShowText(new($"You have been restricted.", Color.Yellow, Color.Red, Color.Black));
+                                Thread.Sleep(3000);
+                                Environment.Exit(100);
+                            }
+
+                            AwokenNotifier?.ShowText(new($"{info.Name} ({info.UserID}) has been restricted!", Color.Yellow, Color.Maroon, Color.Black));
+                            Thread.Sleep(3000);
+                        }
+                    }
                 }
             }, true, false);
 
@@ -646,65 +708,50 @@ namespace SharpAlert.ProgramWorker
                     client.OnReady += (sender, e) =>
                     {
                         Console.WriteLine($"[Discord Rich Presence] Ready.");
+                        localUserID = e.User.ID;
                         //e.User.ID;
 
                         try
                         {
-                            HttpResponseMessage userIDs = Client.GetAsync(RestrictionURL).Result;
-                            userIDs.EnsureSuccessStatusCode();
+                            var Restrictions = GetRestrictions();
 
-                            bool RestrictionFound = false;
-
-                            foreach (string userID in userIDs.Content.ReadAsStringAsync().Result.ReplaceLineEndings("\n").Split('\n', StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries))
+                            if (Restrictions != null)
                             {
-                                if (userID.StartsWith(e.User.ID.ToString()))
+                                bool RestrictionFound = false;
+
+                                foreach (RestrictionInformation info in Restrictions)
                                 {
-                                    RestrictionFound = true;
-
-                                    if (userID.Contains('|'))
+                                    if (info.UserID == e.User.ID.ToString())
                                     {
-                                        string[] userSplit = userID.Split('|');
+                                        RestrictionFound = true;
 
-                                        if (userSplit.Length == 3)
+                                        switch (info.RestrictionLevel)
                                         {
-                                            string id = userSplit[0];
-                                            string level = userSplit[1];
-                                            string reason = userSplit[2];
-
-                                            switch (level)
-                                            {
-                                                default:
-                                                case "1":
-                                                    DiscordUserIsRestricted = DiscordUserRestriction.RichPresenceNotAllowed;
-                                                    QuickSettings.Instance.LastCheckRestricton = DiscordUserRestriction.RichPresenceNotAllowed;
-                                                    break;
-                                                case "2":
-                                                    DiscordUserIsRestricted = DiscordUserRestriction.RichPresenceAndWebhooksNotAllowed;
-                                                    QuickSettings.Instance.LastCheckRestricton = DiscordUserRestriction.RichPresenceAndWebhooksNotAllowed;
-                                                    break;
-                                            }
-
-                                            RestrictionMessage = reason;
-
-                                            Console.WriteLine($"[Discord Rich Presence] {e.User.DisplayName} ({e.User.Username}) is currently restricted (level {level}). Reason: {reason}");
+                                            default:
+                                            case "1":
+                                                DiscordUserIsRestricted = DiscordUserRestriction.RichPresenceNotAllowed;
+                                                QuickSettings.Instance.LastCheckRestricton = DiscordUserRestriction.RichPresenceNotAllowed;
+                                                break;
+                                            case "2":
+                                                DiscordUserIsRestricted = DiscordUserRestriction.RichPresenceAndWebhooksNotAllowed;
+                                                QuickSettings.Instance.LastCheckRestricton = DiscordUserRestriction.RichPresenceAndWebhooksNotAllowed;
+                                                break;
                                         }
 
+                                        AwokenNotifier?.ShowText(new($"Your Discord account is currently restricted on SharpAlert.\r\nOpen Global Settings for more information.", Color.Yellow, Color.Red, Color.Black));
+
+                                        RestrictionMessage = info.RestrictionReason;
+                                        break;
                                     }
-                                    else
-                                    {
-                                        DiscordUserIsRestricted = DiscordUserRestriction.RichPresenceNotAllowed;
-                                        QuickSettings.Instance.LastCheckRestricton = DiscordUserRestriction.RichPresenceNotAllowed;
-                                        Console.WriteLine($"[Discord Rich Presence] {e.User.DisplayName} ({e.User.Username}) is currently restricted.");
-                                    }
-                                    break;
+                                }
+
+                                if (!RestrictionFound)
+                                {
+                                    DiscordUserIsRestricted = DiscordUserRestriction.None;
+                                    QuickSettings.Instance.LastCheckRestricton = DiscordUserRestriction.None;
                                 }
                             }
 
-                            if (!RestrictionFound)
-                            {
-                                DiscordUserIsRestricted = DiscordUserRestriction.None;
-                                QuickSettings.Instance.LastCheckRestricton = DiscordUserRestriction.None;
-                            }
                         }
                         catch (Exception ex)
                         {
@@ -959,6 +1006,14 @@ namespace SharpAlert.ProgramWorker
             QuickSettings.Instance.Save();
 
             if (QuickSettings.Instance.PlayChimeOnRun) AwokenNotifier?.ShowText(new("SharpAlert has started.", Color.White, Color.Green, Color.Black));
+        }
+
+        public class RestrictionInformation(string userID, string name, string restrictionLevel, string restrictionReason)
+        {
+            public readonly string UserID = userID;
+            public readonly string Name = name;
+            public readonly string RestrictionLevel = restrictionLevel;
+            public readonly string RestrictionReason = restrictionReason;
         }
 
         public enum DiscordUserRestriction
