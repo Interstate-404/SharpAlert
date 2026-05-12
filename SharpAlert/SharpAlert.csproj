@@ -119,9 +119,6 @@
 		<Compile Update="Languages\LanguageSelectionForm.cs">
 		  <SubType>Form</SubType>
 		</Compile>
-		<Compile Update="ProgramWorker\UninstallingForm.cs">
-		  <SubType>Form</SubType>
-		</Compile>
 		<Compile Update="Properties\Resources.Designer.cs">
 			<AutoGen>True</AutoGen>
 			<DesignTime>True</DesignTime>
