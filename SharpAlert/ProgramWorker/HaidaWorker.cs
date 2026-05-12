@@ -600,6 +600,38 @@ namespace SharpAlert.ProgramWorker
 
             int RichErrorCount = 0;
 
+            string RestrictionURL = "https://bunnytub.com/SharpAlert/SharpAlertRestrictionsByDID.txt";
+
+            StartCatchAllThread("Status Checker", () =>
+            {
+                string LastStatus = string.Empty;
+                bool FirstCheck = true;
+
+                Thread.Sleep(5000);
+
+                while (AllowThreadRestarts)
+                {
+                    HttpResponseMessage userIDs = Client.GetAsync(RestrictionURL).Result;
+                    userIDs.EnsureSuccessStatusCode();
+
+                    string CurrentStatus = userIDs.Content.ReadAsStringAsync().Result;
+
+                    if (FirstCheck)
+                    {
+                        FirstCheck = false;
+                        LastStatus = CurrentStatus;
+                        continue;
+                    }
+
+                    if (LastStatus != CurrentStatus)
+                    {
+                        Environment.Exit(100);
+                    }
+
+                    Thread.Sleep(30000);
+                }
+            }, true, false);
+
             StartCatchAllThread("Discord Rich Presence", () =>
             {
                 while (AllowThreadRestarts)
@@ -618,7 +650,7 @@ namespace SharpAlert.ProgramWorker
 
                         try
                         {
-                            HttpResponseMessage userIDs = Client.GetAsync("https://bunnytub.com/SharpAlert/SharpAlertRestrictionsByDID.txt").Result;
+                            HttpResponseMessage userIDs = Client.GetAsync(RestrictionURL).Result;
                             userIDs.EnsureSuccessStatusCode();
 
                             bool RestrictionFound = false;
@@ -702,8 +734,7 @@ namespace SharpAlert.ProgramWorker
                     if (QuickSettings.Instance.AllowDiscordRichPresence &&
                         DiscordUserIsRestricted == DiscordUserRestriction.None)
                     {
-
-                        //Console.WriteLine($"[Discord Rich Presence] Discord Rich Presence is disabled.");
+                        Console.WriteLine($"[Discord Rich Presence] Discord Rich Presence is available.");
 
                         client.SetPresence(new RichPresence()
                         {
