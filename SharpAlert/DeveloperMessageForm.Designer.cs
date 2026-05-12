@@ -36,7 +36,6 @@
             DoneButton = new System.Windows.Forms.Button();
             LogOutput = new System.Windows.Forms.TextBox();
             WindowShake = new System.Windows.Forms.Timer(components);
-            EnableNewFeatureButton = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)IDIconBox).BeginInit();
             SuspendLayout();
             // 
@@ -79,9 +78,9 @@
             DoneButton.Font = new System.Drawing.Font("Segoe UI", 16F);
             DoneButton.ForeColor = System.Drawing.Color.White;
             DoneButton.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            DoneButton.Location = new System.Drawing.Point(521, 282);
+            DoneButton.Location = new System.Drawing.Point(148, 282);
             DoneButton.Name = "DoneButton";
-            DoneButton.Size = new System.Drawing.Size(128, 40);
+            DoneButton.Size = new System.Drawing.Size(501, 40);
             DoneButton.TabIndex = 14;
             DoneButton.Text = "Close";
             DoneButton.UseMnemonic = false;
@@ -102,7 +101,8 @@
             LogOutput.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
             LogOutput.Size = new System.Drawing.Size(501, 189);
             LogOutput.TabIndex = 15;
-            LogOutput.Text = resources.GetString("LogOutput.Text");
+            LogOutput.Text = "Marine locations, mainly those out 20 to 60 nautical miles, have been added.\r\nTTS now reads \"nm\" & \"NM\" as \"nautical miles.\"\r\nInternally reordered locations, you should see no difference.\r\n";
+            LogOutput.TextChanged += LogOutput_TextChanged;
             // 
             // WindowShake
             // 
@@ -110,30 +110,11 @@
             WindowShake.Interval = 500;
             WindowShake.Tick += WindowShake_Tick;
             // 
-            // EnableNewFeatureButton
-            // 
-            EnableNewFeatureButton.Anchor = System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right;
-            EnableNewFeatureButton.BackColor = System.Drawing.Color.FromArgb(60, 60, 60);
-            EnableNewFeatureButton.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
-            EnableNewFeatureButton.Font = new System.Drawing.Font("Segoe UI", 16F);
-            EnableNewFeatureButton.ForeColor = System.Drawing.Color.White;
-            EnableNewFeatureButton.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            EnableNewFeatureButton.Location = new System.Drawing.Point(148, 282);
-            EnableNewFeatureButton.Name = "EnableNewFeatureButton";
-            EnableNewFeatureButton.Size = new System.Drawing.Size(367, 40);
-            EnableNewFeatureButton.TabIndex = 16;
-            EnableNewFeatureButton.Text = "Enable \"Use SAME as severity\"";
-            EnableNewFeatureButton.UseMnemonic = false;
-            EnableNewFeatureButton.UseVisualStyleBackColor = false;
-            EnableNewFeatureButton.Visible = false;
-            EnableNewFeatureButton.Click += EnableNewFeatureButton_Click;
-            // 
             // DeveloperMessageForm
             // 
             AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
             BackColor = System.Drawing.Color.FromArgb(20, 20, 20);
             ClientSize = new System.Drawing.Size(661, 334);
-            Controls.Add(EnableNewFeatureButton);
             Controls.Add(LogOutput);
             Controls.Add(DoneButton);
             Controls.Add(label2);
@@ -162,6 +143,5 @@
         private System.Windows.Forms.Button DoneButton;
         private System.Windows.Forms.TextBox LogOutput;
         private System.Windows.Forms.Timer WindowShake;
-        private System.Windows.Forms.Button EnableNewFeatureButton;
     }
 }

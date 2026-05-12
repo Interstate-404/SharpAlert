@@ -117,36 +117,6 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="LogOutput.Text" xml:space="preserve">
-    <value>&lt;&lt; Attention &gt;&gt;
-If you have SharpAlert installed, not standalone, you will be required to install the next upcoming update manually due to the switch of the updater to a new library called Velopack. This new library will provide auto updates in a less janky way.
-
-To get the latest updates automatically, follow these instructions.
-
-Step 1.
-Uninstall SharpAlert. This won't remove your settings.
-
-Step 2.
-Go to https://bunnytub.com/SharpAlert, and download the v19.0 (or newer) installer.
-You may need to wait a few hours to see the new installer download.
-
-Step 3.
-Open the installer, and you're all good to go!
-
----
-
-- Add more missing locations for SAME. - Interstate404
-- Using SAME as severity is now turned on by default. - BunnyTub
-- Fixed "Lower Niagara River" belonging to "Lake Erie" instead of "Lake Ontario". - Interstate404
-- Moved the "Manage Alerts" button to the global settings menu under the name of "Alert Manager". - BunnyTub
-- IP phones will no longer pause the processing of alerts. Calls are separated from alerts to windows and webhooks. - BunnyTub
-- **Fixed Discord webhooks having missing icons due to CAP files specifying other text instead of SAME compliant text.** (Images will use the SAME code as a solution on top of this.) - BunnyTub
-- **Fixed a time issue that caused AM/PM text in alert text to be based on the current system time instead of the alert time.** - BunnyTub
-- **Change "Gulf of America" mentions to "Gulf of Mexico".** - Interstate404
-- **Revamped the Alert Manager window. Check it out!** - BunnyTub
-
-I am BunnyTub, the (mostly) sole developer of SharpAlert. Find additional contributors in credits. SharpAlert has been completely open-sourced! You can find the entire source code and files at https://github.com/BunnyTub/SharpAlert. This software is provided free of charge. If you paid for this software, or it came inside of a software package of which you paid for, you should probably try getting your money back immediately.</value>
-  </data>
   <metadata name="WindowShake.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
     <value>17, 17</value>
   </metadata>

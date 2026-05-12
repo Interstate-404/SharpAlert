@@ -144,7 +144,7 @@ namespace SharpAlert.ProgramWorker
                             }
                             else
                             {
-                                Notify.ShowNotification($"I'll just be waiting right over here in my tray icon. You're up to date.",
+                                Notify.ShowNotification($"Interstate may or may not have updated the code. You're up to date, by the way.",
                                     "SharpAlert is running",
                                     ToolTipIcon.Info);
                             }

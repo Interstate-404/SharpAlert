@@ -71,10 +71,10 @@
             // 
             PrimaryGeneralInfoText.Dock = System.Windows.Forms.DockStyle.Fill;
             PrimaryGeneralInfoText.Font = new System.Drawing.Font("Segoe UI", 9F);
-            PrimaryGeneralInfoText.Location = new System.Drawing.Point(358, 32);
+            PrimaryGeneralInfoText.Location = new System.Drawing.Point(622, 32);
             PrimaryGeneralInfoText.Margin = new System.Windows.Forms.Padding(2);
             PrimaryGeneralInfoText.Name = "PrimaryGeneralInfoText";
-            PrimaryGeneralInfoText.Size = new System.Drawing.Size(442, 17);
+            PrimaryGeneralInfoText.Size = new System.Drawing.Size(178, 17);
             PrimaryGeneralInfoText.TabIndex = 5;
             PrimaryGeneralInfoText.Text = "...";
             PrimaryGeneralInfoText.TextAlign = System.Drawing.ContentAlignment.TopRight;
@@ -83,10 +83,10 @@
             // 
             GeneralInfoText.Dock = System.Windows.Forms.DockStyle.Top;
             GeneralInfoText.Font = new System.Drawing.Font("Segoe UI", 15.75F, System.Drawing.FontStyle.Bold);
-            GeneralInfoText.Location = new System.Drawing.Point(358, 0);
+            GeneralInfoText.Location = new System.Drawing.Point(622, 0);
             GeneralInfoText.Margin = new System.Windows.Forms.Padding(2);
             GeneralInfoText.Name = "GeneralInfoText";
-            GeneralInfoText.Size = new System.Drawing.Size(442, 32);
+            GeneralInfoText.Size = new System.Drawing.Size(178, 32);
             GeneralInfoText.TabIndex = 3;
             GeneralInfoText.Text = "...";
             GeneralInfoText.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
@@ -98,7 +98,7 @@
             panel1.Dock = System.Windows.Forms.DockStyle.Left;
             panel1.Location = new System.Drawing.Point(64, 0);
             panel1.Name = "panel1";
-            panel1.Size = new System.Drawing.Size(294, 49);
+            panel1.Size = new System.Drawing.Size(558, 49);
             panel1.TabIndex = 4;
             // 
             // BrandText
@@ -107,9 +107,9 @@
             BrandText.Location = new System.Drawing.Point(5, 2);
             BrandText.Margin = new System.Windows.Forms.Padding(2);
             BrandText.Name = "BrandText";
-            BrandText.Size = new System.Drawing.Size(285, 42);
+            BrandText.Size = new System.Drawing.Size(550, 42);
             BrandText.TabIndex = 1;
-            BrandText.Text = "SharpAlert";
+            BrandText.Text = "SharpAlert (Interstate 404 // Sevyn Fork) v18.0";
             BrandText.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
             // LogoBox
